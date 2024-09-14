@@ -3,7 +3,6 @@
 bin/
 obj/
 
-# ignore appsettings.json
 appsettings.json
 
 # Common node modules locations

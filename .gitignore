@@ -3,3 +3,10 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+# ignore appsettings.json file
+/SchoolSystem.Web/appsettings.json
+
+
+# ignorre .ignore file
+/SchoolSystem.Web/.ignore
