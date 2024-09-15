@@ -1,0 +1,38 @@
+@model Web.Areas.Admin.ViewModels.AddDisciplineViewModel
+
+@{
+    ViewBag.Title = "Add Discipline";
+}
+
+
+<h2>
+    Choose discipline and class to add to it
+</h2>
+
+<div class="row">
+    <div class="col-sm-8 col-md-6">
+        <form asp-action="AddDiscipline" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DisciplineId" class="control-label"></label>
+                <select asp-for="DisciplineId" class="form-control" asp-items="Model.Disciplines"></select>
+                <span asp-validation-for="DisciplineId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ClassId" class="control-label"></label>
+                <select asp-for="ClassId" class="form-control" asp-items="Model.Classes"></select>
+                <span asp-validation-for="ClassId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary"/>
+                <a asp-action="Index" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

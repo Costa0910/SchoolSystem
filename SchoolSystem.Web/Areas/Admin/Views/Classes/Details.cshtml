@@ -1,0 +1,61 @@
+@* @model Web.Areas.Admin.ViewModels.ClassViewModel *@
+@* *@
+@* @{ *@
+@*     ViewBag.Title = "Details"; *@
+@* *@
+@*     // Dictionary<string, string> routeValues = new(); *@
+@* } *@
+@* *@
+@* <div class="row"> *@
+@*     <div class="col-sm-6 col-md-4"> *@
+@*         <div class="card mb-3" style="max-width: 540px;"> *@
+@*             <div class="row g-0"> *@
+@*                 <div class="col-md-4"> *@
+@*                     <img src="@Model.ClassImageUrl" class="img-fluid rounded-start" alt="@Model.Name"> *@
+@*                 </div> *@
+@*                 <div class="col-md-8"> *@
+@*                     <div class="card-body"> *@
+@*                         <h5 class="card-title">@Model.Name</h5> *@
+@*                         <p class="card-text">@Model.Description</p> *@
+@*                         <p class="card-text"> *@
+@*                             <strong class="text-body-secondary">@Html.DisplayNameFor(model => model.StartDate): </strong>@Model.StartDate *@
+@*                         </p> *@
+@*                         <p class="card-text"> *@
+@*                             <strong class="text-body-secondary">@Html.DisplayNameFor(model => model.EndDate): </strong>@Model.EndDate *@
+@*                         </p> *@
+@*                         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> *@
+@*                         <a asp-action="Index" class="btn btn-secondary">Back</a> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@*     <div class="col-sm-6 col-md-4"> *@
+@*         <h5 class="mb-3 text-center">Disciplines</h5> *@
+@*         @if (Model.Disciplines.Count == 0) *@
+@*         { *@
+@*             <p class="text-center">No disciplines</p> *@
+@*         } *@
+@*         @foreach (var discipline in @Model.Disciplines) *@
+@*         { *@
+@*             <div class="accordion" id="disciplinesAccordion"> *@
+@*                 <div class="accordion-item"> *@
+@*                     <h2 class="accordion-header"> *@
+@*                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@discipline.Name" aria-expanded="false" *@
+@*                                 aria-controls="collapseOne"> *@
+@*                             @discipline.Name *@
+@*                         </button> *@
+@*                     </h2> *@
+@*                     <div id="@discipline.Name" class="accordion-collapse collapse" data-bs-parent="#disciplinesAccordion"> *@
+@*                         <div class="accordion-body"> *@
+@*                             <p>@discipline.Description</p> *@
+@*                             <a asp-action="DeleteDiscipline" asp-route-classId="@Model.Id" asp-route-disciplineId="@discipline.Id" class="btn btn-danger"> *@
+@*                                 Delete *@
+@*                             </a> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         } *@
+@*     </div> *@
+@* </div> *@

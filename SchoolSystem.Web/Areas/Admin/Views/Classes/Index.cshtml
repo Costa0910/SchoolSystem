@@ -1,0 +1,56 @@
+@* @model IEnumerable<Web.Models.Room> *@
+@* *@
+@* @{ *@
+@*     ViewBag.Title = "Classes"; *@
+@* } *@
+@* *@
+@* *@
+@* <div class="container"> *@
+@*     <div class="row text-center"> *@
+@*         <div class="col-md-12"> *@
+@*             <h2 class="text-center">Classes</h2> *@
+@*             <div class="text-center"> *@
+@*                 <a asp-action="Create" class="btn btn-primary">Create class</a> *@
+@*                 <a asp-action="AddDiscipline" class="btn btn-primary">Add discipline</a> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@*     <div class="row"> *@
+@*         <div class="col-md-12"> *@
+@*             <table class="table"> *@
+@*                 <tr> *@
+@*                     <th> *@
+@*                         @Html.DisplayNameFor(model => model.Name) *@
+@*                     </th> *@
+@*                     <th> *@
+@*                         @Html.DisplayNameFor(model => model.Members) *@
+@*                     </th> *@
+@*                     <th> *@
+@*                         @Html.DisplayNameFor(model => model.Disciplines) *@
+@*                     </th> *@
+@*                     <th></th> *@
+@*                 </tr> *@
+@* *@
+@*                 @foreach (var item in Model) *@
+@*                 { *@
+@*                     <tr> *@
+@*                         <td> *@
+@*                             @Html.DisplayFor(modelItem => item.Name) *@
+@*                         </td> *@
+@*                         <td> *@
+@*                             @Html.DisplayFor(modelItem => item.Members.Count) *@
+@*                         </td> *@
+@*                         <td> *@
+@*                             @Html.DisplayFor(modelItem => item.Disciplines.Count) *@
+@*                         </td> *@
+@*                         <td> *@
+@*                             <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
+@*                             <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+@*                             <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
+@*                         </td> *@
+@*                     </tr> *@
+@*                 } *@
+@*             </table> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
