@@ -13,7 +13,7 @@ public class Staff : IEntity
     public string Status { get; set; } // (e.g., "Active", "Retired", "Fired")
     public DateTime HireDate { get; init; }
     [MaxLength(50)]
-    public string Position { get; set; } // (e.g., "Teacher", "Coordinator", "Principal")
+    public string Position { get; set; } // (e.g., "Teacher", "Staff", "Principal")
 
     public User User { get; init; }
 }

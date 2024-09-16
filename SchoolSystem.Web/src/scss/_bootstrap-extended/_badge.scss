@@ -1,0 +1,20 @@
+// Badges
+// ? Bootstrap use bg-label-variant and bg color for solid and label style, hence we have not created mixin for that.
+// *******************************************************************************
+
+.badge {
+  line-height: $line-height-base;
+}
+// Badge Center Style
+
+.badge-center {
+  padding: 3px;
+  line-height: 1.375;
+  @include badge-size($badge-height, $badge-width, $badge-center-font-size);
+  i {
+    font-size: 0.8rem;
+    &::before {
+      font-size: 0.8rem;
+    }
+  }
+}

@@ -1,0 +1,92 @@
+// Dropdowns
+// *****************************************************************
+
+// On hover outline
+[data-trigger='hover'] {
+  outline: 0;
+}
+
+.dropdown-menu {
+  box-shadow: $dropdown-box-shadow;
+
+  // Mega dropdown inside the dropdown menu
+  .mega-dropdown > & {
+    left: 0 !important;
+    right: 0 !important;
+  }
+
+  // Badge within dropdown menu
+  .badge[class^='float-'],
+  .badge[class*=' float-'] {
+    position: relative;
+    top: 0.071em;
+  }
+}
+
+// Dropdown item line height
+.dropdown-item {
+  &.active .waves-ripple,
+  &.disabled .waves-ripple {
+    display: none;
+  }
+}
+
+// Hidden dropdown toggle arrow
+.dropdown-toggle.hide-arrow,
+.dropdown-toggle-hide-arrow > .dropdown-toggle {
+  &::before,
+  &::after {
+    display: none;
+  }
+}
+
+// Dropdown caret icon
+
+@if $enable-caret {
+  .dropstart .dropdown-toggle::before,
+  .dropend .dropdown-toggle::after {
+    vertical-align: $caret-vertical-align;
+  }
+  .dropdown-toggle-split::after {
+    margin-left: 0 !important;
+  }
+  .dropdown-toggle::after {
+    margin-top: -0.278rem;
+    margin-left: 0.8em;
+    width: 0.55em;
+    height: 0.55em;
+    border: 2px solid;
+    border-top: 0;
+    border-left: 0;
+    transform: rotate(45deg);
+  }
+
+  .dropup .dropdown-toggle::after {
+    margin-top: 0.25rem;
+    margin-left: 0.667em;
+    border: 2px solid;
+    border-bottom: 0;
+    border-left: 0;
+    transform: rotate(-45deg);
+  }
+
+  .dropend .dropdown-toggle::after {
+    margin-top: 0;
+    margin-left: 0.667em;
+    border: 2px solid;
+    border-top: 0;
+    border-left: 0;
+    transform: rotate(-45deg);
+  }
+
+  .dropstart .dropdown-toggle::before {
+    margin-top: 0;
+    margin-right: 0.667em;
+    width: 0.55em;
+    height: 0.55em;
+    border: 2px solid;
+    border-top: 0;
+    border-right: 0;
+    transform: rotate(45deg);
+  }
+}

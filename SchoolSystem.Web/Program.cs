@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Web.Data;
+using SchoolSystem.Web.Helpers;
+using SchoolSystem.Web.Helpers.Interfaces;
 using SchoolSystem.Web.Models;
 using Serilog;
 using Syncfusion.Licensing;
@@ -30,20 +33,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.ConfigureApplicationCookie(
-    op =>
-    {
-        op.LoginPath = "/Account/Login";
-        op.AccessDeniedPath = "/Errors/AccessDenied";
-    });
-
 // TODO: Change configuration to be more secure after development
 builder.Services.AddIdentity<User, IdentityRole>(
         config =>
         {
             config.Tokens.AuthenticatorTokenProvider
                 = TokenOptions.DefaultAuthenticatorProvider;
-            //config.SignIn.RequireConfirmedEmail = true;
+            config.SignIn.RequireConfirmedEmail = true;
             config.User.RequireUniqueEmail = true;
             config.Password.RequireDigit = false;
             config.Password.RequiredUniqueChars = 0;
@@ -61,6 +57,16 @@ var connectionString
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddScoped<IUserHelper, UserHelper>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login";
+        options.AccessDeniedPath = "/Errors/AccessDenied";
+    });
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -71,6 +77,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Seed database
+using var scoped = app.Services.CreateScope();
+var services = scoped.ServiceProvider;
+var context = services.GetRequiredService<AppDbContext>();
+var useHelper = services.GetRequiredService<IUserHelper>();
+await Seed.SeedAsync(context, useHelper);
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -78,6 +91,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

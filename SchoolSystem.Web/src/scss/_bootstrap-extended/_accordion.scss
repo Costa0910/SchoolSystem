@@ -1,0 +1,159 @@
+// Accordions
+// *******************************************************************************
+
+// arrow left
+
+.accordion-arrow-left {
+  .accordion-button.collapsed:focus {
+    box-shadow: none;
+  }
+
+  .accordion-item {
+    border: 0;
+    box-shadow: none !important;
+
+    &:not(:first-child) {
+      .accordion-header {
+        border-top: $accordion-border-width solid $accordion-border-color;
+      }
+    }
+    &.active + .accordion-item .accordion-header {
+      border-top: $accordion-border-width solid $accordion-border-color;
+    }
+
+    &.active {
+      box-shadow: none;
+      &:not(:first-child) {
+        margin-top: 0;
+      }
+      &:not(:last-child) {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .accordion-button {
+    padding: var(--#{$prefix}accordion-btn-padding-y) 0;
+    // Accordion icon
+    &::after {
+      content: '';
+      display: none;
+    }
+    &:not(.collapsed) {
+      color: var(--#{$prefix}accordion-active-color);
+      background-color: var(--#{$prefix}accordion-active-bg);
+      box-shadow: none; // stylelint-disable-line function-disallowed-list
+
+      &::before {
+        background-image: var(--#{$prefix}accordion-btn-active-icon);
+        transform: rotate(-180deg);
+      }
+      &::after {
+        background-image: none;
+        transform: none;
+      }
+    }
+    &::before {
+      flex-shrink: 0;
+      width: var(--#{$prefix}accordion-btn-icon-width);
+      height: var(--#{$prefix}accordion-btn-icon-width);
+      margin-left: 0;
+      margin-right: 1.1rem;
+      content: '';
+      background-image: var(--#{$prefix}accordion-btn-icon);
+      background-repeat: no-repeat;
+      background-size: var(--#{$prefix}accordion-btn-icon-width);
+      @include transition(var(--#{$prefix}accordion-btn-icon-transition));
+    }
+  }
+}
+
+// Solid variant icon color
+.accordion[class*='accordion-solid-'] {
+  .accordion-button::after {
+    background-image: str-replace(str-replace($accordion-button-icon, '#{$accordion-icon-color}', $white), '#', '%23');
+  }
+}
+
+// Solid Accordion With Active Border
+.accordion[class*='accordion-border-solid-'] {
+  .accordion-button.collapsed::after {
+    background-image: str-replace(str-replace($accordion-button-icon, '#{$accordion-icon-color}', $white), '#', '%23');
+  }
+}
+
+.accordion-header + .accordion-collapse .accordion-body {
+  padding-top: 0;
+}
+
+// accordion without icon
+.accordion {
+  &.accordion-without-arrow {
+    .accordion-button::after {
+      background-image: none !important;
+    }
+  }
+}
+.accordion {
+  .accordion-body {
+    padding-top: 0;
+  }
+}
+
+.accordion-button.collapsed:focus {
+  box-shadow: none;
+}
+
+.accordion-header {
+  line-height: $line-height-base;
+}
+
+.accordion .accordion-item {
+  transition: $accordion-transition;
+  transition-property: margin-top, margin-bottom, border-radius, border;
+  box-shadow: $box-shadow-xs;
+  border: 0;
+  &:not(.active):not(:first-child) {
+    .accordion-header {
+      border-top: $accordion-border-width solid $accordion-border-color;
+    }
+  }
+  &.previous-active {
+    @include border-bottom-radius($border-radius);
+  }
+  &.active {
+    box-shadow: $box-shadow;
+    border-radius: $border-radius;
+    &:not(:first-child) {
+      margin-top: $spacer * 0.5;
+    }
+    &:not(:last-child) {
+      margin-bottom: $spacer * 0.5;
+    }
+    & + .accordion-item {
+      @include border-top-radius($border-radius);
+    }
+  }
+}
+
+.accordion .accordion-item.active + .accordion-item .accordion-header {
+  border-top: none !important;
+}
+
+// Accordion border radius
+.accordion-button {
+  font-weight: $font-weight-medium;
+
+  @include border-top-radius($accordion-border-radius);
+  &.collapsed {
+    @include border-radius($accordion-border-radius);
+  }
+  &:not(.collapsed) {
+    box-shadow: none;
+  }
+}
+
+// Default card styles of accordion
+.accordion > .card:not(:last-of-type) {
+  border-radius: $accordion-border-radius !important;
+  margin-bottom: 0.6875rem;
+}

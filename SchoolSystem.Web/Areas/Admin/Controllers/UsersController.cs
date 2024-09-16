@@ -31,7 +31,7 @@
 //     {
 //         var model = new RegisterViewModel
 //         {
-//             Role = nameof(Roles.Coordinator)
+//             Role = nameof(Roles.Staff)
 //         };
 //         return View(model);
 //     }

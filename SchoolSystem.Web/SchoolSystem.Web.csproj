@@ -13,15 +13,15 @@
       <Folder Include="Areas\Teacher\Controllers\" />
       <Folder Include="Areas\Teacher\ViewModels\" />
       <Folder Include="Areas\Teacher\Views\" />
-      <Folder Include="Helpers\" />
       <Folder Include="Services\" />
-      <Folder Include="ViewModels\" />
+      <Folder Include="src\" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="EntityFrameworkCore.CommonTools" Version="2.0.2" />
       <PackageReference Include="MailKit" Version="4.7.1.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
@@ -34,6 +34,10 @@
       <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="26.2.14" />
       <PackageReference Include="Syncfusion.Licensing" Version="26.2.14" />
       <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Auth\Login.cshtml" />
     </ItemGroup>
 
 </Project>
