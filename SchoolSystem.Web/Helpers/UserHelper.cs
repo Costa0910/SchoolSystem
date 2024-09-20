@@ -4,6 +4,12 @@ using SchoolSystem.Web.Models;
 
 namespace SchoolSystem.Web.Helpers;
 
+/// <summary>
+/// Helper class for user management
+/// </summary>
+/// <param name="userManager">Class that manage user, creating, editing, etc.</param>
+/// <param name="roleManager">Class that manage roles, creating, editing, etc.</param>
+/// <param name="signInManager">Class that manage user login, logout</param>
 public class UserHelper(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager)
     : IUserHelper
 {
@@ -90,7 +96,6 @@ public class UserHelper(UserManager<User> userManager, RoleManager<IdentityRole>
 
     public Task<IEnumerable<User>> GetAllUsersAsync()
         => Task.FromResult<IEnumerable<User>>(userManager.Users.ToList());
-
     public async Task<IdentityResult> DeleteUserAsync(User user)
         => await userManager.DeleteAsync(user);
 

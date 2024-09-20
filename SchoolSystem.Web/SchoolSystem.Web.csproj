@@ -13,7 +13,6 @@
       <Folder Include="Areas\Teacher\Controllers\" />
       <Folder Include="Areas\Teacher\ViewModels\" />
       <Folder Include="Areas\Teacher\Views\" />
-      <Folder Include="Services\" />
       <Folder Include="src\" />
     </ItemGroup>
 

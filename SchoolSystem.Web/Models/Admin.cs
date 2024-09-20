@@ -6,7 +6,7 @@ namespace SchoolSystem.Web.Models;
 /// <summary>
 /// Admins of the application.
 /// </summary>
-public class Admin : IEntity
+public class AdminUser : IEntity
 {
     public Guid Id { get; init; }
 

@@ -94,4 +94,19 @@ public class AuthController(IUserHelper userHelper) : Controller
   {
     throw new NotImplementedException();
   }
+
+  public IActionResult ResetPassword()
+  {
+    throw new NotImplementedException();
+  }
+
+  public IActionResult Logout()
+  {
+    throw new NotImplementedException();
+  }
+
+  public IActionResult ConfirmPassword()
+  {
+    throw new NotImplementedException();
+  }
 }

@@ -1,54 +1,282 @@
-@model IEnumerable<Web.Areas.Admin.ViewModels.CoordinatorViewModel>
+@using SchoolSystem.Web.Models.EnumsClasses
+@model List<SchoolSystem.Web.Areas.Admin.ViewModels.Users.UserViewModel>
 
 @{
-    ViewBag.Title = "Coordinators";
+    ViewData["Title"] = "Users - Page";
 }
 
-<h2>Coordinators</h2>
 
-<p>
-    @Html.ActionLink("Create New", "RegisterUser", "Account", new { area = "" }, null)
-</p>
+@section PageStyles
+{
+<style>
 
-<p>@ViewBag.Message</p>
+  .dataTables_info {
+    margin: 5px 20px;
+  }
+
+  .dataTables_paginate {
+    margin: 20px;
+  }
+
+  .dataTables_paginate .previous, .dataTables_paginate .next {
+    padding: 6px 12px;
+    text-decoration: none;
+    margin-bottom: 5px;
+    color: black;
+    background-color: #eeeeef;
+    border: 1px solid #eeeeef;
+    border-radius: 5%;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .dataTables_paginate .previous {
+    margin-right: 5px;
+  }
+
+  .dataTables_paginate .next {
+    margin-left: 5px;
+  }
+
+  span a.paginate_button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: black;
+    background-color: #eeeeef;
+    border: 1px solid #eeeeef;
+    border-radius: 50%;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  span a.paginate_button:hover {
+    background-color: #9a9bd7;
+    color: white;
+  }
+
+  span a.paginate_button.current {
+    background-color: #8c57ff;
+    color: white;
+    font-weight: bold;
+    border-color: #8c57ff;
+  }
+
+  span a.paginate_button:focus {
+    outline: none;
+    box-shadow: 0 0 3px 2px rgba(0, 123, 255, 0.5);
+  }
+
+</style>
+}
 
 
-<table class="table">
+<div class="card">
+  <div class="card-header border-bottom">
+    <h6 class="card-title mb-0">Users</h6>
+    @* Alerts and Toasts *@
+    <partial name="_userAlert"/>
+  </div>
+  <div class="card-datatable table-responsive">
+    <div id="DataTables_Table_0_wrapper"
+         class="dataTables_wrapper dt-bootstrap5 no-footer">
+      <div class="d-flex justify-content-between
+gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
+        <div class="add-new col-md-4 w-auto">
+          <button class="btn btn-primary waves-effect waves-light dropdown-toggle"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+            <i
+              class="ri-add-line me-0 me-sm-1 d-inline-block d-sm-none"></i><span
+              class="d-none d-sm-inline-block"> Add New User </span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end m-0" style="">
+            <a asp-action="CreateAdmin" class="dropdown-item">
+              <i class="ri-computer-line ri-22px text-danger me-2"></i><span>Admin</span>
+            </a>
+            <a asp-action="CreateStaff" class="dropdown-item">
+              <i class="ri-vip-crown-line ri-22px text-warning me-2"></i><span>Staff</span>
+            </a>
+            <a asp-action="CreateStudent" class="dropdown-item delete-record">
+              <i class="ri-user-line ri-22px text-primary me-2"></i><span>Student</span>
+            </a>
+          </div>
+        </div>
 
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-
-    @foreach (var item in Model)
-    {
+      </div>
+      <table class="datatables-users table dataTable no-footer dtr-column w-100"
+             id="UsersTable" aria-describedby="DataTables_Table_0_info"
+             style="width: 849px;">
+        <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.ActionLink("Edit","Edit","Account", new { id = item.Id, area = string.Empty }) |
-                @Html.ActionLink("Details", "Details", "Account", new { id = item.Id, area = string.Empty }) |
-                @Html.ActionLink("Delete", "Delete", "Account", new { id = item.Id, area = string.Empty })
-            </td>
+          <th class="control sorting_disabled dtr-hidden" rowspan="1"
+              colspan="1" style="width: 4px; display: none;" aria-label="">
+          </th>
+          <th
+            class="sorting_disabled dt-checkboxes-cell dt-checkboxes-select-all"
+            rowspan="1" colspan="1" style="width: 18px;" data-col="1"
+            aria-label="">
+            <input type="checkbox" class="form-check-input">
+          </th>
+          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+              rowspan="1" colspan="1" style="width: 228px;"
+              aria-label="User: activate to sort column ascending">User
+          </th>
+          <th class="sorting sorting_desc" tabindex="0"
+              aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+              style="width: 266px;"
+              aria-label="Email: activate to sort column ascending"
+              aria-sort="descending">Email
+          </th>
+          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+              rowspan="1" colspan="1" style="width: 115px;"
+              aria-label="Role: activate to sort column ascending">Role
+          </th>
+          <th class="sorting_disabled" rowspan="1" colspan="1"
+              style="width: 0px;" aria-label="Actions">Actions
+          </th>
         </tr>
-    }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @* Loop through the users and display them *@
+
+        @foreach(var user in Model)
+        {
+        <tr class="even">
+          <td class="control dtr-hidden" tabindex="0"
+              style="display: none;"></td>
+          <td class="  dt-checkboxes-cell">
+            <input type="checkbox" class="dt-checkboxes form-check-input">
+          </td>
+          <td>
+            <div
+              class="d-flex justify-content-start align-items-center user-name">
+              <div class="avatar-wrapper">
+                <div class="avatar avatar-sm me-4">
+                  <img src="@user.ProfilePhotoUrl" alt="Avatar"
+                       class="rounded-circle">
+                </div>
+              </div>
+              <div class="d-flex flex-column">
+                <a href="javascript:;"
+                   class="text-heading text-truncate">
+                  <span class="fw-medium">@user.FirstName @user.LastName</span>
+                </a><small>@@@user.Email</small>
+              </div>
+            </div>
+          </td>
+          <td class="sorting_1">
+            <span>@user.Email</span>
+          </td>
+          <td>
+          <span class="text-truncate d-flex align-items-center text-heading">
+            @if(@user.Role == Roles.Admin)
+            {
+              <i class="ri-computer-line ri-22px text-danger me-2"></i>
+            }
+            else if (@user.Role == Roles.Staff) {
+              <i class="ri-vip-crown-line ri-22px text-warning me-2"></i>
+            }
+            else {
+            <i class="ri-user-line ri-22px text-primary me-2"></i>
+            }
+            @user.Role</span>
+          </td>
+          <td class="" style="">
+            <div class="d-flex align-items-center">
+              <a href="javascript:;"
+                 class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect delete-record"
+                 data-bs-toggle="tooltip" title="Delete @user.FirstName">
+                <i class="ri-delete-bin-7-line ri-22px"></i>
+              </a>
+              <a href="javascript:;"
+                 class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect"
+                 data-bs-toggle="tooltip" title="View @user.FirstName">
+                <i class="ri-eye-line ri-22px"></i>
+              </a>
+              <button
+                class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect dropdown-toggle hide-arrow"
+                data-bs-toggle="dropdown">
+                <i class="ri-more-2-line ri-22px"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end m-0">
+                <a asp-action="Details" asp-route-id="@user.Id" asp-route-role="@user.Role"
+                   class="dropdown-item">
+                  <i class="ri-eye-line me-2"></i><span>View</span>
+                </a>
+                <a asp-action="Edit" asp-route-id="@user.Id"
+                   class="dropdown-item">
+                  <i class="ri-edit-box-line me-2"></i><span>Edit</span>
+                </a>
+                <a href="javascript:;" class="dropdown-item delete-record">
+                  <i class="ri-delete-bin-7-line me-2"></i><span>Delete</span>
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+@section PageScripts
+{
+<script src="~/js/ui-toasts.js"></script>
+<!-- Load DataTables from CDN -->
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"
+        defer></script>
+
+<script type="text/javascript" defer>
+  $(document).ready(function() {
+    // Initialize DataTable with Portuguese language support
+    $('#UsersTable').DataTable({
+      'language': {
+        'url': '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese.json'
+      },
+      'aLengthMenu': [
+        [10, 20, 50, 100, 200, -1],
+        [10, 20, 50, 100, 200, 'Todos']
+      ],
+      // initComplete ensures this code runs after DataTable has fully initialized
+      'initComplete': function() {
+        console.log('DataTable initialization complete');
+
+        // Remove the old filter element and replace it
+        let toRemove = document.getElementById('UsersTable_filter');
+        let container = document.getElementById('FilterOptions');
+
+        if (toRemove && container) {
+          toRemove.remove();
+
+          toRemove.classList.add('col-md-4', 'd-flex', 'justify-content-center');
+
+          let label = toRemove.firstElementChild;
+          label.firstElementChild.classList.add('form-control', 'form-control-sm');
+          label.firstElementChild.placeholder = 'Search User';
+          label.removeChild(label.firstChild);
+          label.firstElementChild.classList.remove('dataTables_filter');
+          container.insertAdjacentElement('beforeend', toRemove);
+
+          console.log('Replacement done successfully.');
+        } else {
+          console.error('Elements for replacement not found.');
+        }
+
+        let toMove = document.getElementById('UsersTable_length');
+
+        if (toMove && container) {
+          toMove.remove();
+          toMove.classList.add('col-md-4', 'user_role', 'w-auto', "d-flex", "align-items-center");
+          container.insertAdjacentElement('beforeend', toMove);
+          console.log('Move done successfully.');
+        } else {
+          console.error('Elements for move not found.');
+        }
+      }
+    });
+  });
+</script>
+}

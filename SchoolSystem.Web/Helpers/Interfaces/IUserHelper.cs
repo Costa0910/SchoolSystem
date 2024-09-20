@@ -3,6 +3,9 @@ using SchoolSystem.Web.Models;
 
 namespace SchoolSystem.Web.Helpers.Interfaces;
 
+/// <summary>
+/// Helper for user management
+/// </summary>
 public interface IUserHelper
 {
     Task<User?> GetUserByEmailAsync(string email);

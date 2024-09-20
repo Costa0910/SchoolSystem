@@ -1,0 +1,26 @@
+@model SchoolSystem.Web.Areas.Admin.ViewModels.Users.UserViewModel
+
+  <div class="col-md-6">
+    <div class="form-floating form-floating-outline">
+      <input asp-for="FirstName" class="form-control" type="text"
+             placeholder="John" autofocus />
+      <label asp-for="FirstName">First Name</label>
+    </div>
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+  </div>
+  <div class="col-md-6">
+    <div class="form-floating form-floating-outline">
+      <input  asp-for="LastName" class="form-control" type="text"
+              placeholder="Doe" />
+      <label asp-for="LastName">Last Name</label>
+    </div>
+    <span asp-validation-for="LastName" class="text-danger"></span>
+  </div>
+  <div class="col-md-6">
+    <div class="form-floating form-floating-outline">
+      <input asp-for="Email" class="form-control" type="email" placeholder="john
+                .doe&#64;example.com" />
+      <label asp-for="Email">E-mail</label>
+    </div>
+    <span asp-validation-for="Email" class="text-danger"></span>
+  </div>

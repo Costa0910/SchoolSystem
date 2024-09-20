@@ -2,9 +2,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Web.Data;
+using SchoolSystem.Web.Data.Interfaces;
+using SchoolSystem.Web.Data.Repository;
 using SchoolSystem.Web.Helpers;
 using SchoolSystem.Web.Helpers.Interfaces;
 using SchoolSystem.Web.Models;
+using SchoolSystem.Web.Services;
+using SchoolSystem.Web.Services.Interfaces;
 using Serilog;
 using Syncfusion.Licensing;
 
@@ -58,6 +62,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<ICreateMailHtmlHelper, CreateMailHtmlHelper>();
+builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

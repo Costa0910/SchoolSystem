@@ -10,7 +10,7 @@ namespace SchoolSystem.Web.Data;
 public class AppDbContext(DbContextOptions<AppDbContext> options)
     : IdentityDbContext<User>(options)
 {
-    public DbSet<Admin> Admins { get; set; }
+    public DbSet<AdminUser> Admins { get; set; }
     public DbSet<Staff> Staffs { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }

@@ -38,8 +38,8 @@ public static class Seed
                     = await userHelper
                         .GenerateEmailConfirmationTokenAsync(user);
                 await userHelper.ConfirmEmailAsync(user, token);
-                
-                var admin = new Admin
+
+                var admin = new AdminUser
                 {
                     User = user,
                     Id = Guid.NewGuid(),

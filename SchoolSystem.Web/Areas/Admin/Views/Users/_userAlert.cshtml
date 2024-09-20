@@ -1,0 +1,32 @@
+@if (ViewBag.Error != null)
+{
+  <div class="d-flex m-3 flex-wrap gap-2">
+    <div class="alert alert-danger alert-dismissible d-flex flex-wrap"
+         role="alert">
+      <span class="alert-icon rounded">
+            <i class="ri-error-warning-line ri-22px"></i>
+          </span>
+      @ViewBag.Error
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+}
+
+@if (ViewBag.Message != null)
+{
+  <div class="bs-toast toast toast-placement-ex m-2 fade bottom-0 end-0 show"
+       role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+    <div class="toast-header">
+      <i class="ri-checkbox-circle-fill text-success me-2"></i>
+      <div class="me-auto fw-medium">User</div>
+      <small class="text-muted">1 seg ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      @ViewBag.Message
+    </div>
+  </div>
+}
+
+
