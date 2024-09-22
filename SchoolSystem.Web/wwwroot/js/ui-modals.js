@@ -4,30 +4,36 @@
 
 'use strict';
 
-(function () {
-  // On hiding modal, remove iframe video/audio to stop playing
-  const youTubeModal = document.querySelector('#youTubeModal'),
-    youTubeModalVideo = youTubeModal.querySelector('iframe');
-  youTubeModal.addEventListener('hidden.bs.modal', function () {
-    youTubeModalVideo.setAttribute('src', '');
-  });
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('UI Modals');
+   const openModal = document.querySelectorAll('.openModal');
+    const deleteModal = document.getElementById('deleteUser');
+    const modal = document.getElementById('basicModal');
 
-  // Function to get and auto play youTube video
-  const autoPlayYouTubeModal = function () {
-    const modalTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="modal"]'));
-    modalTriggerList.map(function (modalTriggerEl) {
-      modalTriggerEl.onclick = function () {
-        const theModal = this.getAttribute('data-bs-target'),
-          videoSRC = this.getAttribute('data-theVideo'),
-          videoSRCauto = `${videoSRC}?autoplay=1`,
-          modalVideo = document.querySelector(`${theModal} iframe`);
-        if (modalVideo) {
-          modalVideo.setAttribute('src', videoSRCauto);
-        }
-      };
-    });
-  };
 
-  // Calling function on load
-  autoPlayYouTubeModal();
-})();
+   openModal.forEach((selectedUser) => {
+      selectedUser.addEventListener('click', () => {
+        deleteModal.dataset.userid = selectedUser.dataset.userid;
+        deleteModal.dataset.userrole = selectedUser.dataset.userrole;
+
+        console.log(`User with id: ${selectedUser.dataset.userid} and role: ${selectedUser.dataset.userrole} has been selected`, modal);
+      });
+   });
+
+   deleteModal.addEventListener('click', (e) => {
+      e.preventDefault();
+     console.log('Delete User');
+     deleteModal.textContent = "deleting...";
+      deleteModal.disabled = true;
+      const userId = deleteModal.dataset.userid;
+      const userRole = deleteModal.dataset.userrole;
+      console.log(`User with id: ${userId} and role: ${userRole} has been deleted`);
+
+      setTimeout(() => {
+        console.log(`User with id: ${userId} and role: ${userRole} has been deleted`);
+        modal.classList.add('hide');
+
+        window.location.href = `/Admin/Users/Delete/${userId}?role=${userRole}`;
+      }, 500);
+   });
+});

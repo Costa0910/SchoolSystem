@@ -1,8 +1,8 @@
 using SchoolSystem.Web.Models;
 
-namespace SchoolSystem.Web.Areas.Admin.ViewModels.Users;
+namespace SchoolSystem.Web.ViewModels.Account;
 
-public class UserDetailsViewModel
+public class AccountViewModel
 {
   // Common Stuff
   public string ProfilePhotoUrl { get; set; }

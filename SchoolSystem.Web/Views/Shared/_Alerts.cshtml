@@ -1,0 +1,23 @@
+@if (@ViewBag.Message != null)
+{
+  <div class="alert alert-success alert-dismissible d-flex align-items-center
+   mt-4" role="alert">
+    <span class="alert-icon rounded">
+      <i class="ri-checkbox-circle-line ri-22px"></i>
+    </span>@ViewBag.Message
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+}
+
+@if (@ViewBag.Error != null)
+{
+  <div class="alert alert-danger alert-dismissible d-flex align-items-center
+  mt-4" role="alert">
+    <span class="alert-icon rounded">
+      <i class="ri-error-warning-line ri-22px"></i>
+    </span>@ViewBag.Error
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+}

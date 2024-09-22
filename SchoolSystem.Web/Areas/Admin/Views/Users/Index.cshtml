@@ -1,5 +1,5 @@
 @using SchoolSystem.Web.Models.EnumsClasses
-@model List<SchoolSystem.Web.Areas.Admin.ViewModels.Users.UserViewModel>
+@model List<SchoolSystem.Web.Areas.Admin.ViewModels.Users.ViewUserViewModel>
 
 @{
     ViewData["Title"] = "Users - Page";
@@ -182,14 +182,14 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
             }
             @user.Role</span>
           </td>
-          <td class="" style="">
+          <td>
             <div class="d-flex align-items-center">
-              <a href="javascript:;"
-                 class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect delete-record"
-                 data-bs-toggle="tooltip" title="Delete @user.FirstName">
+              <a data-userId="@user.Id" data-userRole="@user.Role" data-bs-toggle="modal" data-bs-target="#basicModal"
+                 class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect delete-record openModal"
+                  title="Delete @user.FirstName">
                 <i class="ri-delete-bin-7-line ri-22px"></i>
               </a>
-              <a href="javascript:;"
+              <a asp-action="Details" asp-route-id="@user.Id" asp-route-role="@user.Role"
                  class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect"
                  data-bs-toggle="tooltip" title="View @user.FirstName">
                 <i class="ri-eye-line ri-22px"></i>
@@ -208,7 +208,8 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
                    class="dropdown-item">
                   <i class="ri-edit-box-line me-2"></i><span>Edit</span>
                 </a>
-                <a href="javascript:;" class="dropdown-item delete-record">
+                <a data-userId="@user.Id" data-userRole="@user.Role" data-bs-toggle="modal" data-bs-target="#basicModal"
+                   class="dropdown-item openModal">
                   <i class="ri-delete-bin-7-line me-2"></i><span>Delete</span>
                 </a>
               </div>
@@ -222,9 +223,36 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
   </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">
+          Delete user confirmation
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Do you really want to delete this user?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary"
+                data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger delete-record"
+                id="deleteUser">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 @section PageScripts
 {
 <script src="~/js/ui-toasts.js"></script>
+<script src="~/js/ui-modals.js"></script>
 <!-- Load DataTables from CDN -->
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"
         defer></script>

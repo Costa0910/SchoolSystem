@@ -4,5 +4,7 @@ namespace SchoolSystem.Web.Data.Interfaces;
 
 public interface IStaffRepository : IGenericRepository<Staff>
 {
-  Task<Staff?> GetStaffByIdIncludeUserAsync(Guid id);
+  Task<Staff?> GetStaffByIdIncludeUserAsync(string id);
+  Task<bool> DeleteStaffAsync(string id);
+  Task<Staff?> GetStaffByUserEmailAsync(string email);
 }

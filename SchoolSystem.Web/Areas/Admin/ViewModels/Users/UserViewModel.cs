@@ -8,8 +8,6 @@ namespace SchoolSystem.Web.Areas.Admin.ViewModels.Users;
 /// </summary>
 public class UserViewModel
 {
-  public string Id { get; set; }
-
   [MaxLength(50), Display(Name = "First Name"), Required]
   public string FirstName { get; set; }
 
@@ -24,7 +22,4 @@ public class UserViewModel
 
   [Display(Name = "Role")]
   public string? Role { get; set; }
-
-  public string? ProfilePhotoUrl { get; init; }
-
 }

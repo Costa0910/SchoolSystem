@@ -27,7 +27,8 @@ public static class Seed
                 FirstName = "Armando",
                 LastName = "Costa",
                 Email = "Costa0910@cinel.pt",
-                UserName = "Costa0910@cinel.pt"
+                UserName = "Costa0910@cinel.pt",
+                ProfilePhotoId = Guid.Empty
             };
 
             user = await userHelper.AddUserAsync(user, "123456", Roles.Admin);

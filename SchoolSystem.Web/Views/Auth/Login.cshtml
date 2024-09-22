@@ -32,6 +32,7 @@
 
           <form class="mb-5" asp-controller="Auth" asp-action="Login" method="post">
             @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ReturnUrl"/>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-5">
               <div class="form-floating form-floating-outline">
@@ -69,14 +70,21 @@
             </div>
             <div class="mb-5">
               <button class="btn btn-primary d-grid w-100" type="submit">login</button>
+              <div class="text-center mt-2">
+                <a asp-action="Index" asp-controller="Home" class="d-flex align-items-center
+                justify-content-center">
+                  <i class="ri-arrow-left-s-line scaleX-n1-rtl ri-20px me-1_5"></i>
+                  Back to home
+                </a>
+              </div>
             </div>
           </form>
         </div>
       </div>
       <!-- /Login -->
-      <img src="~/img/illustrations/tree-3.png" alt="auth-tree" class="authentication-image-object-left d-none d-lg-block">
-      <img src="~/img/illustrations/auth-basic-mask-light.png" class="authentication-image d-none d-lg-block" height="172" alt="triangle-bg" data-app-light-img="illustrations/auth-basic-mask-light.png" data-app-dark-img="illustrations/auth-basic-mask-dark.png">
-      <img src="~/img/illustrations/tree.png" alt="auth-tree" class="authentication-image-object-right d-none d-lg-block">
+      @* <img src="~/img/illustrations/tree-3.png" alt="auth-tree" class="authentication-image-object-left d-none d-lg-block"> *@
+      @* <img src="~/img/illustrations/auth-basic-mask-light.png" class="authentication-image d-none d-lg-block" height="172" alt="triangle-bg" data-app-light-img="illustrations/auth-basic-mask-light.png" data-app-dark-img="illustrations/auth-basic-mask-dark.png"> *@
+      @* <img src="~/img/illustrations/tree.png" alt="auth-tree" class="authentication-image-object-right d-none d-lg-block"> *@
     </div>
   </div>
 </div>

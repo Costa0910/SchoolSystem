@@ -8,8 +8,10 @@ namespace SchoolSystem.Web.Areas.Admin.ViewModels.Users;
 /// </summary>
 public class CreateStaffViewModel : UserViewModel
 {
+
   [Required, DisplayName("Position")]
-  public string Position { get; set; } // (e.g., "Teacher", "Staff", "Principal")
+  public string
+    Position { get; set; } // (e.g., "Teacher", "Staff", "Principal")
 
   public List<string>? PositionOptions { get; set; }
 }

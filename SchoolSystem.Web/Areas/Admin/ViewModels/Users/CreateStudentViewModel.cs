@@ -8,6 +8,7 @@ namespace SchoolSystem.Web.Areas.Admin.ViewModels.Users;
 /// </summary>
 public class CreateStudentViewModel : UserViewModel
 {
+
   [Required, DisplayName("Student Photo")]
   public IFormFile Photo { get; set; }
 }

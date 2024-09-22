@@ -1,8 +1,8 @@
 @using SchoolSystem.Web.Models.EnumsClasses
-@model SchoolSystem.Web.Areas.Admin.ViewModels.Users.UserDetailsViewModel
+@model SchoolSystem.Web.ViewModels.Account.AccountViewModel
 
 @{
-  ViewBag.Title = "Details - Users";
+  ViewBag.Title = "Your Account - Page";
 }
 
 @section PageStyles {
@@ -76,6 +76,23 @@
       </div>
     </div>
   </div>
+
+  @*   <div class="nav-align-top"> *@
+  @*     <ul class="nav nav-pills flex-column flex-md-row mb-6 gap-2 gap-lg-0"> *@
+  @*       <li class="nav-item"> *@
+  @*         <a class="nav-link active waves-effect waves-light" asp-action="Index"> *@
+  @*           <i class="ri-user-3-line me-1_5"></i>Profile *@
+  @*         </a> *@
+  @*       </li> *@
+  @*       <li class="nav-item"><a class="nav-link waves-effect *@
+  @*       waves-light" asp-action="SettingsEdit"><i class="ri-group-line me-1_5"></i>Account</a></li> *@
+  @*       <li class="nav-item"> *@
+  @*         <a class="nav-link waves-effect waves-light" asp-action="ChangePassword"> *@
+  @*           <i class="ri-lock-line me-1_5"></i>Security *@
+  @*         </a> *@
+  @*       </li> *@
+  @*     </ul> *@
+  @*   </div> *@
   <!-- About User -->
   <div class="card mb-6">
     <div class="card-body">
@@ -108,10 +125,10 @@
         </li>
         @if (Model.Role == Roles.Student)
         {
-        <li class="d-flex align-items-center mb-2">
-          <i class="ri-line-chart-line ri-36px"></i><span class="fw-medium
+          <li class="d-flex align-items-center mb-2">
+            <i class="ri-line-chart-line ri-36px"></i><span class="fw-medium
             mx-2">Attendance:</span> <span>@Model.AttendancePercentage%</span>
-        </li>
+          </li>
         }
       </ul>
       <small class="card-text text-uppercase text-muted small">Contacts</small>
@@ -128,30 +145,4 @@
     </div>
   </div>
   <!--/ About User -->
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="nav-align-top">
-        <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
-          <li class="nav-item">
-            <a class="nav-link waves-effect active
-          waves-light" asp-action="Edit" asp-route-id="@Model.User.Id">
-              <i
-                class="ri-user-3-line
-          me-1_5">
-              </i>Edit @Model.User.FirstName
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active waves-effect
-          waves-light"
-               asp-action="Index">
-              <i class="ri-team-line me-1_5"></i>Back
-              to users
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
 </div>
