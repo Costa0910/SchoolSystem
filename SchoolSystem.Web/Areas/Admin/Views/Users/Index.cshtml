@@ -184,7 +184,7 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
           </td>
           <td>
             <div class="d-flex align-items-center">
-              <a data-userId="@user.Id" data-userRole="@user.Role" data-bs-toggle="modal" data-bs-target="#basicModal"
+              <a data-id="@user.Id" data-userRole="@user.Role" data-bs-toggle="modal" data-bs-target="#basicModal"
                  class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect delete-record openModal"
                   title="Delete @user.FirstName">
                 <i class="ri-delete-bin-7-line ri-22px"></i>
@@ -208,7 +208,7 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
                    class="dropdown-item">
                   <i class="ri-edit-box-line me-2"></i><span>Edit</span>
                 </a>
-                <a data-userId="@user.Id" data-userRole="@user.Role" data-bs-toggle="modal" data-bs-target="#basicModal"
+                <a data-id="@user.Id" data-userRole="@user.Role" data-bs-toggle="modal" data-bs-target="#basicModal"
                    class="dropdown-item openModal">
                   <i class="ri-delete-bin-7-line me-2"></i><span>Delete</span>
                 </a>
@@ -230,7 +230,7 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel1">
-          Delete user confirmation
+          Confirmation
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -239,9 +239,9 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary"
-                data-bs-dismiss="modal">Close</button>
+                data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger delete-record"
-                id="deleteUser">Delete</button>
+                id="deleteModal" data-endpoint="/Admin/Users/Delete">Delete</button>
       </div>
     </div>
   </div>

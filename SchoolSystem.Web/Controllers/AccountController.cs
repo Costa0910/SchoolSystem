@@ -19,8 +19,10 @@ public class AccountController(
     adminRepository,
   IMapper mapper,
   IBlobStorageService blobStorageService)
-  : Controller
+  : BaseController(userHelper)
 {
+  private readonly IUserHelper _userHelper = userHelper;
+
   public async Task<IActionResult> Index()
   {
     AccountViewModel user;
@@ -61,7 +63,7 @@ public class AccountController(
 
   public async Task<IActionResult> SettingsEdit()
   {
-    var user = await userHelper.GetUserByEmailAsync(User.Identity.Name);
+    var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
     if (user is null)
     {
@@ -82,7 +84,7 @@ public class AccountController(
       return View(model);
     }
 
-    var user = await userHelper.GetUserByEmailAsync(User.Identity.Name);
+    var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
     if (user is null)
     {
@@ -109,7 +111,7 @@ public class AccountController(
     user.LastName = model.LastName;
     user.ProfilePhotoId = profileImageId;
 
-    var result = await userHelper.UpdateUserAsync(user);
+    var result = await _userHelper.UpdateUserAsync(user);
 
     if (!result.Succeeded)
     {
@@ -137,14 +139,14 @@ public class AccountController(
       return View();
     }
 
-    var user = await userHelper.GetUserByEmailAsync(User.Identity.Name);
+    var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
     if (user is null)
     {
       return RedirectToAction("Login", "Auth");
     }
 
-    var result = await userHelper.ChangePasswordAsync(user,
+    var result = await _userHelper.ChangePasswordAsync(user,
       model.CurrentPassword,
       model
         .NewPassword);

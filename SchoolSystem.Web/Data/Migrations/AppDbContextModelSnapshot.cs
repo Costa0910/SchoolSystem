@@ -37,6 +37,21 @@ namespace SchoolSystem.Web.Data.Migrations
                     b.ToTable("CourseStudent");
                 });
 
+            modelBuilder.Entity("CourseSubject", b =>
+                {
+                    b.Property<Guid>("CoursesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubjectsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CoursesId", "SubjectsId");
+
+                    b.HasIndex("SubjectsId");
+
+                    b.ToTable("CourseSubject");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -170,7 +185,7 @@ namespace SchoolSystem.Web.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SchoolSystem.Web.Models.Admin", b =>
+            modelBuilder.Entity("SchoolSystem.Web.Models.AdminUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,7 +288,7 @@ namespace SchoolSystem.Web.Data.Migrations
                     b.Property<Guid?>("CoverImageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CreateById")
+                    b.Property<Guid>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -291,7 +306,7 @@ namespace SchoolSystem.Web.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreateById");
+                    b.HasIndex("CreatedById");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -403,12 +418,6 @@ namespace SchoolSystem.Web.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CreateById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -420,10 +429,6 @@ namespace SchoolSystem.Web.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("CreateById");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -524,6 +529,21 @@ namespace SchoolSystem.Web.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CourseSubject", b =>
+                {
+                    b.HasOne("SchoolSystem.Web.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystem.Web.Models.Subject", null)
+                        .WithMany()
+                        .HasForeignKey("SubjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -575,7 +595,7 @@ namespace SchoolSystem.Web.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SchoolSystem.Web.Models.Admin", b =>
+            modelBuilder.Entity("SchoolSystem.Web.Models.AdminUser", b =>
                 {
                     b.HasOne("SchoolSystem.Web.Models.User", "User")
                         .WithMany()
@@ -628,13 +648,13 @@ namespace SchoolSystem.Web.Data.Migrations
 
             modelBuilder.Entity("SchoolSystem.Web.Models.Course", b =>
                 {
-                    b.HasOne("SchoolSystem.Web.Models.Admin", "CreateBy")
+                    b.HasOne("SchoolSystem.Web.Models.AdminUser", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreateById")
+                        .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CreateBy");
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("SchoolSystem.Web.Models.Grade", b =>
@@ -686,28 +706,11 @@ namespace SchoolSystem.Web.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SchoolSystem.Web.Models.Subject", b =>
-                {
-                    b.HasOne("SchoolSystem.Web.Models.Course", null)
-                        .WithMany("Subjects")
-                        .HasForeignKey("CourseId");
-
-                    b.HasOne("SchoolSystem.Web.Models.Admin", "CreateBy")
-                        .WithMany()
-                        .HasForeignKey("CreateById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreateBy");
-                });
-
             modelBuilder.Entity("SchoolSystem.Web.Models.Course", b =>
                 {
                     b.Navigation("Attendances");
 
                     b.Navigation("Grades");
-
-                    b.Navigation("Subjects");
                 });
 #pragma warning restore 612, 618
         }

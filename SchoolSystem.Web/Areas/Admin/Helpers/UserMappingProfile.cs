@@ -36,7 +36,7 @@ public class UserMappingProfile : Profile
               ? $"https://supershop0910.blob.core.windows.net/{AzureContainerNames.profile}/{src.User.ProfilePhotoId}"
               : DefaultProfilePhotoUrl));
 
-      CreateMap<Staff, UserDetailsViewModel>()
+      CreateMap<Models.Staff, UserDetailsViewModel>()
         .ForMember(
           dest => dest.ProfilePhotoUrl,
           opt => opt.MapFrom(
@@ -44,7 +44,7 @@ public class UserMappingProfile : Profile
               ? $"https://supershop0910.blob.core.windows.net/{AzureContainerNames.profile}/{src.User.ProfilePhotoId}"
               : DefaultProfilePhotoUrl));
 
-      CreateMap<Student, UserDetailsViewModel>()
+      CreateMap<Models.Student, UserDetailsViewModel>()
         .ForMember(
           dest => dest.ProfilePhotoUrl,
           opt => opt.MapFrom(

@@ -1,0 +1,113 @@
+@using Syncfusion.EJ2
+@model SchoolSystem.Web.Areas.Admin.ViewModels.Courses.CreateCourseViewModel
+
+@{
+  ViewBag.Title = "Create course - Page";
+}
+
+@section PageStyles
+{
+
+  <partial name="_CourseStyle"/>
+  <style>
+    /* Custom styles for the datepicker*/
+    .Input-color-gray {
+      padding: 0.8555rem 1rem !important;
+      font-size: 0.9375rem !important;
+      font-weight: 400 !important;
+      line-height: 1.375 !important;
+      color: #433c50 !important;
+      border: 1px solid #d1cfd4 !important;
+      border-radius: 0.375rem !important;
+    }
+  </style>
+}
+
+
+@* ************** Content ************** *@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card mb-6">
+      <div class="card-body pt-0">
+        @* user alerts? *@
+
+        <partial name="_Alerts"/>
+        <form id="formAccountSettings" method="post" asp-action="Create"
+              enctype="multipart/form-data">
+          @Html.AntiForgeryToken()
+          <div asp-validation-summary="ModelOnly"></div>
+
+          <div class="d-flex align-items-start align-items-sm-center gap-6 mt-4">
+            <img src="~/img/avatars/course.jpg" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar"/>
+            <div class="button-wrapper">
+              <label for="upload" class="btn btn-sm
+              btn-primary
+              me-3 mb-4"
+                     tabindex="0">
+                <span class="d-none d-sm-block">Upload @Html.DisplayNameFor(model => model.CoverImage)</span>
+                <i class="ri-upload-2-line d-block d-sm-none"></i>
+                <input asp-for="CoverImage" type="file" id="upload"
+                       class="account-file-input"
+                       hidden accept="image/png, image/jpeg"/>
+              </label>
+              <button type="button" class="btn btn-sm btn-outline-danger account-image-reset mb-4">
+                <i class="ri-refresh-line d-block d-sm-none"></i>
+                <span class="d-none d-sm-block">Reset</span>
+              </button>
+
+              <div>Allowed JPG or PNG.</div>
+              <span asp-validation-for="CoverImage" class="text-danger"></span>
+            </div>
+          </div>
+
+          @* Coumn user fields *@
+          <div class="row mt-1 g-5">
+
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
+                <input asp-for="Name" class="form-control" type="text"
+                       placeholder="Programing..." autofocus/>
+                <label asp-for="Name">Name</label>
+              </div>
+              <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
+                <textarea asp-for="Description" class="form-control" placeholder="Learn Programing..."></textarea>
+                <label asp-for="Description">Description</label>
+              </div>
+              <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
+                <ejs-datepicker id="datepickerFor" ejs-for="StartDate"
+                                cssClass="form-control Input-color-gray"
+                                placeholder="The start date of course"
+                                min="@DateOnly.FromDateTime(DateTime.Now)" format="dd-MM-yyyy">
+                </ejs-datepicker>
+                <label asp-for="StartDate">Start Date</label>
+              </div>
+              <div id="errorMessage">
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 d-flex gap-2 flex-wrap">
+            <a asp-action="Index" class="btn btn-outline-primary me-3">Back to Courses</a>
+            <button type="submit" class="btn btn-primary me-3">Create course</button>
+          </div>
+        </form>
+      </div>
+      <!-- /Account -->
+    </div>
+  </div>
+</div>
+
+@* ************** PageScripts ************** *@
+
+@section PageScripts {
+  <partial name="_CourseScripts"/>
+}

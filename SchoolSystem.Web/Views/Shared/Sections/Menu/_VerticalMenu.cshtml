@@ -1,3 +1,4 @@
+@using SchoolSystem.Web.Models.EnumsClasses
 @{
   TempData.Keep();
   string? currentPage = ViewContext.HttpContext.Request.Path;
@@ -6,90 +7,178 @@
 <!-- Menu -->
 @* ! Do this simple *@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+  @if (User.IsInRole(Roles.Admin))
+  {
+    @* ! Hide app brand if navbar-full *@
+    <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
+      <a asp-controller="Home" asp-action="Index" asp-area="Admin" class="app-brand-link">
+        <span class="app-brand-logo demo me-1"> @await Html.PartialAsync("../_Partials/_Macros")</span>
+        <span class="app-brand-text demo menu-text fw-semibold ms-2">@TempData.Peek("appName")</span>
+      </a>
 
-  @* ! Hide app brand if navbar-full *@
-  <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
-    <a asp-controller="Dashboards" asp-action="Index" class="app-brand-link">
-      <span class="app-brand-logo demo me-1">  @await Html.PartialAsync("../_Partials/_Macros")</span>
-      <span class="app-brand-text demo menu-text fw-semibold ms-2">@TempData.Peek("appName")</span>
-    </a>
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+        <i class="menu-toggle-icon d-xl-block align-middle"></i>
+      </a>
+    </div>
 
-    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-      <i class="menu-toggle-icon d-xl-block align-middle"></i>
-    </a>
-  </div>
+    <div class="menu-inner-shadow"></div>
 
-  <div class="menu-inner-shadow"></div>
+    @* ! Full version menu-items *@
+    <ul class="menu-inner py-1">
+      <!-- Dashboard -->
+      <li class='menu-item@(currentPage.EndsWith("/Admin") ? " active" : "")'>
+        <a asp-area="Admin" asp-action="Index" asp-controller="Home" class="menu-link">
+          <i class="menu-icon tf-icons ri-home-smile-line"></i>
+          <div>Dashboard</div>
+        </a>
+      </li>
+      <li class="menu-header mt-5">
+        <span class="menu-header-text">Users &amp; Accounts</span>
+      </li>
+      <li class='menu-item@(currentPage == "/Admin/Users" ? " active" : "")'>
+        <a asp-action="Index" asp-controller="Users" asp-area="Admin" class="menu-link">
+          <i class="menu-icon tf-icons ri-user-line"></i>
+          <div>Users</div>
+        </a>
+      </li>
 
-  @* ! Full version menu-items *@
-  <ul class="menu-inner py-1">
-    <!-- Dashboard -->
-    <li class='menu-item@(currentPage.EndsWith("/Admin") ? " active" : "")'>
-      <a href="/Admin" class="menu-link">
-        <i class="menu-icon tf-icons ri-home-smile-line"></i>
-        <div>Dashboard</div>
+      <!-- Apps -->
+      <li class='menu-item@(currentPage == "/Admin/Courses" ? " active" : "")'>
+        <a asp-action="Index" asp-controller="Courses" asp-area="Admin"
+           class="menu-link">
+          <i class="menu-icon tf-icons ri-school-line"></i>
+          <div>Courses</div>
+        </a>
+      </li>
+      <li class='menu-item@(currentPage == "/Admin/Subjects" ? " active" : "")'>
+        <a asp-action="Index" asp-area="Admin" asp-controller="Subjects"
+           class="menu-link">
+          <i class="menu-icon tf-icons ri-graduation-cap-line"></i>
+          <div>Subjects</div>
+        </a>
+      </li>
+      <li class='menu-item@(currentPage == "/Apps/Calendar" ? " active" : "")'>
+        <a href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/html/vertical-menu-template/app-calendar.html" target="_blank" class="menu-link">
+          <i class="menu-icon tf-icons ri-calendar-line"></i>
+          <div>Calendar</div>
+          <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+        </a>
+      </li>
+      <li class='menu-item@(currentPage == "/Apps/Kanban" ? " active" : "")'>
+        <a href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/html/vertical-menu-template/app-kanban.html" target="_blank" class="menu-link">
+          <i class="menu-icon tf-icons ri-drag-drop-line"></i>
+          <div>Kanban</div>
+          <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+        </a>
+      </li>
+      <!-- Pages -->
+      <li class='menu-item@(currentPage.StartsWith("/Pages") ? " active open" : "")'>
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ri-layout-left-line"></i>
+          <div>Account Settings</div>
+        </a>
+        <ul class="menu-sub">
+          <li class='menu-item@(currentPage == "/Pages/AccountSettings" ? " active" : "")'>
+            <a asp-controller="Pages" asp-action="AccountSettings" class="menu-link">
+              <div>Account</div>
+            </a>
+          </li>
+          <li class='menu-item@(currentPage == "/Pages/AccountSettingsNotifications" ? " active" : "")'>
+            <a asp-controller="Pages" asp-action="AccountSettingsNotifications" class="menu-link">
+              <div>Notifications</div>
+            </a>
+          </li>
+          <li class='menu-item@(currentPage == "/Pages/AccountSettingsConnections" ? " active" : "")'>
+            <a asp-controller="Pages" asp-action="AccountSettingsConnections" class="menu-link">
+              <div>Connections</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  }
+  else if (User.IsInRole(Roles.Staff))
+  {
+    <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
+      <a asp-controller="Home" asp-action="Index" asp-area="Staff" class="app-brand-link">
+        <span class="app-brand-logo demo me-1"> @await Html.PartialAsync("../_Partials/_Macros")</span>
+        <span class="app-brand-text demo menu-text fw-semibold ms-2">@TempData.Peek("appName")</span>
       </a>
-    </li>
-    <li class="menu-header mt-5">
-      <span class="menu-header-text">Users &amp; Accounts</span>
-    </li>
-    <li class='menu-item@(currentPage == "/Admin/Users" ? " active" : "")'>
-      <a asp-action="Index" asp-controller="Users" asp-area="Admin" class="menu-link">
-        <i class="menu-icon tf-icons ri-user-line"></i>
-        <div>Users</div>
-      </a>
-    </li>
 
-    <!-- Apps -->
-    <li class='menu-item@(currentPage == "/Apps/Email" ? " active" : "")'>
-      <a href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/html/vertical-menu-template/app-email.html" target="_blank" class="menu-link">
-        <i class="menu-icon tf-icons ri-mail-open-line"></i>
-        <div>Email</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+        <i class="menu-toggle-icon d-xl-block align-middle"></i>
       </a>
-    </li>
-    <li class='menu-item@(currentPage == "/Apps/Chat" ? " active" : "")'>
-      <a href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/html/vertical-menu-template/app-chat.html" target="_blank" class="menu-link">
-        <i class="menu-icon tf-icons ri-wechat-line"></i>
-        <div>Chat</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    // Staff menu items
+    <ul class="menu-inner py-1">
+      <!-- Dashboard -->
+      <li class='menu-item@(currentPage.EndsWith("/Staff") ? " active" : "")'>
+        <a asp-area="Staff" asp-action="Index" asp-controller="Home" class="menu-link">
+          <i class="menu-icon tf-icons ri-home-smile-line"></i>
+          <div>Dashboard</div>
+        </a>
+      </li>
+      <li class="menu-header mt-5">
+        <span class="menu-header-text">Students</span>
+      </li>
+    </ul>
+  }
+  else if (User.IsInRole(Roles.Student))
+  {
+    <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
+      <a asp-controller="Home" asp-action="Index" asp-area="Admin" class="app-brand-link">
+        <span class="app-brand-logo demo me-1"> @await Html.PartialAsync("../_Partials/_Macros")</span>
+        <span class="app-brand-text demo menu-text fw-semibold ms-2">@TempData.Peek("appName")</span>
       </a>
-    </li>
-    <li class='menu-item@(currentPage == "/Apps/Calendar" ? " active" : "")'>
-      <a href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/html/vertical-menu-template/app-calendar.html" target="_blank" class="menu-link">
-        <i class="menu-icon tf-icons ri-calendar-line"></i>
-        <div>Calendar</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+        <i class="menu-toggle-icon d-xl-block align-middle"></i>
       </a>
-    </li>
-    <li class='menu-item@(currentPage == "/Apps/Kanban" ? " active" : "")'>
-      <a href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/html/vertical-menu-template/app-kanban.html" target="_blank" class="menu-link">
-        <i class="menu-icon tf-icons ri-drag-drop-line"></i>
-        <div>Kanban</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+    // Student menu items
+    <ul class="menu-inner py-1">
+      <!-- Dashboard -->
+      <li class='menu-item@(currentPage.EndsWith("/Admin") ? " active" : "")'>
+        <a asp-area="Admin" asp-action="Index" asp-controller="Home" class="menu-link">
+          <i class="menu-icon tf-icons ri-home-smile-line"></i>
+          <div>Dashboard</div>
+        </a>
+      </li>
+      <li class="menu-header mt-5">
+        <span class="menu-header-text">Users &amp; Accounts</span>
+      </li>
+    </ul>
+  }
+  else
+  {
+    <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
+      <a asp-controller="Home" asp-action="Index" asp-area="Admin" class="app-brand-link">
+        <span class="app-brand-logo demo me-1"> @await Html.PartialAsync("../_Partials/_Macros")</span>
+        <span class="app-brand-text demo menu-text fw-semibold ms-2">@TempData.Peek("appName")</span>
       </a>
-    </li>
-    <!-- Pages -->
-    <li class='menu-item@(currentPage.StartsWith("/Pages") ? " active open" : "")'>
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons ri-layout-left-line"></i>
-        <div>Account Settings</div>
+
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+        <i class="menu-toggle-icon d-xl-block align-middle"></i>
       </a>
-      <ul class="menu-sub">
-        <li class='menu-item@(currentPage == "/Pages/AccountSettings" ? " active" : "")'>
-          <a asp-controller="Pages" asp-action="AccountSettings" class="menu-link">
-            <div>Account</div>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+    <ul class="menu-inner py-1">
+      <li>
+        <p>
+          Something is wrong, try
+          <a asp-area="" asp-action="Login"
+             asp-controller="Auth">
+            login
           </a>
-        </li>
-        <li class='menu-item@(currentPage == "/Pages/AccountSettingsNotifications" ? " active" : "")'>
-          <a asp-controller="Pages" asp-action="AccountSettingsNotifications" class="menu-link">
-            <div>Notifications</div>
-          </a>
-        </li>
-        <li class='menu-item@(currentPage == "/Pages/AccountSettingsConnections" ? " active" : "")'>
-          <a asp-controller="Pages" asp-action="AccountSettingsConnections" class="menu-link">
-            <div>Connections</div>
-          </a>
-        </li>
-      </ul>
-    </li>
-  </ul>
+        </p>
+      </li>
+    </ul>
+  }
 
 </aside>
-<!-- / Menu -->

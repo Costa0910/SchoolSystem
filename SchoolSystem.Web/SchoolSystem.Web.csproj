@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Areas\Student\Controllers\" />
       <Folder Include="Areas\Student\ViewModels\" />
-      <Folder Include="Areas\Student\Views\" />
       <Folder Include="Areas\Teacher\Controllers\" />
       <Folder Include="Areas\Teacher\ViewModels\" />
       <Folder Include="Areas\Teacher\Views\" />
@@ -38,6 +36,16 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\Auth\Login.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Account\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\layouts\layout-container-light.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\layouts\layout-fluid-light.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\layouts\layout-without-menu-light.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\layouts\layout-without-navbar-light.png" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Subjects\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Areas\Staff\Views\Home\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Student\Views\Home\Index.cshtml" />
     </ItemGroup>
 
 </Project>

@@ -1,10 +1,11 @@
+@using SchoolSystem.Web.Models.EnumsClasses
 @* ! Brand demo (display only for navbar-full and hide on below xl) *@
 @if (ViewData["navbarFull"] != null)
 {
   <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-6">
-  <a asp-controller="Dashboards" asp-action="Index" class="app-brand-link gap-2">
-    <span class="app-brand-logo demo">
-      @await Html.PartialAsync("../_Partials/_Macros")
+    <a href="javascript:" class="app-brand-link gap-2">
+      <span class="app-brand-logo demo">
+        @await Html.PartialAsync("../_Partials/_Macros")
       </span>
       <span class="app-brand-text demo menu-text fw-semibold ms-1">@TempData.Peek("appName")</span>
     </a>
@@ -15,10 +16,10 @@
 @if (ViewData["navbarHideToggle"] == null)
 {
   <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
-  <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-    <i class="ri-menu-fill ri-24px"></i>
-  </a>
-</div>
+    <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+      <i class="ri-menu-fill ri-24px"></i>
+    </a>
+  </div>
 }
 
 <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
@@ -27,21 +28,38 @@
     <li class="nav-item navbar-dropdown dropdown-user dropdown">
       <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
         <div class="avatar avatar-online">
-          <img src="~/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle">
+          <img src="@ViewBag.ProfilePhoto" alt class="w-px-40 h-auto rounded-circle">
         </div>
       </a>
       <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
         <li>
-          <a class="dropdown-item" href="javascript:void();">
+          <a class="dropdown-item" href="javascript:">
             <div class="d-flex align-items-center">
               <div class="flex-shrink-0 me-2">
                 <div class="avatar avatar-online">
-                  <img src="~/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle">
+                  <img src="@ViewBag.ProfilePhoto" alt class="w-px-40 h-auto rounded-circle">
                 </div>
               </div>
               <div class="flex-grow-1">
-                <h6 class="mb-0 small">John Doe</h6>
-                <small class="text-muted">Admin</small>
+                <h6 class="mb-0 small">@ViewBag.CurrentUser.FirstName @ViewBag.CurrentUser.LastName</h6>
+                <small class="text-muted">
+                  @if (User.IsInRole(Roles.Admin))
+                  {
+                    @Roles.Admin
+                  }
+                  else if (User.IsInRole(Roles.Staff))
+                  {
+                    @Roles.Staff
+                  }
+                  else if (User.IsInRole(Roles.Student))
+                  {
+                    @Roles.Student
+                  }
+                  else
+                  {
+                    <span class="text-danger">Unknown</span>
+                  }
+                </small>
               </div>
             </div>
           </a>
@@ -70,7 +88,7 @@
           <div class="d-grid px-4 pt-2 pb-1">
             <a class="btn btn-danger d-flex" asp-action="Logout"
                asp-controller="Auth" asp-area="">
-            <small class="align-middle">Logout</small>
+              <small class="align-middle">Logout</small>
               <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
             </a>
           </div>

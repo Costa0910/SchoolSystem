@@ -1,0 +1,62 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.DropDowns
+@model SchoolSystem.Web.Areas.Admin.ViewModels.Courses.AddSubjectViewModel
+
+@{
+  ViewBag.Title = "Add Subject - Page";
+}
+
+@section PageStyles
+{
+  <!-- Syncfusion ASP.NET Core controls styles -->
+  <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/27.1.48/fluent.css"/>
+  <!-- Syncfusion ASP.NET Core controls scripts -->
+  <script src="https://cdn.syncfusion.com/ej2/27.1.48/dist/ej2.min.js"></script>
+  @* <link rel="stylesheet" href="~/css/page-profile.css"/> *@
+}
+
+<div class="row">
+  <div class="clos-md-12">
+      <partial name="_Alerts"/>
+    <div class="card">
+      <div class="card-header d-flex justify-content-center">
+        <h4 class="card-title">Add Subject to @Model.Name</h4>
+      </div>
+      <div class="card-body pt-0">
+        <form id="formAccountSettings" method="post" asp-action="AddSubject">
+          @Html.AntiForgeryToken()
+          <input type="hidden" asp-for="Id"/>
+          <div asp-validation-summary="ModelOnly"></div>
+          <div class="row g-5">
+            <div class="d-flex flex-column">
+              <div class="control-wrapper w-60 align-self-center">
+                  <ejs-dropdownlist id="Subjects"
+                                    dataSource="@Model.Subjects"
+                                    placeholder="Select a Subject"
+                                    value="@Model.SelectedSubjectId"
+                                    name="SelectedSubjectId">
+                    <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+                  </ejs-dropdownlist>
+              </div>
+              <span asp-validation-for="SelectedSubjectId" class="text-danger
+               align-self-center d-block"></span>
+            </div>
+          </div>
+          <div class="mt-6 d-flex gap-2 flex-wrap justify-content-center">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn
+            btn-outline-primary me-3">Back to Course</a>
+            <button type="submit" class="btn btn-primary me-3">Add Subject</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section PageScripts
+{
+  <ejs-scripts></ejs-scripts>
+
+  @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

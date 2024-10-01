@@ -13,7 +13,7 @@ public class Course : IEntity
     public Guid? CoverImageId { get; set; }
 
     [MaxLength(1000)] public string Description { get; set; }
-    public AdminUser CreateBy { get; init; }
+    public AdminUser CreatedBy { get; init; }
 
     public List<Subject> Subjects { get; set; }
     public List<Student> Students { get; set; }

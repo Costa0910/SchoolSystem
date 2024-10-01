@@ -1,0 +1,18 @@
+@model SchoolSystem.Web.Models.Course
+
+<div class="col-md-6">
+  <div class="form-floating form-floating-outline">
+    <input asp-for="Name" class="form-control" type="text"
+           placeholder="Programing..." autofocus />
+    <label asp-for="Name">Name</label>
+  </div>
+  <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="col-md-6">
+  <div class="form-floating form-floating-outline">
+    <input  asp-for="Description" class="form-control" type="text"
+            placeholder="Learn Programing..." />
+    <label asp-for="Description">Description</label>
+  </div>
+  <span asp-validation-for="Description" class="text-danger"></span>
+</div>

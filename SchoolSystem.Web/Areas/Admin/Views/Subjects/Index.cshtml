@@ -1,0 +1,258 @@
+@model IEnumerable<SchoolSystem.Web.Models.Subject>
+
+@{
+  ViewData["Title"] = "Subjects - Page";
+}
+
+
+@section PageStyles
+{
+  <style>
+
+  .dataTables_info {
+    margin: 5px 20px;
+  }
+
+  .dataTables_paginate {
+    margin: 20px;
+  }
+
+  .dataTables_paginate .previous, .dataTables_paginate .next {
+    padding: 6px 12px;
+    text-decoration: none;
+    margin-bottom: 5px;
+    color: black;
+    background-color: #eeeeef;
+    border: 1px solid #eeeeef;
+    border-radius: 5%;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .dataTables_paginate .previous {
+    margin-right: 5px;
+  }
+
+  .dataTables_paginate .next {
+    margin-left: 5px;
+  }
+
+  span a.paginate_button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: black;
+    background-color: #eeeeef;
+    border: 1px solid #eeeeef;
+    border-radius: 50%;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  span a.paginate_button:hover {
+    background-color: #9a9bd7;
+    color: white;
+  }
+
+  span a.paginate_button.current {
+    background-color: #8c57ff;
+    color: white;
+    font-weight: bold;
+    border-color: #8c57ff;
+  }
+
+  span a.paginate_button:focus {
+    outline: none;
+    box-shadow: 0 0 3px 2px rgba(0, 123, 255, 0.5);
+  }
+
+</style>
+}
+
+
+<div class="card">
+  <div class="card-header border-bottom">
+    @* Alerts and Toasts *@
+     <partial name="_Toasts"/>
+    <h6 class="card-title mb-0">All available subjects</h6>
+    <div class="card-datatable table-responsive">
+      <div id="DataTables_Table_0_wrapper"
+           class="dataTables_wrapper dt-bootstrap5 no-footer">
+        <div class="d-flex justify-content-between
+gap-4 gap-md-0 gx-5 flex-wrap py-5 align-content-center" id="FilterOptions">
+          <div class="add-new col-md-4 w-auto">
+            <a class="btn btn-primary waves-effect waves-light" asp-action="Create">
+              <i class="ri-add-line me-0 me-sm-1 d-inline-block d-sm-none"></i>
+              <span class="d-none d-sm-inline-block text-white"> Add New Subject </span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+      <table class="datatables-users table dataTable no-footer dtr-column w-100"
+             id="UsersTable" aria-describedby="DataTables_Table_0_info"
+             style="width: 849px;">
+        <thead>
+        <tr>
+          <th class="control sorting_disabled dtr-hidden" rowspan="1"
+              colspan="1" style="width: 4px; display: none;">
+          </th>
+          <th
+            class="sorting_disabled dt-checkboxes-cell dt-checkboxes-select-all"
+            rowspan="1" colspan="1" style="width: 18px;" data-col="1">
+            <input type="checkbox" class="form-check-input">
+          </th>
+          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+              rowspan="1" colspan="1" style="width: 228px;"
+              aria-label="User: activate to sort column ascending">
+            Subject
+          </th>
+          <th class="sorting sorting_desc" tabindex="0"
+              aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+              style="width: 266px;"
+              aria-label="Email: activate to sort column ascending"
+              aria-sort="descending">
+            Description
+          </th>
+          <th class="sorting_disabled" rowspan="1" colspan="1"
+              style="width: 0px;" aria-label="Actions">
+            Actions
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        @* Loop through the users and display them *@
+
+        @foreach (var subject in Model)
+        {
+          <tr class="even">
+            <td class="control dtr-hidden" tabindex="0"
+                style="display: none;">
+            </td>
+            <td class="  dt-checkboxes-cell">
+              <input type="checkbox" class="dt-checkboxes form-check-input">
+            </td>
+            <td>
+              <div
+                class="d-flex justify-content-start align-items-center user-name">
+                <div class="d-flex flex-column">
+                  <a href="javascript:;"
+                     class="text-heading text-truncate">
+                    <span class="fw-medium">@subject.Name</span>
+                  </a>
+                </div>
+              </div>
+            </td>
+            <td class="sorting_1">
+              <span class="text-truncate">@subject.Description</span>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <a data-id="@subject.Id"
+                   data-bs-toggle="modal" data-bs-target="#basicModal"
+                   class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect delete-record openModal"
+                   title="Delete @subject.Name">
+                  <i class="ri-delete-bin-7-line ri-22px"></i>
+                </a>
+                <a asp-action="Edit" asp-route-id="@subject.Id"
+                   class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect"
+                   data-bs-toggle="tooltip" title="Edit @subject.Name">
+                  <i class="ri-edit-box-line me-2"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel1">Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Do you really want to delete this course?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary"
+                  data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-danger delete-record"
+                  id="deleteModal" data-endpoint="Subjects/Delete">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@section PageScripts
+{
+  <script src="~/js/ui-toasts.js"></script>
+  <script src="~/js/ui-modals.js"></script>
+  <!-- Load DataTables from CDN -->
+  <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"
+          defer></script>
+
+  <script type="text/javascript" defer>
+  $(document).ready(function() {
+    // Initialize DataTable with Portuguese language support
+    $('#UsersTable').DataTable({
+      'language': {
+        'url': '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese.json'
+      },
+      'aLengthMenu': [
+        [10, 20, 50, 100, 200, -1],
+        [10, 20, 50, 100, 200, 'Todos']
+      ],
+      // initComplete ensures this code runs after DataTable has fully initialized
+      'initComplete': function() {
+        console.log('DataTable initialization complete');
+
+        // Remove the old filter element and replace it
+        let toRemove = document.getElementById('UsersTable_filter');
+        let container = document.getElementById('FilterOptions');
+
+        if (toRemove && container) {
+          toRemove.remove();
+
+          toRemove.classList.add('col-md-4', 'd-flex', 'justify-content-center');
+
+          let label = toRemove.firstElementChild;
+          label.firstElementChild.classList.add('form-control', 'form-control-sm');
+          label.firstElementChild.placeholder = 'Search course...';
+          label.removeChild(label.firstChild);
+          label.firstElementChild.classList.remove('dataTables_filter');
+          container.insertAdjacentElement('beforeend', toRemove);
+
+          console.log('Replacement done successfully.');
+        } else {
+          console.error('Elements for replacement not found.');
+        }
+
+        let toMove = document.getElementById('UsersTable_length');
+
+        if (toMove && container) {
+          toMove.remove();
+          toMove.classList.add('col-md-4', 'user_role', 'w-auto', "d-flex", "align-items-center");
+          container.insertAdjacentElement('beforeend', toMove);
+          console.log('Move done successfully.');
+        } else {
+          console.error('Elements for move not found.');
+        }
+      }
+    });
+  });
+</script>
+}

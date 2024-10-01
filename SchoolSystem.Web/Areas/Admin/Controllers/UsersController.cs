@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolSystem.Web.Areas.Admin.ViewModels.Users;
+using SchoolSystem.Web.Controllers;
 using SchoolSystem.Web.Data.Interfaces;
 using SchoolSystem.Web.Helpers.Interfaces;
 using SchoolSystem.Web.Models;
@@ -12,7 +13,7 @@ using SchoolSystem.Web.Services.Interfaces;
 namespace SchoolSystem.Web.Areas.Admin.Controllers
 {
   [Area(Roles.Admin), Authorize(Roles = Roles.Admin)]
-  public class UsersController : Controller
+  public class UsersController : BaseController
   {
     private readonly IUserHelper _userHelper;
     private readonly IMapper _mapper;
@@ -26,7 +27,7 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
     public UsersController(IUserHelper userHelper, IMapper mapper,
       IMailService mailService, ICreateMailHtmlHelper createMailHtmlHelper,
       IBlobStorageService blobStorageService, IAdminRepository adminRepository,
-      IStudentRepository studentRepository, IStaffRepository staffRepository)
+      IStudentRepository studentRepository, IStaffRepository staffRepository) : base(userHelper)
     {
       _userHelper = userHelper;
       _mapper = mapper;
@@ -177,7 +178,7 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
         return View(model);
       }
 
-      var staff = new Staff
+      var staff = new Models.Staff
       {
         Id = Guid.NewGuid(),
         User = user,
@@ -228,7 +229,7 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
           .Photo, AzureContainerNames.profile);
       }
 
-      var student = new Student
+      var student = new Models.Student
       {
         Id = Guid.NewGuid(),
         User = user,

@@ -1,0 +1,56 @@
+@model SchoolSystem.Web.Areas.Admin.ViewModels.Subjects.EditSubjectViewModel
+
+@{
+  ViewBag.Title = "Edit Subject - Page";
+}
+
+@* ************** Content ************** *@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card mb-6">
+      <div class="card-body pt-0">
+        @* user alerts? *@
+
+        <partial name="_Alerts"/>
+        <form id="formAccountSettings" method="post" asp-action="Edit">
+          @Html.AntiForgeryToken()
+          <input type="hidden" asp-for="Id"/>
+          <div asp-validation-summary="ModelOnly"></div>
+
+          @* Coumn user fields *@
+          <div class="row mt-1 g-5">
+
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
+                <input asp-for="Name" class="form-control" type="text"
+                       placeholder="Web development..." autofocus/>
+                <label asp-for="Name">Name</label>
+              </div>
+              <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
+                <textarea asp-for="Description" class="form-control" placeholder="Learn Programing..."></textarea>
+                <label asp-for="Description">Description</label>
+              </div>
+              <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+          </div>
+
+          <div class="mt-6 d-flex gap-2 flex-wrap">
+            <a asp-action="Index" class="btn btn-outline-primary me-3">Back to Subjects</a>
+            <button type="submit" class="btn btn-primary me-3">Update Subject</button>
+          </div>
+        </form>
+      </div>
+      <!-- /Account -->
+    </div>
+  </div>
+</div>
+
+@* ************** PageScripts ************** *@
+
+@section PageScripts {
+  <script src="~/js/pages-account-settings-account.js"></script>
+  @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -141,7 +141,7 @@ public class AuthController(
 
     ViewBag.Message
       = "An email has been sent to your email address with instructions to reset your password";
-    return View();
+    return View(model);
   }
 
   public IActionResult ResetPassword(string userId, string token)
