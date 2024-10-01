@@ -163,14 +163,14 @@ public class AuthController(
   {
     if (!ModelState.IsValid)
     {
-      ViewBag.Error = "Some data is not valid, please try again";
+      ViewBag.Error = "Some data are not valid, please try again";
       return View(model);
     }
 
     var user = await userHelper.GetUserByIdAsync(model.UserId);
     if (user is null)
     {
-      ViewBag.Error = "Some data is not valid, please try again";
+      ViewBag.Error = "Some data are not valid, please try again";
       return View(model);
     }
 
@@ -179,7 +179,7 @@ public class AuthController(
 
     if (!result.Succeeded)
     {
-      ViewBag.Error = "Some data is not valid, please try again";
+      ViewBag.Error = "Some data are not valid, please try again";
       return View(model);
     }
 

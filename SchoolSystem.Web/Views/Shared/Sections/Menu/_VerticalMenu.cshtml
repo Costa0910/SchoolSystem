@@ -124,6 +124,13 @@
       <li class="menu-header mt-5">
         <span class="menu-header-text">Students</span>
       </li>
+      <li class='menu-item@(currentPage == "/Staff/Students" ? " active" : "")'>
+        <a asp-action="Index" asp-controller="Students" asp-area="Staff"
+           class="menu-link">
+          <i class="menu-icon tf-icons ri-user-line"></i>
+          <div>Students</div>
+        </a>
+      </li>
     </ul>
   }
   else if (User.IsInRole(Roles.Student))

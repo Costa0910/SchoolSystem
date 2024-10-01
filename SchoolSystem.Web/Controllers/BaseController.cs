@@ -32,7 +32,7 @@ public class BaseController(IUserHelper userHelper) : Controller
 
       ViewBag.ProfilePhoto = user.ProfilePhotoId != Guid.Empty
         ? $"https://supershop0910.blob.core.windows.net/{AzureContainerNames.profile}/{user.ProfilePhotoId}"
-        : "img/avatars/3.png";
+        : "https://localhost:7228/img/avatars/3.png";
 
       ViewBag.CurrentUser = user;
     }
