@@ -1,8 +1,7 @@
-@using SchoolSystem.Web.Models.EnumsClasses
-@model IEnumerable<SchoolSystem.Web.Areas.Staff.ViewModels.Students.StudentsViewModel>
+@model IEnumerable<SchoolSystem.Web.Models.Course>
 
 @{
-  ViewData["Title"] = "Students - Page";
+  ViewData["Title"] = "Enrollment - Page";
 }
 
 
@@ -74,21 +73,20 @@
 
 <div class="card">
   <div class="card-header border-bottom">
-    <h6 class="card-title mb-0">All Students</h6>
     @* Alerts and Toasts *@
     <partial name="_Toasts"/>
-  </div>
-  <div class="card-datatable table-responsive">
-    <div id="DataTables_Table_0_wrapper"
-         class="dataTables_wrapper dt-bootstrap5 no-footer">
-      <div class="d-flex justify-content-between
-gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
-        <div class="add-new col-md-4 w-auto d-flex">
-          <a class="btn btn-primary waves-effect waves-light align-self-center"
-             asp-action="Create">
-            <i class="ri-add-line me-0 me-sm-1 d-inline-block d-sm-none"></i>
-            <span class="d-none d-sm-inline-block text-white"> Add New Student </span>
-          </a>
+    <h6 class="card-title mb-0">Add student to any of this courses</h6>
+    <div class="card-datatable table-responsive">
+      <div id="DataTables_Table_0_wrapper"
+           class="dataTables_wrapper dt-bootstrap5 no-footer">
+        <div class="d-flex justify-content-between
+gap-4 gap-md-0 gx-5 flex-wrap py-5 align-content-center" id="FilterOptions">
+          <div class="add-new col-md-4 w-auto">
+            <a class="btn btn-primary waves-effect waves-light" asp-action="Create">
+              <i class="ri-add-line me-0 me-sm-1 d-inline-block d-sm-none"></i>
+              <span class="d-none d-sm-inline-block text-white"> New Enrollment </span>
+            </a>
+          </div>
         </div>
 
       </div>
@@ -98,30 +96,29 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
         <thead>
         <tr>
           <th class="control sorting_disabled dtr-hidden" rowspan="1"
-              colspan="1" style="width: 4px; display: none;" aria-label="">
+              colspan="1" style="width: 4px; display: none;">
           </th>
           <th
             class="sorting_disabled dt-checkboxes-cell dt-checkboxes-select-all"
-            rowspan="1" colspan="1" style="width: 18px;" data-col="1"
-            aria-label="">
+            rowspan="1" colspan="1" style="width: 18px;" data-col="1">
             <input type="checkbox" class="form-check-input">
           </th>
           <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
               rowspan="1" colspan="1" style="width: 228px;"
               aria-label="User: activate to sort column ascending">
-            Student
+            Course
           </th>
           <th class="sorting sorting_desc" tabindex="0"
               aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
               style="width: 266px;"
               aria-label="Email: activate to sort column ascending"
               aria-sort="descending">
-            Email
+            Subjects
           </th>
           <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
               rowspan="1" colspan="1" style="width: 115px;"
-              aria-label="Status: activate to sort column ascending">
-            Status
+              aria-label="Role: activate to sort column ascending">
+            Students
           </th>
           <th class="sorting_disabled" rowspan="1" colspan="1"
               style="width: 0px;" aria-label="Actions">
@@ -132,7 +129,7 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
         <tbody>
         @* Loop through the users and display them *@
 
-        @foreach (var student in Model)
+        @foreach (var course in Model)
         {
           <tr class="even">
             <td class="control dtr-hidden" tabindex="0"
@@ -144,79 +141,53 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
             <td>
               <div
                 class="d-flex justify-content-start align-items-center user-name">
-                <div class="avatar-wrapper">
-                  <div class="avatar avatar-sm me-4">
-                    <img src="@student.ProfilePhotoUrl" alt="Avatar"
-                         class="rounded-circle">
-                  </div>
-                </div>
+                @* <div class="avatar-wrapper"> *@
+                @*   <div class="avatar avatar-sm me-4"> *@
+                @*     <img src="@user.ProfilePhotoUrl" alt="Avatar" *@
+                @*          class="rounded-circle"> *@
+                @*   </div> *@
+                @* </div> *@
                 <div class="d-flex flex-column">
                   <a href="javascript:;"
                      class="text-heading text-truncate">
-                    <span class="fw-medium">@student.FirstName @student.LastName</span>
-                  </a><small>@@@student.Email</small>
+                    <span class="fw-medium">@course.Name</span>
+                  </a>
                 </div>
               </div>
             </td>
             <td class="sorting_1">
-              <span>@student.Email</span>
-            </td>
-            <td>
-              @if (student.Status == StatusStudent.Active)
+              @if (@course.Subjects.Count > 0)
               {
-                <span class="badge rounded-pill  bg-label-primary">
-                  @student.Status
+                <span>
+                  <span class="badge bg-label-secondary rounded-pill">@course.Subjects.Count</span>
                 </span>
-              }
-              else if (student.Status == StatusStudent.Graduated)
-              {
-                <span class="badge bg-label-success rounded-pill">@student.Status</span>
-              }
-              else if (student.Status == StatusStudent.ExcludedByAttendance)
-              {
-                <span class="badge bg-label-danger rounded-pill">@student.Status</span>
-              }
-              else if (student.Status == StatusStudent.Dropped)
-              {
-                <span class="badge bg-label-warning rounded-pill">@student.Status</span>
               }
               else
               {
-                <span class="badge bg-label-info rounded-pill">Unknown</span>
+                <span>No Subjects</span>
               }
             </td>
             <td>
-              <div class="d-flex align-items-center">
-                <a data-id="@student.UserId" data-bs-toggle="modal" data-bs-target="#basicModal"
-                   class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect delete-record openModal"
-                   title="Delete @student.FirstName">
-                  <i class="ri-delete-bin-7-line ri-22px"></i>
-                </a>
-                <a asp-action="Details" asp-route-id="@student.UserId"
+
+              @if (@course.Students.Count > 0)
+              {
+                <span class="text-truncate d-flex align-items-center text-heading">
+                  <span class="badge bg-label-primary rounded-pill">@course.Students.Count</span>
+                </span>
+              }
+              else
+              {
+                <span>No Students</span>
+              }
+            </td>
+            <td>
+              <div class="d-flex align-items-center ">
+                <a asp-action="Details" asp-route-id="@course.Id"
                    class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect"
-                   data-bs-toggle="tooltip" title="View @student.FirstName">
+                   data-bs-toggle="tooltip" title="View all Students">
                   <i class="ri-eye-line ri-22px"></i>
                 </a>
-                <button
-                  class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect dropdown-toggle hide-arrow"
-                  data-bs-toggle="dropdown">
-                  <i class="ri-more-2-line ri-22px"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end m-0">
-                  <a asp-action="Details" asp-route-id="@student.UserId"
-                     class="dropdown-item">
-                    <i class="ri-eye-line me-2"></i><span>View</span>
-                  </a>
-                  <a asp-action="Edit" asp-route-id="@student.UserId"
-                     class="dropdown-item">
-                    <i class="ri-edit-box-line me-2"></i><span>Edit</span>
-                  </a>
-                  <a data-id="@student.UserId" data-bs-toggle="modal"
-                     data-bs-target="#basicModal"
-                     class="dropdown-item openModal">
-                    <i class="ri-delete-bin-7-line me-2"></i><span>Delete</span>
-                  </a>
-                </div>
+                  See students
               </div>
             </td>
           </tr>
@@ -228,38 +199,9 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">
-          Confirmation
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Do you really want to delete this user?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary"
-                data-bs-dismiss="modal">
-          Cancel
-        </button>
-        <button type="button" class="btn btn-danger delete-record"
-                id="deleteModal" data-endpoint="/Staff/Students/Delete">
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 @section PageScripts
 {
   <script src="~/js/ui-toasts.js"></script>
-  <script src="~/js/ui-modals.js"></script>
   <!-- Load DataTables from CDN -->
   <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"
           defer></script>
@@ -289,9 +231,8 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
           toRemove.classList.add('col-md-4', 'd-flex', 'justify-content-center');
 
           let label = toRemove.firstElementChild;
-          label.firstElementChild.classList.add('form-control',
-            'form-control-lg', 'form-control-borderless');
-          label.firstElementChild.placeholder = 'Search student';
+          label.firstElementChild.classList.add('form-control', 'form-control-lg', 'form-control-borderless');
+          label.firstElementChild.placeholder = 'Search course...';
           label.removeChild(label.firstChild);
           label.firstElementChild.classList.remove('dataTables_filter');
           container.insertAdjacentElement('beforeend', toRemove);
@@ -305,8 +246,7 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
 
         if (toMove && container) {
           toMove.remove();
-          toMove.classList.add('col-md-4', 'user_role', 'w-auto', "d-flex",
-            "align-items-center");
+          toMove.classList.add('col-md-4', 'user_role', 'w-auto', "d-flex", "align-items-center");
           container.insertAdjacentElement('beforeend', toMove);
           console.log('Move done successfully.');
         } else {

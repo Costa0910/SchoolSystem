@@ -22,4 +22,11 @@ public class CourseRepository(AppDbContext context)
       .Include(c => c.CreatedBy)
       .FirstOrDefaultAsync(c => c.Id == id);
   }
+
+  public async Task<Course?> GetCourseWithStudents(Guid id)
+  {
+    return await context.Courses
+      .Include(c => c.Students)
+      .FirstOrDefaultAsync(c => c.Id == id);
+  }
 }

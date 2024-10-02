@@ -131,6 +131,13 @@
           <div>Students</div>
         </a>
       </li>
+      <li class='menu-item@(currentPage == "/Staff/Enrollments" ? " active" : "")'>
+        <a asp-action="Index" asp-controller="Enrollments" asp-area="Staff"
+           class="menu-link">
+          <i class="menu-icon tf-icons ri-graduation-cap-line"></i>
+          <div>Enrollments</div>
+        </a>
+      </li>
     </ul>
   }
   else if (User.IsInRole(Roles.Student))
