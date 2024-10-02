@@ -404,17 +404,17 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
 
       if (role == Roles.Admin)
       {
-        r = await _adminRepository.DeleteAdminUserAsync(user.Id.ToString());
+        r = await _adminRepository.DeleteAdminUserAsync(user.Id);
         if (!r) return false;
       }
       else if (role == Roles.Staff)
       {
-        r = await _staffRepository.DeleteStaffAsync(user.Id.ToString());
+        r = await _staffRepository.DeleteStaffAsync(user.Id);
         if (!r) return false;
       }
       else if (role == Roles.Student)
       {
-        r = await _studentRepository.DeleteStudentAsync(user.Id.ToString());
+        r = await _studentRepository.DeleteStudentAsync(user.Id);
         if (!r) return false;
       }
 

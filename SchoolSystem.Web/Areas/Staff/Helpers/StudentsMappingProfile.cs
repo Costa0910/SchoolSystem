@@ -1,5 +1,6 @@
 using AutoMapper;
 using SchoolSystem.Web.Areas.Staff.ViewModels.Students;
+using SchoolSystem.Web.Models;
 using SchoolSystem.Web.Models.EnumsClasses;
 
 namespace SchoolSystem.Web.Areas.Staff.Helpers;
@@ -7,10 +8,36 @@ namespace SchoolSystem.Web.Areas.Staff.Helpers;
 public class StudentsMappingProfile : Profile
 {
   private const string DefaultImageUrl
-    = "http://localhost:5286/img/avatars/course.jpg";
+    = "http://localhost:5286/img/avatars/3.jpg";
+
+  private const string photoUrl = "http://localhost:5286/img/avatars/2.png";
 
   public StudentsMappingProfile()
   {
+    CreateMap<CreateStudentViewModel, User>();
+
+    CreateMap<User, EditStudentViewModel>()
+      .ForMember(dest => dest.ProfilePhotoUrl, opt => opt.MapFrom(src => src
+        .ProfilePhotoId == Guid.Empty
+        ? DefaultImageUrl
+        : $"https://supershop0910.blob.core.windows.net/{AzureContainerNames
+          .profile}/{src.ProfilePhotoId}")).ReverseMap();
+
+    CreateMap<Models.Student, StudentDetailsViewModel>()
+      .ForMember(
+        dest => dest.ProfilePhotoUrl,
+        opt => opt.MapFrom(
+          src => src.User.ProfilePhotoId != Guid.Empty
+            ? $"https://supershop0910.blob.core.windows.net/{AzureContainerNames.profile}/{src.User.ProfilePhotoId}"
+            : DefaultImageUrl))
+      .ForMember(
+        dest => dest.PhotoUrl,
+        opt => opt.MapFrom(
+          src => src.PhotoId != Guid.Empty
+            ? $"https://supershop0910.blob.core.windows.net/{AzureContainerNames.profile}/{src.PhotoId}"
+            : photoUrl))
+      .ForMember(dest => dest.Role, opt => opt.MapFrom(src => Roles.Student));
+
     CreateMap<Models.Student, StudentsViewModel>()
       .ForMember(dest => dest.ProfilePhotoUrl, opt => opt.MapFrom(src => src
         .User.ProfilePhotoId == Guid.Empty

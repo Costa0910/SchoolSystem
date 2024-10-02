@@ -1,0 +1,115 @@
+@model SchoolSystem.Web.Areas.Staff.ViewModels.Students.StudentDetailsViewModel
+
+
+@{
+  ViewBag.Title = "Student Details - Page";
+}
+
+@section PageStyles {
+  <link rel="stylesheet" href="~/css/page-profile.css">
+}
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-6">
+        <div class="user-profile-header-banner">
+          <img src="@Model.ProfilePhotoUrl" alt="Banner" class="rounded-top">
+        </div>
+        <div class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-4">
+          <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+            <img src="@Model.PhotoUrl" alt="@Model.User.FirstName"
+                 class="d-block h-auto ms-0 ms-sm-5 rounded user-profile-img">
+          </div>
+          <div class="flex-grow-1 mt-3 mt-lg-5">
+            <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-4">
+              <div class="user-profile-info">
+                <h4 class="mb-2 mt-lg-6">@Model.User.FirstName @Model.User.LastName</h4>
+                <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4">
+                  <li class="list-inline-item">
+                    <i class="ri-mac-line ri-36px"></i>
+                    <span class="fw-medium">
+                      @Model.Role
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- About User -->
+  <div class="card mb-6">
+    <div class="card-body">
+      <small class="card-text text-uppercase text-muted small">About</small>
+      <ul class="list-unstyled my-3 py-1">
+        <li class="d-flex align-items-center mb-4">
+          <i
+            class="ri-user-3-line ri-24px">
+          </i><span class="fw-medium
+                mx-2">Full Name:</span>
+          <span>@Model.User.FirstName @Model.User.LastName</span>
+        </li>
+        <li class="d-flex align-items-center mb-4">
+          <i
+            class="ri-check-line ri-24px">
+          </i><span class="fw-medium
+                mx-2">Status:</span> <span>@Model.Status</span>
+        </li>
+        <li class="d-flex align-items-center mb-4">
+          <i
+            class="ri-star-smile-line ri-24px">
+          </i><span class="fw-medium
+                 mx-2">Role:</span> <span>@Model.Role</span>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <i class="ri-translate-2 ri-24px"></i><span class="fw-medium mx-2">Languages:</span> <span>Portuguese</span>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <i class="ri-line-chart-line ri-36px"></i><span class="fw-medium
+            mx-2">Attendance:</span> <span>@Model.AttendancePercentage%</span>
+        </li>
+      </ul>
+      <small class="card-text text-uppercase text-muted small">Contacts</small>
+      <ul class="list-unstyled my-3 py-1">
+        <li class="d-flex align-items-center mb-4">
+          <i class="ri-phone-line ri-24px"></i><span class="fw-medium mx-2">Contact:</span> <span>(123) 456-7890</span>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <i
+            class="ri-mail-open-line ri-24px">
+          </i><span class="fw-medium mx-2">Email:</span> <span>@Model.User.Email</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--/ About User -->
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="nav-align-top">
+        <ul class="nav nav-pills flex-column flex-sm-row mb-6 gap-2 gap-lg-0">
+          <li class="nav-item">
+            <a class="nav-link waves-effect active
+          waves-light" asp-action="Edit" asp-route-id="@Model.User.Id">
+              <i
+                class="ri-user-3-line
+          me-1_5">
+              </i>Edit @Model.User.FirstName
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active waves-effect
+          waves-light"
+               asp-action="Index">
+              <i class="ri-team-line me-1_5"></i>Back to users
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
