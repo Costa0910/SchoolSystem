@@ -1,3 +1,10 @@
+'use strict';
+
+
+// Path: SchoolSystem.Web/wwwroot/js/Enrollment.js
+// Make a request to the server to get available students for a course
+// and populate the students select element with the available students
+// for the selected course
 const coursesSelect = document.getElementById('courses');
 const studentsSelect = document.getElementById('students');
 

@@ -1,8 +1,7 @@
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
-@model SchoolSystem.Web.Areas.Admin.ViewModels.Courses.CourseViewModel
+@model SchoolSystem.Web.Areas.Staff.ViewModels.Enrollments.DetailsEnrollmentsViewModel
 
 @{
-  ViewBag.Title = "Details and Subjects - Page";
+  ViewBag.Title = "Enrollments students - Page";
 }
 
 @section PageStyles
@@ -54,13 +53,13 @@
                   </li>
                 </ul>
               </div>
-              <a asp-action="AddSubject" asp-route-id="@Model.Id" class="btn
-              btn-primary
-              waves-effect
-              waves-light">
-                <i class="ri-graduation-cap-line" style="margin-right:
-                8px"></i>Add Subject
-              </a>
+              @*               <a asp-action="AddSubject" asp-route-id="@Model.Id" class="btn *@
+              @*               btn-primary *@
+              @*               waves-effect *@
+              @*               waves-light"> *@
+              @*                 <i class="ri-graduation-cap-line" style="margin-right: *@
+              @*                 8px"></i>Add Subject *@
+              @*               </a> *@
             </div>
           </div>
         </div>
@@ -77,7 +76,7 @@
           <i class="ri-search-line ri-20px"></i>
         </span>
         <input id="filterInput" type="text" class="form-control"
-               placeholder="Filter subjects..."
+               placeholder="Filter students..."
                aria-label="Search..." aria-describedby="basic-addon-search31">
       </div>
     </div>
@@ -88,17 +87,20 @@
   <div class="row">
     <div class="cols-md-12">
       <div class="row g-6">
-        @foreach (var subject in Model.Subjects)
+        @foreach (var student in Model.Students)
         {
-          <div class="col-xl-4 col-lg-6 col-md-6 subject">
+          <div class="col-xl-4 col-lg-6 col-md-6 students">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-center pb-1">
-                  <div class="me-2 text-heading h5 mb-0 subject-name">@subject.Name</div>
+                  <div class="me-2 text-heading h5 mb-0
+                  student-name">
+                    @student.User.FirstName @student.User.LastName
+                  </div>
                   <div class="ms-auto">
                     <ul class="list-inline mb-0 d-flex align-items-center">
                       <li class="list-inline-item">
-                        <button data-subject="@subject.Id"
+                        <button data-student="@student.Id"
                                 data-course="@Model.Id" class="btn
                         btn-outline-danger
                         btn-icon
@@ -111,7 +113,7 @@
                   </div>
                 </div>
                 <p class="text-truncate text-muted">
-                  @subject.Description
+                  @student.User.Email
                 </p>
               </div>
             </div>
@@ -131,7 +133,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Do you really want to delete this subject from @Model.Name?</p>
+        <p>Do you really want to delete this student from @Model.Name?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary"
@@ -149,5 +151,5 @@
 
 @section PageScripts {
 
-  <script src="~/js/subject.js"></script>
+  <script src="~/js/EnrollmentDetails.js"></script>
 }

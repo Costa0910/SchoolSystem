@@ -7,4 +7,5 @@ public interface ICourseRepository : IGenericRepository<Course>
   Task<IEnumerable<Course>> GetCoursesWithSubjectsAndStudents();
   Task<Course?> GetCourseWithSubjects(Guid id);
   Task<Course?> GetCourseWithStudents(Guid id);
+  Task<Course?> GetCourseWithStudentsDetails(Guid id);
 }
