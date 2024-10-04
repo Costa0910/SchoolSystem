@@ -37,4 +37,12 @@ public class CourseRepository(AppDbContext context)
       .ThenInclude(s => s.User)
       .FirstOrDefaultAsync(c => c.Id == id);
   }
+
+  public async Task<Course?> GetCourseWithStudentsSubjectsAndGrades(Guid parse)
+  {
+    return await context.Courses
+      .Include(c => c.Students)
+      .Include(c => c.Subjects)
+      .Include(s => s.Grades)
+      .FirstOrDefaultAsync(c => c.Id == parse);  }
 }

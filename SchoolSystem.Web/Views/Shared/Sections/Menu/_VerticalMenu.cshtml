@@ -37,7 +37,7 @@
       </li>
       <li class='menu-item@(currentPage == "/Admin/Users" ? " active" : "")'>
         <a asp-action="Index" asp-controller="Users" asp-area="Admin" class="menu-link">
-          <i class="menu-icon tf-icons ri-user-line"></i>
+          <i class="menu-icon tf-icons ri-group-line"></i>
           <div>Users</div>
         </a>
       </li>
@@ -127,15 +127,22 @@
       <li class='menu-item@(currentPage == "/Staff/Students" ? " active" : "")'>
         <a asp-action="Index" asp-controller="Students" asp-area="Staff"
            class="menu-link">
-          <i class="menu-icon tf-icons ri-user-line"></i>
+          <i class="menu-icon tf-icons ri-group-line"></i>
           <div>Students</div>
         </a>
       </li>
       <li class='menu-item@(currentPage == "/Staff/Enrollments" ? " active" : "")'>
         <a asp-action="Index" asp-controller="Enrollments" asp-area="Staff"
            class="menu-link">
-          <i class="menu-icon tf-icons ri-graduation-cap-line"></i>
+          <i class="menu-icon tf-icons ri-school-line"></i>
           <div>Enrollments</div>
+        </a>
+      </li>
+      <li class='menu-item@(currentPage == "/Staff/Grades" ? " active" : "")'>
+        <a asp-action="Index" asp-controller="Grades" asp-area="Staff"
+           class="menu-link">
+          <i class="menu-icon tf-icons ri-task-line"></i>
+          <div>Grades</div>
         </a>
       </li>
     </ul>
@@ -143,7 +150,8 @@
   else if (User.IsInRole(Roles.Student))
   {
     <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
-      <a asp-controller="Home" asp-action="Index" asp-area="Admin" class="app-brand-link">
+      <a asp-controller="Home" asp-action="Index" asp-area="Student"
+         class="app-brand-link">
         <span class="app-brand-logo demo me-1"> @await Html.PartialAsync("../_Partials/_Macros")</span>
         <span class="app-brand-text demo menu-text fw-semibold ms-2">@TempData.Peek("appName")</span>
       </a>

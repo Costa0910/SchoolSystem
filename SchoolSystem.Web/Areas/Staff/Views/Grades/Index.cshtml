@@ -1,0 +1,46 @@
+@model IEnumerable<SchoolSystem.Web.Areas.Staff.ViewModels.Grades.CourseViewModel>
+@{
+  ViewBag.Title = "Courses - Grades Page";
+}
+
+@section PageStyles
+{
+  <style>
+    .card:hover {
+      transform: scale(1.05);
+      transition: transform 0.5s ease-in-out;
+    }
+  </style>
+}
+
+<div class="container-xxl">
+  <partial name="_Toasts"/>
+  <p>All courses with at least 1 student and subject</p>
+  <div class="row mb-12 g-3">
+    @if (!Model.Any())
+    {
+      <div class="col-md-12">
+        <div class="alert alert-warning" role="alert">
+          No courses found.
+        </div>
+      </div>
+    }
+    @foreach (var course in Model)
+    {
+      <div class="col-md-3 col-lg-2">
+        <a asp-action="StudentsToGrade" asp-route-courseId="@course.Id"
+           class="text-decoration-none">
+          <div class="card h-100">
+            <img class="card-img-top" src="~/img/avatars/course.jpg" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">@course.Name</h5>
+              <p class="card-text text-truncate">
+                @course.Description
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    }
+  </div>
+</div>
