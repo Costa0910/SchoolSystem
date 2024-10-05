@@ -13,6 +13,5 @@ public class Grade : IEntity
     [MaxLength(50)]
     public string Status { get; set; } // Pass, Fail
     public Student Student { get; set; }
-    public Staff Teacher { get; set; }
     public Subject Subject { get; set; }
 }

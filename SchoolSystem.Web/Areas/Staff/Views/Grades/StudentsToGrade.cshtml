@@ -186,21 +186,22 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
           </div>
           <div class="card-body">
             <ul class="list-unstyled mb-0  overflow-scroll" id="StudentGrades">
-              <li class="mb-4">
-                <div class="d-flex align-items-center">
-                  <div class="d-flex align-items-center">
-                    <div class="me-2">
-                      <h6 class="mb-0">Cecilia Payne</h6>
-                      <small>45 Connections</small>
-                    </div>
-                  </div>
-                  <div class="ms-auto">
-                    <i class="ri-edit-box-line ri-22px btn-outline-primary"
-                       data-bs-target="#modals-transparent" data-bs-toggle="modal">
-                    </i>
-                  </div>
-                </div>
-              </li>
+              @* Student's subjects will be displayed here. *@
+              @* <li class="mb-4"> *@
+              @*   <div class="d-flex align-items-center"> *@
+              @*     <div class="d-flex align-items-center"> *@
+              @*       <div class="me-2"> *@
+              @*         <h6 class="mb-0">Cecilia Payne</h6> *@
+              @*         <small>45 Connections</small> *@
+              @*       </div> *@
+              @*     </div> *@
+              @*     <div class="ms-auto"> *@
+              @*       <i class="ri-edit-box-line ri-22px btn-outline-primary" *@
+              @*          data-bs-target="#modals-transparent" data-bs-toggle="modal"> *@
+              @*       </i> *@
+              @*     </div> *@
+              @*   </div> *@
+              @* </li> *@
             </ul>
           </div>
         </div>
@@ -219,15 +220,27 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        <a href="javascript:void(0);" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></a>
-        <p class=" text-large fw-light mb-4">Subscribe to get latest updates</p>
+        <a href="javascript:void(0);" class="btn-close text-white"
+           data-bs-dismiss="modal" aria-label="Close" id="btnCloseGrade"></a>
+        @* <p class=" text-large fw-light mb-4" id="gradeTitle"> *@
+        @*   Subscribe to get *@
+        @*   latest *@
+        @*   updates *@
+        @* </p> *@
         <div class="input-group input-group-lg mb-4">
-          <input type="number" min="0" max="20" class="form-control bg-white
-          border-0"
-                 placeholder="Grade...0-20" aria-describedby="subscribe">
-          <button class="btn btn-primary waves-effect waves-light" type="button" id="subscribe">Subscribe</button>
+          <input type="number" min="1" max="20" step="0.5" class="form-control
+          bg-white
+          border-1"
+                 placeholder="Value between 1..20"
+                 aria-describedby="subscribe" id="gradeValue">
+          <button class="btn btn-primary waves-effect waves-light"
+                  type="button" id="btnSaveGrade">
+            Save
+          </button>
         </div>
-        <div class="text-start">We won't share your email address</div>
+        <div class="text-start" id="gradeError" style="display: none">
+          <p class="text-danger">Grade must be between 1 and 20.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -236,7 +249,7 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
 
 @section PageScripts
 {
-<script src="~/js/Grades.js"></script>
+  <script src="~/js/Grades.js"></script>
 
   <!-- Load DataTables from CDN -->
   <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"

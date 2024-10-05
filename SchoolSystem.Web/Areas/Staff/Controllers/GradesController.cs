@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchoolSystem.Web.Areas.Staff.Helpers;
 using SchoolSystem.Web.Areas.Staff.ViewModels.Grades;
 using SchoolSystem.Web.Controllers;
 using SchoolSystem.Web.Data.Interfaces;
@@ -14,7 +15,8 @@ namespace SchoolSystem.Web.Areas.Staff.Controllers;
 public class GradesController(
   IUserHelper userHelper,
   ICourseRepository courseRepository,
-  IMapper mapper)
+  IMapper mapper,
+  IGradeRepository gradeRepository)
   : BaseController(userHelper)
 {
   public async Task<IActionResult> Index(string? message)
@@ -81,6 +83,62 @@ public class GradesController(
     });
 
     return Json(grades);
+  }
+
+  [HttpPost]
+  public async Task<IActionResult> SaveGrade([FromBody] SaveGradeModel model)
+  {
+    if (!ModelState.IsValid)
+    {
+      return BadRequest();
+    }
+
+    var course
+      = await courseRepository.GetCourseWithStudentsSubjectsAndGrades(
+        Guid.Parse(model.CourseId));
+    if (course == null)
+    {
+      return NotFound();
+    }
+
+    var student
+      = course.Students.Find(s => s.Id == Guid.Parse(model.StudentId));
+    if (student == null)
+    {
+      return NotFound();
+    }
+
+    var subject
+      = course.Subjects.Find(s => s.Id == Guid.Parse(model.SubjectId));
+    if (subject == null)
+    {
+      return NotFound();
+    }
+
+    var grades
+      = course.Grades.Find(g => g.Student == student && g.Subject == subject);
+    if (grades == null)
+    {
+      var newGrade = new Grade
+      {
+        Id = Guid.NewGuid(),
+        Student = student,
+        Subject = subject,
+        Value = model.Grade,
+        Status = model.Grade >= 10 ? StatusGrade.Pass : StatusGrade.Fail
+      };
+
+      await gradeRepository.AddAsync(newGrade);
+      course.Grades.Add(newGrade);
+      await courseRepository.UpdateAsync(course);
+    }
+    else
+    {
+      grades.Value = model.Grade;
+      grades.Status = model.Grade >= 10 ? StatusGrade.Pass : StatusGrade.Fail;
+      await gradeRepository.UpdateAsync(grades);
+    }
+    return Ok();
   }
 
   /// <summary>
