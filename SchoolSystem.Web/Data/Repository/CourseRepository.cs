@@ -38,11 +38,21 @@ public class CourseRepository(AppDbContext context)
       .FirstOrDefaultAsync(c => c.Id == id);
   }
 
-  public async Task<Course?> GetCourseWithStudentsSubjectsAndGrades(Guid parse)
+  public async Task<Course?> GetCourseWithStudentsSubjectsAndGrades(Guid id)
   {
     return await context.Courses
       .Include(c => c.Students)
       .Include(c => c.Subjects)
       .Include(s => s.Grades)
-      .FirstOrDefaultAsync(c => c.Id == parse);  }
+      .FirstOrDefaultAsync(c => c.Id == id);  }
+  public async Task<Course?> GetCourseWithGradesAndStudents(Guid id)
+  {
+    return await context.Courses
+      .Include(c => c.Students)
+      .Include(c => c.Grades)
+      .ThenInclude(g => g.Student)
+      .Include(c => c.Grades)
+      .ThenInclude(g => g.Subject)
+      .FirstOrDefaultAsync(c => c.Id == id);
+  }
 }

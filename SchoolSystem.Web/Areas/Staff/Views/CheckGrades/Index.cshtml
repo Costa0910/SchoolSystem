@@ -1,16 +1,17 @@
 @model IEnumerable<SchoolSystem.Web.Areas.Staff.ViewModels.Grades.CourseViewModel>
+
 @{
-  ViewBag.Title = "Courses - Grades Page";
+  ViewBag.Title = "Courses to check Grades";
 }
 
 @section PageStyles
 {
   <style>
-    .card:hover {
-      transform: scale(1.05);
-      transition: transform 0.5s ease-in-out;
-    }
-  </style>
+  .card:hover {
+    transform: scale(1.05);
+    transition: transform 0.5s ease-in-out;
+  }
+</style>
 }
 
 <div class="container-xxl">
@@ -21,14 +22,14 @@
     {
       <div class="col-md-12">
         <div class="alert alert-warning" role="alert">
-          No courses found.
+          No courses found
         </div>
       </div>
     }
     @foreach (var course in Model)
     {
       <div class="col-md-3 col-lg-2">
-        <a asp-action="StudentsToGrade" asp-route-courseId="@course.Id"
+        <a asp-action="StudentsToCheck" asp-route-courseId="@course.Id"
            class="text-decoration-none">
           <div class="card h-100">
             <img class="card-img-top" src="@course.CoverImageUrl" alt="Card image cap">

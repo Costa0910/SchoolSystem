@@ -1,7 +1,7 @@
 @model SchoolSystem.Web.Models.Course
 
 @{
-  ViewBag.Title = "Students to grade";
+  ViewBag.Title = "Student to check grades";
 }
 
 @section PageStyles
@@ -72,7 +72,7 @@
 
 <div class="card">
   <div class="card-header border-bottom">
-    <h6 class="card-title mb-0">All students in @Model.Name, search any student to update it's grade!</h6>
+    <h6 class="card-title mb-0">All students in @Model.Name, search any student to view it's grades!</h6>
     @* Alerts and Toasts *@
     <partial name="_Toasts"/>
   </div>
@@ -142,14 +142,13 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
             </td>
             <td>
               <div class="d-flex align-items-center">
-                <button data-bs-target="#show-subjects"
-                        data-bs-toggle="offcanvas"
+                <button type="button" data-bs-toggle="modal" data-bs-target="#fullscreenModal"
                         data-author="@student.User.FirstName @student.User.LastName"
                         data-course="@Model.Id"
                         data-student="@student.Id"
                         class="btn btn-sm btn-text-secondary
-                        btn-outline-primary waves-effect ListStudentSubjects">
-                  Update grades
+                        btn-outline-primary waves-effect showGradeButton">
+                  View grades
                 </button>
               </div>
             </td>
@@ -161,90 +160,66 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
   </div>
 </div>
 
-@* Show when staff click on the "Update grades" button. *@
-<div class="offcanvas offcanvas-end" id="show-subjects" aria-modal="true"
-     role="dialog">
-  <div class="offcanvas-header border-bottom">
-    <h5 class="offcanvas-title text-truncate">
-      @Model.Name's
-      subjects
-    </h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body flex-grow-1">
-    <div class="col-sm-12">
-      <div class="col-lg-12">
-        <div class="card-action mb-8">
-          <div class="card-header align-items-center">
-            <h5 class="card-action-title mb-3" id="studentName">Connections</h5>
-          </div>
-          <div class="card-body">
-            <ul class="list-unstyled mb-0  overflow-scroll" id="StudentGrades">
-              @* Student's subjects will be displayed here. *@
-              @* <li class="mb-4"> *@
-              @*   <div class="d-flex align-items-center"> *@
-              @*     <div class="d-flex align-items-center"> *@
-              @*       <div class="me-2"> *@
-              @*         <h6 class="mb-0">Cecilia Payne</h6> *@
-              @*         <small>45 Connections</small> *@
-              @*       </div> *@
-              @*     </div> *@
-              @*     <div class="ms-auto"> *@
-              @*       <i class="ri-edit-box-line ri-22px btn-outline-primary" *@
-              @*          data-bs-target="#modals-transparent" data-bs-toggle="modal"> *@
-              @*       </i> *@
-              @*     </div> *@
-              @*   </div> *@
-              @* </li> *@
-            </ul>
-          </div>
-        </div>
-      </div>
-      <button type="reset" class="btn btn-primary waves-effect position-fixed bottom-0 end-0 me-4 mb-3"
-              data-bs-dismiss="offcanvas">
-        Close
-      </button>
-    </div>
-  </div>
-</div>
-
-
-@* Show when staff wanna give grades to students. *@
-<div class="modal modal-transparent fade" id="modals-transparent" tabindex="-1" aria-modal="true" role="dialog">
-  <div class="modal-dialog">
+@* Show select user grades *@
+<div class="modal fade" id="fullscreenModal" tabindex="-1" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen" role="document">
     <div class="modal-content">
-      <div class="modal-body">
-        <a href="javascript:void(0);" class="btn-close text-white"
-           data-bs-dismiss="modal" aria-label="Close" id="btnCloseGrade"></a>
-        @* <p class=" text-large fw-light mb-4" id="gradeTitle"> *@
-        @*   Subscribe to get *@
-        @*   latest *@
-        @*   updates *@
-        @* </p> *@
-        <div class="input-group input-group-lg mb-4">
-          <input type="number" min="1" max="20" step="0.5" class="form-control
-          bg-white
-          border-1"
-                 placeholder="Value between 1..20"
-                 aria-describedby="subscribe" id="gradeValue">
-          <button class="btn btn-primary waves-effect waves-light"
-                  type="button" id="btnSaveGrade">
-            Save
-          </button>
-        </div>
-        <div class="text-start" id="gradeError" style="display: none">
-          <p class="text-danger">Grade must be between 1 and 20.</p>
-        </div>
+      <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body table-responsive">
+        <table class="table caption-top table-hover">
+          <caption id="caption">List of users</caption>
+          <thead class="table-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Approval</th>
+          </tr>
+          </thead>
+          <tbody id="tableBody">
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@@twitter</td>
+          </tr>
+          </tbody>
+          <tfoot class="table-light" id="tableFooter">
+          <tr>
+            <th scope="row">#</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@@mdo</td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary waves-effect"
+                data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
-
 
 @section PageScripts
 {
-  <script src="~/js/Grades.js"></script>
-
+<script src="~/js/showGrade.js"></script>
   <!-- Load DataTables from CDN -->
   <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"
           defer></script>

@@ -145,6 +145,13 @@
           <div>Grades</div>
         </a>
       </li>
+      <li class='menu-item@(currentPage == "/Staff/CheckGrades" ? " active" : "")'>
+        <a asp-action="Index" asp-controller="CheckGrades" asp-area="Staff"
+           class="menu-link">
+          <i class="menu-icon tf-icons ri-graduation-cap-line"></i>
+          <div>Check grades</div>
+        </a>
+      </li>
     </ul>
   }
   else if (User.IsInRole(Roles.Student))
@@ -165,8 +172,8 @@
     // Student menu items
     <ul class="menu-inner py-1">
       <!-- Dashboard -->
-      <li class='menu-item@(currentPage.EndsWith("/Admin") ? " active" : "")'>
-        <a asp-area="Admin" asp-action="Index" asp-controller="Home" class="menu-link">
+      <li class='menu-item@(currentPage.EndsWith("/Student") ? " active" : "")'>
+        <a asp-area="Student" asp-action="Index" asp-controller="Home" class="menu-link">
           <i class="menu-icon tf-icons ri-home-smile-line"></i>
           <div>Dashboard</div>
         </a>
