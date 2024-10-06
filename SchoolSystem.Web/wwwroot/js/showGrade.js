@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const response = await fetch(`GetStudentGrades/?courseId=${courseId}&studentId=${studentId}`);
 
-    debugger;
     if (response.ok) {
       const data = await response.json();
       if (data.length > 0) {
@@ -87,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <td>#</td>
     <td>Total</td>
     <td>${total}</td>
-    <td class=${status}>${roundedAverage} average</td>
+    <td class=${status}>${roundedAverage} ${Number(roundedAverage)? "average" : ""}</td>
     `;
     tableFooter.appendChild(row);
   }
