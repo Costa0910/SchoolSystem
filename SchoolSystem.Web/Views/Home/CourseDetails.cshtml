@@ -1,0 +1,46 @@
+@model SchoolSystem.Web.Models.Course
+
+@{
+  ViewBag.Title = "Course Details";
+}
+
+@* Adapted from https://templatemo.com/tm-586-scholar*@
+
+<div class="section about-us">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 offset-lg-1">
+        <div class="accordion" id="accordionExample">
+          @foreach(var subject in Model.Subjects)
+          {
+            var id = string.Join("", subject.Name.Split(" "));
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="@subject.Id">
+                <button class="accordion-button" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#@id"
+                        aria-expanded="false" aria-controls="@subject.Id">
+                  @subject.Name
+                </button>
+              </h2>
+              <div id="@id" class="accordion-collapse collapse"
+                   aria-labelledby="@subject.Id"
+                   data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  @subject.Description
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="col-lg-5 align-self-center">
+        <div class="section-heading">
+          <h6>About this course</h6>
+          <h2>@Model.Name</h2>
+          <p>@Model.Description</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,286 @@
+@model SchoolSystem.Web.Models.Course
+
+@{
+  ViewBag.Title = "Students - Absents Page";
+}
+
+@section PageStyles
+{
+  <!-- Syncfusion ASP.NET Core controls styles -->
+  <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/27.1.48/fluent.css"/>
+  <!-- Syncfusion ASP.NET Core controls scripts -->
+  <script src="https://cdn.syncfusion.com/ej2/27.1.48/dist/ej2.min.js"></script>
+  <style>
+
+  .dataTables_info {
+    margin: 5px 20px;
+  }
+
+  .dataTables_paginate {
+    margin: 20px;
+  }
+
+  .dataTables_paginate .previous, .dataTables_paginate .next {
+    padding: 6px 12px;
+    text-decoration: none;
+    margin-bottom: 5px;
+    color: black;
+    background-color: #eeeeef;
+    border: 1px solid #eeeeef;
+    border-radius: 5%;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .dataTables_paginate .previous {
+    margin-right: 5px;
+  }
+
+  .dataTables_paginate .next {
+    margin-left: 5px;
+  }
+
+  span a.paginate_button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: black;
+    background-color: #eeeeef;
+    border: 1px solid #eeeeef;
+    border-radius: 50%;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  span a.paginate_button:hover {
+    background-color: #9a9bd7;
+    color: white;
+  }
+
+  span a.paginate_button.current {
+    background-color: #8c57ff;
+    color: white;
+    font-weight: bold;
+    border-color: #8c57ff;
+  }
+
+  span a.paginate_button:focus {
+    outline: none;
+    box-shadow: 0 0 3px 2px rgba(0, 123, 255, 0.5);
+  }
+
+</style>
+}
+
+
+<div class="card">
+  <div class="card-header border-bottom">
+    <h6 class="card-title mb-0">All students in @Model.Name, search any student to mark absent!</h6>
+    @* Alerts and Toasts *@
+    <partial name="_Toasts"/>
+    <div class="control-section" style="width:400px;margin:0 auto;">
+      <ejs-toast id="element" title="Matt sent you a friend request" content="You have a new friend request yet to accept" timeOut="0" click="onClick">
+        <e-toast-position X="Right" Y="Top"></e-toast-position>
+      </ejs-toast>
+    </div>
+
+  </div>
+  <div class="card-datatable table-responsive">
+    <div id="DataTables_Table_0_wrapper"
+         class="dataTables_wrapper dt-bootstrap5 no-footer">
+      <div class="d-flex justify-content-between
+gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
+      </div>
+      <table class="datatables-users table dataTable no-footer dtr-column w-100"
+             id="UsersTable" aria-describedby="DataTables_Table_0_info"
+             style="width: 849px;">
+        <thead>
+        <tr>
+          <th class="control sorting_disabled dtr-hidden" rowspan="1"
+              colspan="1" style="width: 4px; display: none;" aria-label="">
+          </th>
+          <th
+            class="sorting_disabled dt-checkboxes-cell dt-checkboxes-select-all"
+            rowspan="1" colspan="1" style="width: 18px;" data-col="1"
+            aria-label="">
+            <input type="checkbox" class="form-check-input">
+          </th>
+          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+              rowspan="1" colspan="1" style="width: 228px;"
+              aria-label="User: activate to sort column ascending">
+            Student
+          </th>
+          <th class="sorting sorting_desc" tabindex="0"
+              aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+              style="width: 266px;"
+              aria-label="Email: activate to sort column ascending"
+              aria-sort="descending">
+            Email
+          </th>
+          <th class="sorting_disabled" rowspan="1" colspan="1"
+              style="width: 0px;" aria-label="Actions">
+            Action
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        @* Loop through the users and display them *@
+
+        @foreach (var student in Model.Students)
+        {
+          <tr class="even">
+            <td class="control dtr-hidden" tabindex="0"
+                style="display: none;">
+            </td>
+            <td class="  dt-checkboxes-cell">
+              <input type="checkbox" class="dt-checkboxes form-check-input">
+            </td>
+            <td>
+              <div
+                class="d-flex justify-content-start align-items-center user-name">
+                <div class="d-flex flex-column">
+                  <a href="javascript:;"
+                     class="text-heading text-truncate">
+                    <span class="fw-medium">@student.User.FirstName @student.User.LastName</span>
+                  </a><small>@@@student.User.Email</small>
+                </div>
+              </div>
+            </td>
+            <td class="sorting_1">
+              <span>@student.User.Email</span>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <button data-bs-target="#MarkAbsentModal"
+                        data-bs-toggle="modal"
+                        data-author="@student.User.FirstName @student.User.LastName"
+                        data-course="@Model.Id"
+                        data-student="@student.Id"
+                        class="btn btn-sm btn-text-secondary
+                        btn-outline-primary waves-effect ListStudent">
+                  Mark Absent
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+@* Show when staff click on the "Update grades" button. *@
+<div class="modal-onboarding modal fade animate__animated"
+     id="MarkAbsentModal" tabindex="-1" style="display: none;"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content text-center">
+      <div class="modal-body p-0">
+        <div class="onboarding-content mb-0">
+          <h5 class="onboarding-title text-body" id="StudentNameDisplay">
+            In
+            what
+            subject
+            --- was
+            absent?
+          </h5>
+          <div class="row mb-5">
+            <div class="col-sm-12">
+              <div class="control_wrapper AutoComplete-control-section">
+                <div id="default">
+                  <ejs-autocomplete id="Subjects" datasource="@ViewBag.Subjects"
+                    placeholder="Select a subject ex. @ViewBag.Ex"
+                    allowCustom="false">
+                    <e-autocomplete-fields value="Name">
+                    </e-autocomplete-fields>
+                  </ejs-autocomplete>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-outline-secondary waves-effect"
+                data-bs-dismiss="modal" id="btnCloseModal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary waves-effect
+        waves-light" id="btnMark">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@section PageScripts
+{
+  <!-- Load DataTables from CDN -->
+  <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"
+          defer></script>
+
+  <script type="text/javascript" defer>
+  $(document).ready(function() {
+    // Initialize DataTable with Portuguese language support
+    $('#UsersTable').DataTable({
+      'language': {
+        'url': '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese.json'
+      },
+      'aLengthMenu': [
+        [10, 20, 50, 100, 200, -1],
+        [10, 20, 50, 100, 200, 'Todos']
+      ],
+      // initComplete ensures this code runs after DataTable has fully initialized
+      'initComplete': function() {
+        console.log('DataTable initialization complete');
+
+        // Remove the old filter element and replace it
+        let toRemove = document.getElementById('UsersTable_filter');
+        let container = document.getElementById('FilterOptions');
+
+        if (toRemove && container) {
+          toRemove.remove();
+
+          toRemove.classList.add('col-md-4', 'd-flex', 'align-items-center');
+
+          let label = toRemove.firstElementChild;
+          label.firstElementChild.classList.add('form-control',
+            'form-control-lg', 'form-control-borderless');
+          label.firstElementChild.placeholder = 'Search student';
+          label.removeChild(label.firstChild);
+          label.firstElementChild.classList.remove('dataTables_filter');
+          container.insertAdjacentElement('beforeend', toRemove);
+
+          console.log('Replacement done successfully.');
+        } else {
+          console.error('Elements for replacement not found.');
+        }
+
+        let toMove = document.getElementById('UsersTable_length');
+
+        if (toMove && container) {
+          toMove.remove();
+          toMove.classList.add('col-md-4', 'user_role', 'w-auto', "d-flex",
+            "align-items-center");
+          container.insertAdjacentElement('beforeend', toMove);
+          console.log('Move done successfully.');
+        } else {
+          console.error('Elements for move not found.');
+        }
+      }
+    });
+  });
+</script>
+
+  <script type="text/javascript">
+  function onClick(e) {
+    e.clickToClose = true;
+  }
+</script>
+
+  <script src="~/js/markAbsent.js"></script>
+  <ejs-scripts></ejs-scripts>
+
+}

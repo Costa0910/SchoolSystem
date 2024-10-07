@@ -14,6 +14,7 @@ public class StudentRepository(AppDbContext context)
     return await _context.Students.Include(s => s.User).FirstOrDefaultAsync(s
       => s.User.Id == id);
   }
+
   public async Task<Student?> GetStudentByIdIncludeUserAsync(Guid id)
   {
     return await _context.Students.Include(s => s.User).FirstOrDefaultAsync(s
@@ -39,12 +40,21 @@ public class StudentRepository(AppDbContext context)
       => s.User.Email == email);
   }
 
-  public async Task<List<Student>> GetStudentsIncludeUserAsync() => await _context.Students.Include(s => s.User).ToListAsync();
+  public async Task<List<Student>> GetStudentsIncludeUserAsync() =>
+    await _context.Students.Include(s => s.User).ToListAsync();
+
   public async Task<List<Student>> GetStudentsNotInCourseAsync(Course course)
   {
     return await _context.Students
       .Include(s => s.User)
       .Where(s => s.Courses.All(c => c.Id != course.Id))
       .ToListAsync();
+  }
+
+  public async Task<Student?> GetStudentCoursesByEmailAsync(string email)
+  {
+    return await _context.Students
+      .Include(s => s.Courses)
+      .FirstOrDefaultAsync(s => s.User.Email == email);
   }
 }

@@ -1,0 +1,85 @@
+@using SchoolSystem.Web.Models.EnumsClasses
+@model System.Collections.Generic.List<SchoolSystem.Web.Areas.Student.ViewModels.Grades.ViewGradeViewModel>
+
+@{
+  ViewBag.Title = "Check my grades";
+}
+
+<div class="card">
+  <h5 class="card-header">Your grades on @ViewBag.CourseName</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>Subject</th>
+        <th>Grade</th>
+        <th>Approval</th>
+      </tr>
+      </thead>
+      <tbody>
+      @foreach (var grade in Model)
+      {
+        <tr>
+          <td>@grade.SubjectName</td>
+          <td>
+            @if (grade.Grade == 0)
+            {
+              <span class="badge rounded-pill bg-label-warning">Not graded yet</span>
+            }
+            else
+            {
+              if (grade.Grade >= 10)
+              {
+                <span class="badge rounded-pill bg-label-success">@grade.Grade</span>
+              }
+              else
+              {
+                <span class="badge rounded-pill bg-label-danger">@grade.Grade</span>
+              }
+            }
+          </td>
+          <td>
+            @if (grade.Status == StatusGrade.Pass)
+            {
+              <span class="badge rounded-pill bg-label-success">Approved</span>
+            }
+            else if (grade.Status == StatusGrade.Fail)
+            {
+              <span class="badge rounded-pill bg-label-danger">Not approved</span>
+            }
+            else
+            {
+              <span class="badge rounded-pill bg-label-warning">Pending</span>
+            }
+          </td>
+        </tr>
+      }
+      </tbody>
+      <tfoot class="table-border-bottom-0">
+      <tr>
+        <th class="rounded-start-bottom">Total</th>
+        <th>
+          @if (@ViewBag.Total > 0)
+          {
+            <span class="badge rounded-pill bg-label-primary">@ViewBag.Total</span>
+          }
+          else
+          {
+            <span class="badge rounded-pill bg-label-warning">No grades yet</span>
+          }
+        </th>
+        <th class="rounded-end-bottom">
+          @if (@ViewBag.Average > 0)
+          {
+            <span class="badge rounded-pill bg-label-primary">@ViewBag.Average Average</span>
+          }
+          else
+          {
+            <span class="badge rounded-pill bg-label-warning">No grades yet</span>
+          }
+        </th>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

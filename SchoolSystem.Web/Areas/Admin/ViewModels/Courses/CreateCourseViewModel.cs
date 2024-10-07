@@ -17,4 +17,8 @@ public class CreateCourseViewModel
    DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode =
      true)]
   public DateOnly StartDate { get; set; }
+
+  [Range(5, 40, ErrorMessage = "Value must be between {0} and {1}"),
+   Required, Display(Name = "Exclusion Percentage")]
+  public double ExclusionPercentage { get; set; }
 }

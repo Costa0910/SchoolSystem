@@ -30,6 +30,14 @@
             </div>
             <div class="col-md-6">
               <div class="form-floating form-floating-outline">
+                <input asp-for="Hours" class="form-control" type="number"
+                       placeholder="Ex. 25" min="10" max="50"/>
+                <label asp-for="Hours">Hours</label>
+              </div>
+              <span asp-validation-for="Hours" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
                 <textarea asp-for="Description" class="form-control" placeholder="Learn Programing..."></textarea>
                 <label asp-for="Description">Description</label>
               </div>

@@ -152,6 +152,13 @@
           <div>Check grades</div>
         </a>
       </li>
+      <li class='menu-item@(currentPage == "/Staff/Absents" ? " active" : "")'>
+        <a asp-action="Index" asp-controller="Absents" asp-area="Staff"
+           class="menu-link">
+          <i class="menu-icon tf-icons ri-arrow-right-down-line"></i>
+          <div>Absents</div>
+        </a>
+      </li>
     </ul>
   }
   else if (User.IsInRole(Roles.Student))
@@ -179,14 +186,21 @@
         </a>
       </li>
       <li class="menu-header mt-5">
-        <span class="menu-header-text">Users &amp; Accounts</span>
+        <span class="menu-header-text">Courses &amp; Grades</span>
+      </li>
+      <li class='menu-item@(currentPage == "/Student/Grades" ? " active" : "")'>
+        <a asp-action="Index" asp-controller="Grades" asp-area="Student"
+           class="menu-link">
+          <i class="menu-icon tf-icons ri-task-line"></i>
+          <div>My courses</div>
+        </a>
       </li>
     </ul>
   }
   else
   {
     <div class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
-      <a asp-controller="Home" asp-action="Index" asp-area="Admin" class="app-brand-link">
+      <a asp-controller="Home" asp-action="Index" asp-area="" class="app-brand-link">
         <span class="app-brand-logo demo me-1"> @await Html.PartialAsync("../_Partials/_Macros")</span>
         <span class="app-brand-text demo menu-text fw-semibold ms-2">@TempData.Peek("appName")</span>
       </a>
@@ -201,8 +215,7 @@
       <li>
         <p>
           Something is wrong, try
-          <a asp-area="" asp-action="Login"
-             asp-controller="Auth">
+          <a asp-area="" asp-action="Login" asp-controller="Auth">
             login
           </a>
         </p>

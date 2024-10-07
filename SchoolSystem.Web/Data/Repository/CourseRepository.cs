@@ -44,7 +44,9 @@ public class CourseRepository(AppDbContext context)
       .Include(c => c.Students)
       .Include(c => c.Subjects)
       .Include(s => s.Grades)
-      .FirstOrDefaultAsync(c => c.Id == id);  }
+      .FirstOrDefaultAsync(c => c.Id == id);
+  }
+
   public async Task<Course?> GetCourseWithGradesAndStudents(Guid id)
   {
     return await context.Courses
@@ -53,6 +55,24 @@ public class CourseRepository(AppDbContext context)
       .ThenInclude(g => g.Student)
       .Include(c => c.Grades)
       .ThenInclude(g => g.Subject)
+      .FirstOrDefaultAsync(c => c.Id == id);
+  }
+
+  public async Task<Course?> GetCourseWithStudentsDetailsAndSubjects(Guid id)
+  {
+    return await context.Courses
+      .Include(c => c.Students)
+      .ThenInclude(s => s.User)
+      .Include(c => c.Subjects)
+      .FirstOrDefaultAsync(c => c.Id == id);
+  }
+
+  public async Task<Course?> GetCourseWithStudentsSubjectsAndAbsent(Guid id)
+  {
+    return await context.Courses
+      .Include(c => c.Students)
+      .Include(c => c.Subjects)
+      .Include(c => c.Attendances)
       .FirstOrDefaultAsync(c => c.Id == id);
   }
 }

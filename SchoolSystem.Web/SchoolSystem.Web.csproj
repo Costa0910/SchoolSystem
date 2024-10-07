@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Areas\Student\ViewModels\" />
       <Folder Include="Areas\Student\Views\Shared\" />
       <Folder Include="Areas\Teacher\Controllers\" />
       <Folder Include="Areas\Teacher\ViewModels\" />
@@ -43,11 +42,16 @@
       <_ContentIncludedByDefault Remove="wwwroot\img\layouts\layout-without-navbar-light.png" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Subjects\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Staff\Pages\Students\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Staff\Pages\Absents\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
       <AdditionalFiles Include="Areas\Staff\Views\Home\Index.cshtml" />
       <AdditionalFiles Include="Areas\Student\Views\Home\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="wwwroot\assets\.DS_Store" />
     </ItemGroup>
 
 </Project>

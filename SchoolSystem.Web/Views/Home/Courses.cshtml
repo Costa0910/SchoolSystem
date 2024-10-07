@@ -1,0 +1,88 @@
+@model IEnumerable<SchoolSystem.Web.ViewModels.Home.CourseViewModel>
+
+@{
+  ViewBag.Title = "Courses Page";
+}
+
+<section class="section courses" id="courses">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="section-heading">
+          <h6>Latest Courses</h6>
+          <h2>Latest Courses</h2>
+        </div>
+      </div>
+    </div>
+    <!-- ***** Serach Start ***** -->
+    <div class="search-input event_filter">
+      <form id="search">
+        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword"/>
+        <i class="fa fa-search"></i>
+      </form>
+    </div>
+    <!-- ***** Serach Start ***** -->
+    <div class="row event_box" id="coursesContainer">
+      @foreach (var course in Model)
+      {
+        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6">
+          <div class="events_item">
+            <div class="thumb">
+              <a asp-action="CourseDetails" asp-route-id="@course.Id" asp-controller="Home">
+                <img src="@course.CoverImageUrl" alt="">
+              </a>
+            </div>
+            <div class="down-content">
+              <span class="author text-truncate">@course.Name</span>
+              <h4 class="desc text-truncate">@course.Description</h4>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+@section Scripts {
+  <script type="text/javascript">
+    const form = document.getElementById('search');
+    const searchText = document.getElementById('searchText');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    Filter();
+  });
+
+  let timerId ;
+
+  searchText.addEventListener("input", (e) => {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      Filter();
+    }, 500);
+  });
+
+
+  const Filter = () => {
+    console.log('Filtering', searchText.value);
+    const searchKeyword = searchText.value.toLocaleLowerCase();
+    const coursesContainer = document.getElementById('coursesContainer');
+    const courses = coursesContainer.getElementsByClassName('event_outer');
+    for (let i = 0; i < courses.length; i++) {
+      const course = courses[i];
+      const courseName = course.getElementsByClassName('author')[0]
+        .textContent.toLocaleLowerCase();
+      const courseDescription = course.getElementsByClassName
+      ('desc')[0].textContent.toLocaleLowerCase();
+      if (courseName.includes(searchKeyword) || courseDescription.includes
+      (searchKeyword) || searchKeyword === '') {
+        course.style.display = '';
+      } else {
+        course.style.display = 'none';
+      }
+    }
+
+    console.log('Filtering done');
+  }
+  </script>
+}

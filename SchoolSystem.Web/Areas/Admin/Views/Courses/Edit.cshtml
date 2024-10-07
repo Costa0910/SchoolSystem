@@ -76,6 +76,15 @@
             </div>
             <div class="col-md-6">
               <div class="form-floating form-floating-outline">
+                <input asp-for="ExclusionPercentage" class="form-control"
+                       type="number"
+                       placeholder="Ex. 30%" min="10" max="40"/>
+                <label asp-for="ExclusionPercentage">Exclusion percentage</label>
+              </div>
+              <span asp-validation-for="ExclusionPercentage" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
                 <textarea asp-for="Description" class="form-control" placeholder="Learn Programing..."></textarea>
                 <label asp-for="Description">Description</label>
               </div>

@@ -263,9 +263,6 @@ namespace SchoolSystem.Web.Data.Migrations
                     b.Property<Guid>("SubjectId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TeacherId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
@@ -273,8 +270,6 @@ namespace SchoolSystem.Web.Data.Migrations
                     b.HasIndex("StudentId");
 
                     b.HasIndex("SubjectId");
-
-                    b.HasIndex("TeacherId");
 
                     b.ToTable("Attendances");
                 });
@@ -295,6 +290,9 @@ namespace SchoolSystem.Web.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<double>("ExclusionPercentage")
+                        .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -417,6 +415,9 @@ namespace SchoolSystem.Web.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -628,17 +629,9 @@ namespace SchoolSystem.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchoolSystem.Web.Models.Staff", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Student");
 
                     b.Navigation("Subject");
-
-                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("SchoolSystem.Web.Models.Course", b =>

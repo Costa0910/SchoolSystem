@@ -213,6 +213,7 @@ public class CoursesController(
       Name = model.Name,
       Description = model.Description,
       StartDate = model.StartDate,
+      ExclusionPercentage = model.ExclusionPercentage,
       CoverImageId = classImageId,
       Grades = [],
       Students = [],

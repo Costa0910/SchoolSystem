@@ -95,6 +95,7 @@ public class SubjectsController(
     {
       Name = model.Name,
       Description = model.Description,
+      Hours = model.Hours,
       Courses = []
     };
 

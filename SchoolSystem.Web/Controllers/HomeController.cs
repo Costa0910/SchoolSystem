@@ -1,35 +1,62 @@
 using System.Diagnostics;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchoolSystem.Web.Data.Interfaces;
 using SchoolSystem.Web.Models;
+using SchoolSystem.Web.ViewModels.Home;
 
 namespace SchoolSystem.Web.Controllers;
 
-public class HomeController : Controller
+[AllowAnonymous]
+public class HomeController(ICourseRepository courseRepository, IMapper mapper)
+  :
+    Controller
 {
-    private readonly ILogger<HomeController> _logger;
+  public IActionResult Index()
+  {
+    return View();
+  }
 
-    public HomeController(ILogger<HomeController> logger)
+  public IActionResult Privacy()
+  {
+    return View();
+  }
+
+  public async Task<IActionResult> Courses()
+  {
+    var courses = await courseRepository.GetAllAsync();
+    var courseViewModel = mapper.Map<IEnumerable<CourseViewModel>>(courses);
+    return View(courseViewModel.OrderBy(c => c.Name));
+  }
+
+  public async Task<IActionResult> CourseDetails(string id)
+  {
+    if (!ModelState.IsValid)
     {
-        _logger = logger;
+      return NotFound();
     }
 
-    public IActionResult Index()
+    var course = await courseRepository.GetCourseWithSubjects(Guid.Parse(id));
+    if (course == null)
     {
-        return View();
+      return NotFound();
     }
+    return View(course);
+  }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+  public IActionResult About()
+  {
+    return View();
+  }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None,
-        NoStore = true)]
-    public IActionResult Error()
+  [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None,
+    NoStore = true)]
+  public IActionResult Error()
+  {
+    return View(new ErrorViewModel
     {
-        return View(new ErrorViewModel
-        {
-            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-        });
-    }
+      RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+    });
+  }
 }
