@@ -75,18 +75,18 @@
   <div class="card-header border-bottom">
     @* Alerts and Toasts *@
     <partial name="_Toasts"/>
-    <h6 class="card-title mb-0">Add student to any of this courses</h6>
+    <h6 class="card-title mb-0">Click on Students or Subjects icon to view more</h6>
     <div class="card-datatable table-responsive">
       <div id="DataTables_Table_0_wrapper"
            class="dataTables_wrapper dt-bootstrap5 no-footer">
         <div class="d-flex justify-content-between
 gap-4 gap-md-0 gx-5 flex-wrap py-5 align-content-center" id="FilterOptions">
-          <div class="add-new col-md-4 w-auto">
-            <a class="btn btn-primary waves-effect waves-light" asp-action="Create">
-              <i class="ri-add-line me-0 me-sm-1 d-inline-block d-sm-none"></i>
-              <span class="d-none d-sm-inline-block text-white"> New Enrollment </span>
-            </a>
-          </div>
+          @* <div class="add-new col-md-4 w-auto"> *@
+          @*   <a class="btn btn-primary waves-effect waves-light" asp-action="AddStudent"> *@
+          @*     <i class="ri-add-line me-0 me-sm-1 d-inline-block d-sm-none"></i> *@
+          @*     <span class="d-none d-sm-inline-block text-white"> New Enrollment </span> *@
+          @*   </a> *@
+          @* </div> *@
         </div>
 
       </div>
@@ -141,12 +141,6 @@ gap-4 gap-md-0 gx-5 flex-wrap py-5 align-content-center" id="FilterOptions">
             <td>
               <div
                 class="d-flex justify-content-start align-items-center user-name">
-                @* <div class="avatar-wrapper"> *@
-                @*   <div class="avatar avatar-sm me-4"> *@
-                @*     <img src="@user.ProfilePhotoUrl" alt="Avatar" *@
-                @*          class="rounded-circle"> *@
-                @*   </div> *@
-                @* </div> *@
                 <div class="d-flex flex-column">
                   <a href="javascript:;"
                      class="text-heading text-truncate">
@@ -159,7 +153,7 @@ gap-4 gap-md-0 gx-5 flex-wrap py-5 align-content-center" id="FilterOptions">
               @if (@course.Subjects.Count > 0)
               {
                 <span>
-                  <span class="badge bg-label-secondary rounded-pill">@course.Subjects.Count</span>
+                  <span class="badge bg-label-info rounded-pill">@course.Subjects.Count</span>
                 </span>
               }
               else
@@ -182,12 +176,32 @@ gap-4 gap-md-0 gx-5 flex-wrap py-5 align-content-center" id="FilterOptions">
             </td>
             <td>
               <div class="d-flex align-items-center ">
-                <a asp-action="Details" asp-route-id="@course.Id"
-                   class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect"
-                   data-bs-toggle="tooltip" title="View all Students">
-                  <i class="ri-eye-line ri-22px"></i>
+                <a asp-action="DetailsSubjects" asp-route-id="@course.Id"
+                   class="btn btn-sm btn-icon rounded-pill waves-effect" data-bs-toggle="tooltip" title="View
+                    all Subjects">
+                  <i class="ri-graduation-cap-line
+                    text-info"></i>
                 </a>
-                  See students
+                <a asp-action="DetailsStudents" asp-route-id="@course.Id"
+                   class="btn btn-sm btn-icon rounded-pill waves-effect" data-bs-toggle="tooltip" title="View all Students">
+                  <i class="ri-user-line text-primary"> </i>
+                </a>
+                <button
+                  class="btn btn-sm btn-icon btn-text-secondary rounded-pill waves-effect dropdown-toggle hide-arrow"
+                  data-bs-toggle="dropdown">
+                  <i class="ri-more-2-line ri-22px"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end m-0">
+                  <a asp-action="AddSubject" asp-route-courseId="@course.Id"
+                     class="dropdown-item">
+                    <i class="ri-graduation-cap-line
+                    text-info me-2"></i><span>Add subject</span>
+                  </a>
+                  <a asp-action="AddStudent" asp-route-courseId="@course.Id"
+                     class="dropdown-item">
+                      <i class="ri-user-line text-primary me-2"></i><span>Add student</span>
+                  </a>
+                </div>
               </div>
             </td>
           </tr>
@@ -228,7 +242,7 @@ gap-4 gap-md-0 gx-5 flex-wrap py-5 align-content-center" id="FilterOptions">
         if (toRemove && container) {
           toRemove.remove();
 
-          toRemove.classList.add('col-md-4', 'd-flex', 'justify-content-center');
+          toRemove.classList.add('col-md-4');
 
           let label = toRemove.firstElementChild;
           label.firstElementChild.classList.add('form-control', 'form-control-lg', 'form-control-borderless');

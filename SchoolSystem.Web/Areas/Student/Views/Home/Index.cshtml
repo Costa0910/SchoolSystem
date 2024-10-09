@@ -1,5 +1,38 @@
+@model SchoolSystem.Web.ViewModels.Home.HomeViewModel
 @{
   ViewBag.Title = "Student Home - Page";
 }
 
-<h2>Welcome, Students home page</h2>
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row">
+    <!-- Alerts with headings -->
+    <div class="col-md mb-6 mb-md-0">
+      <div class="card">
+        <h5 class="card-header text-center">In box</h5>
+        <div class="card-body d-flex flex-grow-1 flex-wrap gap-5 justify-content-center">
+          @foreach (var alert in Model.InBoxAlerts)
+          {
+            <div class="alert alert-success alert-dismissible text-black"
+                 role="alert">
+
+              <div class="alert-heading d-flex align-items-center mb-0">
+                <div class="avatar me-1">
+                  <img src="@alert.PhotoUrl" alt="Avatar" class="rounded-circle">
+                </div>
+                <div class="me-1">
+                  <h6 class="mb-0">@alert.FullName</h6>
+                  <small class="text-muted">
+                    @alert.DateCreated.ToString("MMM d, yyyy HH:mm")
+                  </small>
+                </div>
+              </div>
+              <hr>
+              <p class="mb-0">@alert.Message</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 namespace SchoolSystem.Web.Areas.Staff.ViewModels.Enrollments;
 
-public class DetailsEnrollmentsViewModel
+public class DetailsStudentsViewModel
 {
   public Guid Id { get; init; }
   public string Name { get; set; }

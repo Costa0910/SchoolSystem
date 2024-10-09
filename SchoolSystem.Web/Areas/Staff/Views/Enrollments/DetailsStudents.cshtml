@@ -1,0 +1,148 @@
+@model SchoolSystem.Web.Areas.Staff.ViewModels.Enrollments.DetailsStudentsViewModel
+
+@{
+  ViewBag.Title = "Enrollments students - Page";
+}
+
+@section PageStyles
+{
+  <style>
+    .user-profile-header-banner {
+      max-height: 250px;
+      overflow: hidden; /* Prevents overflow of image *!*/
+    }
+
+    .user-profile-header-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures the image covers the area */
+    }
+
+  </style>
+}
+
+
+<div class="container-xxl flex-grow-1">
+
+  <partial name="_Toasts"/>
+  <!-- Header -->
+  <div class="row">
+    <input type="hidden" asp-for="Id" id="courseId"/>
+    <div class="col-12">
+      <div class="card mb-6">
+        <div class="user-profile-header-banner">
+          <img src="@Model.CoverImageUrl" alt="Banner"
+               class="rounded-top">
+        </div>
+        <div class="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-4">
+          <div class="flex-grow-1 mt-3 mt-lg-5">
+            <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-4">
+              <div class="user-profile-info">
+                <h4 class="mb-0 mt-lg-6">@Model.Name</h4>
+                <p class="mb-2 text-muted">@Model.Description</p>
+                <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4">
+                  <li class="list-inline-item">
+                    <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">Online</span>
+                  </li>
+                  <li class="list-inline-item">
+                    <i class="ri-calendar-line me-2 ri-24px"></i>
+                    <span
+                      class="fw-medium">
+                      Start @Model.StartDate
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Header -->
+
+  <!-- Navbar pills -->
+  <div class="row">
+    <div class="col-md-12 mb-5">
+      <div class="input-group input-group-merge">
+        <span class="input-group-text" id="basic-addon-search31">
+          <i class="ri-search-line ri-20px"></i>
+        </span>
+        <input id="filterInput" type="text" class="form-control"
+               placeholder="Filter students..."
+               aria-label="Search..." aria-describedby="basic-addon-search31">
+      </div>
+    </div>
+  </div>
+  <!--/ Navbar pills -->
+
+  <!-- User Profile Content -->
+  <div class="row">
+    <div class="cols-md-12">
+      <div class="row g-6">
+        @foreach (var student in Model.Students)
+        {
+          <div class="col-xl-4 col-lg-6 col-md-6 elements">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center pb-1">
+                  <div class="me-2 text-heading h5 mb-0
+                  element-name">
+                    @student.User.FirstName @student.User.LastName
+                  </div>
+                  <div class="ms-auto">
+                    <ul class="list-inline mb-0 d-flex align-items-center">
+                      <li class="list-inline-item">
+                        <button data-element="@student.Id"
+                                data-course="@Model.Id" data-endpoint="/Staff/Enrollments/DeleteStudent" class="btn
+                        btn-outline-danger
+                        btn-icon
+                      waves-effect w-40 openModal" data-bs-toggle="modal" data-bs-target="#basicModal">
+                          <i class="ri-delete-bin-line
+                      ri-20px"></i>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="text-truncate text-muted">
+                  @student.User.Email
+                </p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Do you really want to delete this student from @Model.Name?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary"
+                data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger delete-record"
+                id="deleteModal">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section PageScripts {
+
+  <script src="~/js/EnrollmentDetails.js"></script>
+}

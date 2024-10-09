@@ -75,4 +75,16 @@ public class CourseRepository(AppDbContext context)
       .Include(c => c.Attendances)
       .FirstOrDefaultAsync(c => c.Id == id);
   }
+
+  public async Task<Course?> GetAbsentsAsync(Guid courseId, Student student)
+  {
+    // return await context.Courses
+    //   .Include(c => c.Attendances)
+    //   .ThenInclude(a => a.Student == student)
+    //   .FirstOrDefaultAsync(c => c.Id == courseId);
+
+    return await context.Courses
+      .Include(c => c.Attendances.Where(a => a.Student == student))
+      .FirstOrDefaultAsync(c => c.Id == courseId);
+  }
 }

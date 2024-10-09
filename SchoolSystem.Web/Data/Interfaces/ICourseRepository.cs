@@ -1,3 +1,4 @@
+using System.Collections;
 using SchoolSystem.Web.Models;
 
 namespace SchoolSystem.Web.Data.Interfaces;
@@ -12,4 +13,5 @@ public interface ICourseRepository : IGenericRepository<Course>
   Task<Course?> GetCourseWithGradesAndStudents(Guid id);
   Task<Course?> GetCourseWithStudentsDetailsAndSubjects(Guid id);
   Task<Course?> GetCourseWithStudentsSubjectsAndAbsent(Guid id);
+  Task<Course?> GetAbsentsAsync(Guid courseId, Student student);
 }

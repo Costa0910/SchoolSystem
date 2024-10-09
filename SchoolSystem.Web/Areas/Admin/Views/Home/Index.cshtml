@@ -1,5 +1,103 @@
+@model SchoolSystem.Web.ViewModels.Home.HomeViewModel
 @{
   ViewBag.Title = "Admin Home - Page";
 }
 
-<h2>Welcome - Your alerts gonna appear here!</h2>
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row">
+    <!-- Alerts with headings -->
+    <div class="col-md mb-6 mb-md-0">
+      <div class="card">
+        <h5 class="card-header">In box</h5>
+        <div class="card-body">
+          @foreach (var alert in Model.InBoxAlerts)
+          {
+            <div class="alert alert-success alert-dismissible text-black"
+                 role="alert">
+              <div class="alert-heading d-flex align-items-center mb-0">
+                <div class="avatar me-1">
+                  <img src="@alert.PhotoUrl" alt="Avatar" class="rounded-circle">
+                </div>
+                <div class="me-1">
+                  <h6 class="mb-0">@alert.FullName</h6>
+                  <small class="text-muted">
+                    @alert.DateCreated.ToString("MMM d, yyyy HH:mm")
+                  </small>
+                </div>
+              </div>
+              <hr>
+              <p class="mb-0">@alert.Message</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <!--/ Alerts with headings -->
+    <div class="col-md">
+      <div class="card">
+        <div class="card-body d-flex flex-column">
+
+          <div class="col-xl w-75 align-self-center">
+            <div class="mb-6">
+              @* removed card-header and card  *@
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Create your alert</h5>
+              </div>
+              <div class="card-body">
+                <form id="submit">
+                  <div class="mb-6">
+                    <div class="form-floating form-floating-outline">
+                      <textarea id="basic-default-message" name="message"
+                              class="form-control" placeholder="Hi, ..." style="height: 65px;"></textarea>
+                      <label for="basic-default-message">Message</label>
+                    </div>
+                    <span class="text-danger" id="message-error"></span>
+
+                  </div>
+                  <div class="mb-6">
+                    <div class="form-select-group">
+                      <select class="form-select" name="sendTo" id="basic-default-select"
+                              aria-label="Default select example">
+                        <option selected value="">Choose the user</option>
+                        <option value="Students">All Students</option>
+                        <option value="Admins">All Admins</option>
+                        <option value="Staffs">All Staffs</option>
+                        <option value="All">All Users</option>
+                      </select>
+                    </div>
+                    <span class="text-danger"
+                          id="sendTo-error">
+                    </span>
+                  </div>
+                  <button type="submit" id="send" class="btn btn-primary waves-effect
+                   waves-light">Send</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <h5>
+            Sent by you
+          </h5>
+
+          <div id="userAlerts">
+            @foreach (var alert in Model.AlertsByUser)
+            {
+              <div class="alert alert-primary alert-dismissible" role="alert">
+                @alert.Message
+                @* time *@
+                <br/><small class="text-muted ms-auto">@alert.DateCreated.ToString("MMM d, yyyy HH:mm")</small>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section PageScripts {
+  <script src="~/js/Alerts.js"></script>
+}

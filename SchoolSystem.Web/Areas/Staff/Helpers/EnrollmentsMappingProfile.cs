@@ -13,7 +13,16 @@ public class EnrollmentsMappingProfile : Profile
   public EnrollmentsMappingProfile()
   {
     var culture = System.Globalization.CultureInfo.CurrentCulture;
-    CreateMap<Course, DetailsEnrollmentsViewModel>()
+    CreateMap<Course, DetailsStudentsViewModel>()
+      .ForMember(dest => dest.CoverImageUrl,
+        opt => opt.MapFrom(src =>
+          src.CoverImageId != Guid.Empty
+            ? $"https://supershop0910.blob.core.windows.net/{AzureContainerNames.classes}/{src.CoverImageId}"
+            : DefaultCoverImageUrl))
+      .ForMember(dest => dest.StartDate,
+        opt => opt.MapFrom(src => src.StartDate.ToString("d", culture)));
+
+    CreateMap<Course, DetailsSubjectsViewModel>()
       .ForMember(dest => dest.CoverImageUrl,
         opt => opt.MapFrom(src =>
           src.CoverImageId != Guid.Empty

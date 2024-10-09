@@ -12,7 +12,10 @@
       <thead>
       <tr>
         <th>Subject</th>
+        <th>Expected Hours</th>
+        <th>Absents(in hours)</th>
         <th>Grade</th>
+        <th>Attendance</th>
         <th>Approval</th>
       </tr>
       </thead>
@@ -21,6 +24,26 @@
       {
         <tr>
           <td>@grade.SubjectName</td>
+          <td>
+            @if (grade.ExpectedHours == 0)
+            {
+              <span class="badge rounded-pill bg-label-warning">No expected hours</span>
+            }
+            else
+            {
+              <span class="badge rounded-pill bg-label-primary">@grade.ExpectedHours</span>
+            }
+          </td>
+          <td>
+            @if (grade.Absents == 0)
+            {
+              <span class="badge rounded-pill bg-label-success">No absents</span>
+            }
+            else
+            {
+              <span class="badge rounded-pill bg-label-danger">@grade.Absents</span>
+            }
+          </td>
           <td>
             @if (grade.Grade == 0)
             {
@@ -39,17 +62,34 @@
             }
           </td>
           <td>
-            @if (grade.Status == StatusGrade.Pass)
+            @if (grade.IsExcluded)
             {
-              <span class="badge rounded-pill bg-label-success">Approved</span>
-            }
-            else if (grade.Status == StatusGrade.Fail)
-            {
-              <span class="badge rounded-pill bg-label-danger">Not approved</span>
+              <span class="badge rounded-pill bg-label-danger">@grade.AttendancePercentage%</span>
             }
             else
             {
-              <span class="badge rounded-pill bg-label-warning">Pending</span>
+              <span class="badge rounded-pill bg-label-success">@grade.AttendancePercentage%</span>
+            }
+          </td>
+          <td>
+            @if (grade.IsExcluded)
+            {
+              <span class="badge rounded-pill bg-label-danger">Excluded for Absents</span>
+            }
+            else
+            {
+              if (grade.Status == StatusGrade.Pass)
+              {
+                <span class="badge rounded-pill bg-label-success">Approved</span>
+              }
+              else if (grade.Status == StatusGrade.Fail)
+              {
+                <span class="badge rounded-pill bg-label-danger">Not approved</span>
+              }
+              else
+              {
+                <span class="badge rounded-pill bg-label-warning">Pending</span>
+              }
             }
           </td>
         </tr>
@@ -59,23 +99,64 @@
       <tr>
         <th class="rounded-start-bottom">Total</th>
         <th>
-          @if (@ViewBag.Total > 0)
+          @if (@ViewBag.TotalHours > 0)
           {
-            <span class="badge rounded-pill bg-label-primary">@ViewBag.Total</span>
+            <span class="badge rounded-pill bg-label-primary">@ViewBag.TotalHours</span>
           }
           else
           {
-            <span class="badge rounded-pill bg-label-warning">No grades yet</span>
+            <span class="badge rounded-pill bg-label-warning">No expected hours</span>
+          }
+        </th>
+        <th>
+          @if (@ViewBag.Absents > 0)
+          {
+            <span class="badge rounded-pill bg-label-danger">@ViewBag.Absents</span>
+          }
+          else
+          {
+            <span class="badge rounded-pill bg-label-primary">No absents</span>
+          }
+        </th>
+        <th>
+          @if (@ViewBag.Average > 0)
+          {
+          <span class="badge rounded-pill bg-label-primary">@ViewBag.Average Average</span>
+          }
+          else
+          {
+          <span class="badge rounded-pill bg-label-warning">No grades yet</span>
+          }
+        </th>
+        <th>
+          @if (@ViewBag.TotalAttendancePercentage >= 75)
+          {
+            <span class="badge rounded-pill bg-label-success">@ViewBag.TotalAttendancePercentage%</span>
+          }
+          else
+          {
+            <span class="badge rounded-pill bg-label-danger">@ViewBag.TotalAttendancePercentage%</span>
           }
         </th>
         <th class="rounded-end-bottom">
-          @if (@ViewBag.Average > 0)
+          @if (@ViewBag.IsExcluded)
           {
-            <span class="badge rounded-pill bg-label-primary">@ViewBag.Average Average</span>
+            <span class="badge rounded-pill bg-label-danger">Excluded for Absents</span>
           }
           else
           {
-            <span class="badge rounded-pill bg-label-warning">No grades yet</span>
+            if (@ViewBag.Status == StatusGrade.Pass)
+            {
+              <span class="badge rounded-pill bg-label-success">Approved</span>
+            }
+            else if (@ViewBag.Status == StatusGrade.Fail)
+            {
+              <span class="badge rounded-pill bg-label-danger">Not approved</span>
+            }
+            else
+            {
+              <span class="badge rounded-pill bg-label-warning">Pending</span>
+            }
           }
         </th>
       </tr>

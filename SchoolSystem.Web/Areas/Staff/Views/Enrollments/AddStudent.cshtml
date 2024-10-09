@@ -1,0 +1,58 @@
+@model SchoolSystem.Web.Areas.Staff.ViewModels.Enrollments.EnrollStudentViewModel
+
+@{
+  ViewBag.Title = "Enroll Student - Page";
+}
+
+
+<div class="row">
+  <div class="clos-md-12">
+    <partial name="_Toasts"/>
+    <div class="card">
+      <div class="card-header d-flex justify-content-center">
+        <h4 class="card-title">Enroll Student into @Model.Name</h4>
+      </div>
+      <div class="card-body pt-0">
+        <form id="formAccountSettings" method="post" asp-action="AddStudent">
+          @Html.AntiForgeryToken()
+          <input type="hidden" asp-for="CourseId" id="courseId"/>
+          <div asp-validation-summary="ModelOnly"></div>
+          <div class="row g-5">
+            <div class="d-flex flex-column">
+              <div class="form-floating form-floating-outline w-60 align-self-center">
+                <select id="students" class="select2 form-select"
+                        asp-for="StudentId">
+                  <option value="">Select Student to enroll</option>
+                  @if (Model.Students != null)
+                  {
+                    foreach (var student in Model.Students)
+                    {
+                      <option value="@student.Id">
+                        @student.User.FirstName
+                        @student.User.LastName
+                      </option>
+                    }
+                  }
+                </select>
+                <label asp-for="StudentId">Students</label>
+              </div>
+              <span asp-validation-for="StudentId" class="text-danger
+              w-60 align-self-center"></span>
+            </div>
+          </div>
+          <div class="mt-6 d-flex gap-2 flex-wrap justify-content-center">
+            <a asp-action="Index" class="btn
+            btn-outline-primary me-3">Back</a>
+            <button type="submit" class="btn btn-primary me-3">Enroll</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section PageScripts
+{
+
+  @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

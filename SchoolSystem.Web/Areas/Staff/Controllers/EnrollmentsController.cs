@@ -14,7 +14,7 @@ public class EnrollmentsController(
   IUserHelper userHelper,
   ICourseRepository courseRepository,
   IStudentRepository studentRepository,
-  IMapper mapper)
+  IMapper mapper, ISubjectRepository subjectRepository)
   : BaseController(userHelper)
 {
   public async Task<IActionResult> Index(string? message)
@@ -26,38 +26,60 @@ public class EnrollmentsController(
     return View(courses);
   }
 
-  public async Task<IActionResult> Create()
+  public async Task<IActionResult> AddStudent(string courseId)
   {
-    var viewModel = new CreateEnrollmentsViewModel
+    if (!ModelState.IsValid)
     {
-      Courses = await courseRepository.GetAllAsync(),
-      Students = []
+      return RedirectToAction(nameof(Index),
+        new { message = "Course not found" });
+    }
+
+    var course = await courseRepository.GetByIdAsync(Guid.Parse(courseId));
+
+    if (course == null)
+      return RedirectToAction(nameof(Index),
+        new { message = "Course not found" });
+
+    var students = await studentRepository.GetStudentsNotInCourseAsync(course);
+
+    var viewModel = new EnrollStudentViewModel
+    {
+      Students = students,
+      Name = course.Name,
     };
 
     return View(viewModel);
   }
 
   [HttpPost, ValidateAntiForgeryToken]
-  public async Task<IActionResult> Create(CreateEnrollmentsViewModel viewModel)
+  public async Task<IActionResult> AddStudent(EnrollStudentViewModel model)
   {
     if (!ModelState.IsValid)
     {
-      ViewBag.Error = "Invalid data";
-      viewModel.Courses = await courseRepository.GetAllAsync();
-      return View(viewModel);
+      ViewBag.Error = "Invalid data, please try again";
+      var courseModel = await courseRepository.GetByIdAsync(Guid.Parse(model.CourseId));
+
+      if (courseModel == null)
+        return RedirectToAction(nameof(Index),
+          new { message = "Course not found" });
+
+      var students = await studentRepository.GetStudentsNotInCourseAsync(courseModel);
+      model.Students = students;
+      model.Name = courseModel.Name;
+
+      return View(model);
     }
 
     var course = await courseRepository.GetCourseWithStudents(Guid.Parse
-      (viewModel.CourseId));
+      (model.CourseId));
     var student
       = await studentRepository.GetStudentByIdIncludeUserAsync(
-        Guid.Parse(viewModel.StudentId));
+        Guid.Parse(model.StudentId));
 
     if (course == null || student == null)
     {
-      ViewBag.ErrorMessage = "Course or student not found";
-      viewModel.Courses = await courseRepository.GetAllAsync();
-      return View(viewModel);
+      return RedirectToAction(nameof(Index),
+        new { message = "Course or student not found" });
     }
 
     course.Students.Add(student);
@@ -68,6 +90,72 @@ public class EnrollmentsController(
       {
         message
           = $"Student {student.User.FirstName} {student.User.LastName} enrolled in course {course.Name}"
+      });
+  }
+
+  public async Task<IActionResult> AddSubject(string courseId)
+  {
+    if (!ModelState.IsValid)
+    {
+      return RedirectToAction(nameof(Index),
+        new { message = "Course not found" });
+    }
+
+    var course = await courseRepository.GetCourseWithSubjects(Guid.Parse(courseId));
+
+    if (course == null)
+      return RedirectToAction(nameof(Index),
+        new { message = "Course not found" });
+
+    var subjects = await subjectRepository.GetSubjectsNotInCourseAsync(course);
+
+    var viewModel = new AddSubjectViewModel
+    {
+      Subjects = subjects,
+      Name = course.Name,
+    };
+
+    return View(viewModel);
+  }
+
+  [HttpPost, ValidateAntiForgeryToken]
+  public async Task<IActionResult> AddSubject(AddSubjectViewModel model)
+  {
+    if (!ModelState.IsValid)
+    {
+      ViewBag.Error = "Invalid data, please try again";
+      var courseModel = await courseRepository.GetCourseWithSubjects(Guid.Parse(model.CourseId));
+
+      if (courseModel == null)
+        return RedirectToAction(nameof(Index),
+          new { message = "Course not found" });
+
+      var subjects = await subjectRepository.GetSubjectsNotInCourseAsync(courseModel);
+      model.Subjects = subjects;
+      model.Name = courseModel.Name;
+
+      return View(model);
+    }
+
+    var course = await courseRepository.GetCourseWithSubjects(Guid.Parse
+      (model.CourseId));
+    var subject
+      = await subjectRepository.GetByIdAsync(Guid.Parse(model.SubjectId));
+
+    if (course == null || subject == null)
+    {
+      return RedirectToAction(nameof(Index),
+        new { message = "Course or subject not found" });
+    }
+
+    course.Subjects.Add(subject);
+    await courseRepository.UpdateAsync(course);
+
+    return RedirectToAction(nameof(Index),
+      new
+      {
+        message
+          = $"Subject {subject.Name} added to course {course.Name}"
       });
   }
 
@@ -91,7 +179,34 @@ public class EnrollmentsController(
     }));
   }
 
-  public async Task<IActionResult> Details(string id, string? message)
+  public async Task<IActionResult> DetailsSubjects(string id, string? message)
+  {
+    if (!string.IsNullOrEmpty(message))
+    {
+      ViewBag.Message = message;
+    }
+
+    if (!ModelState.IsValid)
+    {
+      return RedirectToAction(nameof(Index),
+        new { message = "Course not found" });
+    }
+
+    var course = await courseRepository.GetCourseWithSubjects(Guid.Parse
+      (id));
+
+    if (course is null)
+    {
+      return RedirectToAction(nameof(Index),
+        new { message = "course not found." });
+    }
+
+    var model = mapper.Map<DetailsSubjectsViewModel>(course);
+
+    return View(model);
+  }
+
+  public async Task<IActionResult> DetailsStudents(string id, string? message)
   {
     if (!string.IsNullOrEmpty(message))
     {
@@ -113,13 +228,13 @@ public class EnrollmentsController(
         new { message = "course not found." });
     }
 
-    var model = mapper.Map<DetailsEnrollmentsViewModel>(course);
+    var model = mapper.Map<DetailsStudentsViewModel>(course);
 
     return View(model);
   }
 
-  public async Task<IActionResult> DeleteStudent(string courseId,
-    string studentId)
+  public async Task<IActionResult> DeleteSubject(string courseId,
+    string id)
   {
     if (!ModelState.IsValid)
     {
@@ -130,7 +245,47 @@ public class EnrollmentsController(
       }
       else
       {
-        return RedirectToAction(nameof(Details),
+        return RedirectToAction(nameof(DetailsSubjects),
+          new { id = courseId, message = "Course or subject not found" });
+      }
+    }
+
+    var course = await courseRepository.GetCourseWithSubjects(Guid.Parse
+      (courseId));
+    var subject
+      = await subjectRepository.GetByIdAsync(Guid.Parse(id));
+
+    if (course == null || subject == null)
+    {
+      return RedirectToAction(nameof(Index),
+        new { message = "Course or subject not found" });
+    }
+
+    course.Subjects.Remove(subject);
+    await courseRepository.UpdateAsync(course);
+
+    return RedirectToAction(nameof(DetailsSubjects),
+      new
+      {
+        id = courseId,
+        message
+          = $"Subject {subject.Name} removed from Course {course.Name}"
+      });
+  }
+
+  public async Task<IActionResult> DeleteStudent(string courseId,
+    string id)
+  {
+    if (!ModelState.IsValid)
+    {
+      if (string.IsNullOrEmpty(courseId))
+      {
+        return RedirectToAction(nameof(Index),
+          new { message = "Course not found" });
+      }
+      else
+      {
+        return RedirectToAction(nameof(DetailsStudents),
           new { id = courseId, message = "Course or student not found" });
       }
     }
@@ -139,7 +294,7 @@ public class EnrollmentsController(
       (courseId));
     var student
       = await studentRepository.GetStudentByIdIncludeUserAsync(
-        Guid.Parse(studentId));
+        Guid.Parse(id));
 
     if (course == null || student == null)
     {
@@ -151,7 +306,7 @@ public class EnrollmentsController(
     course.Students.Remove(student);
     await courseRepository.UpdateAsync(course);
 
-    return RedirectToAction(nameof(Details),
+    return RedirectToAction(nameof(DetailsStudents),
       new
       {
         id = courseId,

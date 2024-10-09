@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using SchoolSystem.Web.Models;
 
 namespace SchoolSystem.Web.Areas.Staff.ViewModels.Enrollments;
 
-public class CreateEnrollmentsViewModel
+public class EnrollStudentViewModel
 {
-  public IEnumerable<Course>? Courses { get; set; }
+  public string? Name { get; set; }
   public IEnumerable<Models.Student>? Students { get; set; }
 
   [Required(ErrorMessage = "Choose a course where to enroll the student")]

@@ -1,7 +1,7 @@
-@model SchoolSystem.Web.Areas.Staff.ViewModels.Enrollments.DetailsEnrollmentsViewModel
+@model SchoolSystem.Web.Areas.Staff.ViewModels.Enrollments.DetailsSubjectsViewModel
 
 @{
-  ViewBag.Title = "Enrollments students - Page";
+  ViewBag.Title = "Enrollments subjects - Page";
 }
 
 @section PageStyles
@@ -53,13 +53,6 @@
                   </li>
                 </ul>
               </div>
-              @*               <a asp-action="AddSubject" asp-route-id="@Model.Id" class="btn *@
-              @*               btn-primary *@
-              @*               waves-effect *@
-              @*               waves-light"> *@
-              @*                 <i class="ri-graduation-cap-line" style="margin-right: *@
-              @*                 8px"></i>Add Subject *@
-              @*               </a> *@
             </div>
           </div>
         </div>
@@ -76,7 +69,7 @@
           <i class="ri-search-line ri-20px"></i>
         </span>
         <input id="filterInput" type="text" class="form-control"
-               placeholder="Filter students..."
+               placeholder="Filter subjects..."
                aria-label="Search..." aria-describedby="basic-addon-search31">
       </div>
     </div>
@@ -87,21 +80,22 @@
   <div class="row">
     <div class="cols-md-12">
       <div class="row g-6">
-        @foreach (var student in Model.Students)
+        @foreach (var subject in Model.Subjects)
         {
           <div class="col-xl-4 col-lg-6 col-md-6 students">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-center pb-1">
                   <div class="me-2 text-heading h5 mb-0
-                  student-name">
-                    @student.User.FirstName @student.User.LastName
+                  element-name">
+                    @subject.Name
                   </div>
                   <div class="ms-auto">
                     <ul class="list-inline mb-0 d-flex align-items-center">
                       <li class="list-inline-item">
-                        <button data-student="@student.Id"
-                                data-course="@Model.Id" class="btn
+                        <button data-element="@subject.Id"
+                                data-course="@Model.Id"
+                                data-endpoint="/Staff/Enrollments/DeleteSubject" class="btn
                         btn-outline-danger
                         btn-icon
                       waves-effect w-40 openModal" data-bs-toggle="modal" data-bs-target="#basicModal">
@@ -113,7 +107,7 @@
                   </div>
                 </div>
                 <p class="text-truncate text-muted">
-                  @student.User.Email
+                  @subject.Description
                 </p>
               </div>
             </div>
@@ -133,7 +127,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Do you really want to delete this student from @Model.Name?</p>
+        <p>Do you really want to delete this subject from @Model.Name?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary"

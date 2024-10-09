@@ -8,9 +8,9 @@ function filterStudents(e) {
   debounceTimeout = setTimeout(() => {
     const filter = e.target.value.toUpperCase();
     console.log('Filtering Students by:', filter);
-    const students = document.querySelectorAll('.students');
+    const students = document.querySelectorAll('.elements');
     students.forEach((subject) => {
-      const name = subject.querySelector('.student-name').textContent;
+      const name = subject.querySelector('.element-name').textContent;
       if (name.toUpperCase().includes(filter)) {
         subject.style.display = '';
       } else {
@@ -34,11 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-   openModal.forEach((selectedUser) => {
-      selectedUser.addEventListener('click', () => {
-        deleteModal.dataset.student = selectedUser.dataset.student;
-        deleteModal.dataset.course = selectedUser.dataset.course;
-        console.log(`User with id: ${selectedUser.dataset.student} and role: ${selectedUser.dataset.course} has been selected`, modal);
+   openModal.forEach((selected) => {
+      selected.addEventListener('click', () => {
+        deleteModal.dataset.element = selected.dataset.element;
+        deleteModal.dataset.course = selected.dataset.course;
+        deleteModal.dataset.endpoint = selected.dataset.endpoint;
+        console.log(`element with id: ${selected.dataset.element} and course: ${selected.dataset.course} has been selected`, modal);
       });
    });
 
@@ -47,16 +48,17 @@ document.addEventListener('DOMContentLoaded', function () {
      console.log("Deleting student from course");
      deleteModal.textContent = "deleting...";
       deleteModal.disabled = true;
-      const studentId = deleteModal.dataset.student;
+      const element = deleteModal.dataset.element;
       const courseId = deleteModal.dataset.course;
+      const elementEndpoint = deleteModal.dataset.endpoint;
       // get base url
       const splitUrl = window.location.href.split('/');
       const baseUrl = splitUrl[0] + '//' + splitUrl[2];
-      const endpoint = `${baseUrl}/Staff/Enrollments/DeleteStudent`;
-      const sendTo = `${endpoint}?studentId=${studentId}&courseId=${courseId}`;
+      const endpoint = `${baseUrl}${elementEndpoint}`;
+      const sendTo = `${endpoint}?id=${element}&courseId=${courseId}`;
 
       setTimeout(() => {
-      console.log((`Course with id: ${courseId} and Student: ${studentId} has been deleted`), sendTo);
+      console.log((`Course with id: ${courseId} and Student: ${element} has been deleted`), sendTo);
         modal.classList.add('hide');
         window.location.href = sendTo;
       }, 500);
