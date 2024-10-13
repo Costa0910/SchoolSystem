@@ -1,9 +1,7 @@
-using System.Diagnostics;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolSystem.Web.Data.Interfaces;
-using SchoolSystem.Web.Models;
 using SchoolSystem.Web.ViewModels.Home;
 
 namespace SchoolSystem.Web.Controllers;
@@ -42,6 +40,7 @@ public class HomeController(ICourseRepository courseRepository, IMapper mapper)
     {
       return NotFound();
     }
+
     return View(course);
   }
 
@@ -52,11 +51,21 @@ public class HomeController(ICourseRepository courseRepository, IMapper mapper)
 
   [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None,
     NoStore = true)]
-  public IActionResult Error()
+  public IActionResult Error(int code)
   {
-    return View(new ErrorViewModel
+    if (ModelState.IsValid && code == 404)
     {
-      RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-    });
+      ViewBag.TitleError = "Page Not Found";
+      ViewBag.ErrorMessage = "The page you are looking for does not exist.";
+    }
+    else
+    {
+      ViewBag.Title = "An Error Occurred";
+      ViewBag.ErrorMessage = "An unexpected error occurred.";
+    }
+
+    ViewBag.Code = code;
+    ViewBag.IsAuthenticated = User.Identity is { IsAuthenticated: true };
+    return View();
   }
 }

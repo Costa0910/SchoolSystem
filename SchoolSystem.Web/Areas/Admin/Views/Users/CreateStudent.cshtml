@@ -10,13 +10,14 @@
   <div class="col-md-12">
     <div class="card mb-6">
       <div class="card-body pt-0">
+        <partial name="_Alerts"/>
         <form id="formAccountSettings" method="post"
               asp-action="CreateStudent" enctype="multipart/form-data">
           @Html.AntiForgeryToken()
           <div asp-validation-summary="ModelOnly"></div>
 
             <div class="d-flex align-items-start align-items-sm-center gap-6 mt-4">
-              <img src="~/img/avatars/1.png" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar" />
+              <img src="https://supershop0910.blob.core.windows.net/profile/user.png" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar" />
               <div class="button-wrapper">
                 <label for="upload" class="btn btn-sm btn-primary me-3 mb-4" tabindex="0">
                   <span class="d-none d-sm-block">Upload @Html.DisplayNameFor(model => model.ProfilePhoto)</span>
@@ -66,6 +67,3 @@
 @section PageScripts {
   <partial name="_UserScripts"/>
 }
-
-
-

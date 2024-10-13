@@ -179,7 +179,9 @@ public class AuthController(
 
     if (!result.Succeeded)
     {
-      ViewBag.Error = "Some data are not valid, please try again";
+      foreach (var error in result.Errors)
+        ModelState.AddModelError(string.Empty, error.Description);
+      ViewBag.Error = "Error resetting the password, please try again";
       return View(model);
     }
 

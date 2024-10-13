@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Web.Areas.Admin.ViewModels.Subjects;
 using SchoolSystem.Web.Controllers;
 using SchoolSystem.Web.Data.Interfaces;
@@ -11,7 +12,8 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers;
 
 [Area(Roles.Admin), Authorize(Roles = Roles.Admin)]
 public class SubjectsController(
-  ISubjectRepository subjectRepository, IUserHelper userHelper)
+  ISubjectRepository subjectRepository,
+  IUserHelper userHelper)
   : BaseController(userHelper)
 {
   public async Task<IActionResult> Index(string? message)
@@ -130,15 +132,19 @@ public class SubjectsController(
       return RedirectToAction(nameof(Index),
         new { message = "Subject not found." });
 
-    try
+
+    var canDelete = await subjectRepository.CanDeleteSubjectAsync(subject);
+
+    if (canDelete)
     {
       await subjectRepository.DeleteAsync(subject);
     }
-    catch (Exception)
+    else
     {
-      //Tdod: check if the discipline is used in any other entity
-      return RedirectToAction(nameof(Index),
-        new { message = "An error occurred while deleting the subject" });
+      throw new DbUpdateException(
+        "DELETE statement conflicted with the REFERENCE constraint",
+        new Exception(
+          "DELETE statement conflicted with the REFERENCE constraint"));
     }
 
     return RedirectToAction(nameof(Index),

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Web.Areas.Staff.ViewModels.Enrollments;
 using SchoolSystem.Web.Controllers;
 using SchoolSystem.Web.Data.Interfaces;
@@ -14,7 +15,8 @@ public class EnrollmentsController(
   IUserHelper userHelper,
   ICourseRepository courseRepository,
   IStudentRepository studentRepository,
-  IMapper mapper, ISubjectRepository subjectRepository)
+  IMapper mapper,
+  ISubjectRepository subjectRepository)
   : BaseController(userHelper)
 {
   public async Task<IActionResult> Index(string? message)
@@ -57,13 +59,15 @@ public class EnrollmentsController(
     if (!ModelState.IsValid)
     {
       ViewBag.Error = "Invalid data, please try again";
-      var courseModel = await courseRepository.GetByIdAsync(Guid.Parse(model.CourseId));
+      var courseModel
+        = await courseRepository.GetByIdAsync(Guid.Parse(model.CourseId));
 
       if (courseModel == null)
         return RedirectToAction(nameof(Index),
           new { message = "Course not found" });
 
-      var students = await studentRepository.GetStudentsNotInCourseAsync(courseModel);
+      var students
+        = await studentRepository.GetStudentsNotInCourseAsync(courseModel);
       model.Students = students;
       model.Name = courseModel.Name;
 
@@ -101,7 +105,8 @@ public class EnrollmentsController(
         new { message = "Course not found" });
     }
 
-    var course = await courseRepository.GetCourseWithSubjects(Guid.Parse(courseId));
+    var course
+      = await courseRepository.GetCourseWithSubjects(Guid.Parse(courseId));
 
     if (course == null)
       return RedirectToAction(nameof(Index),
@@ -124,13 +129,16 @@ public class EnrollmentsController(
     if (!ModelState.IsValid)
     {
       ViewBag.Error = "Invalid data, please try again";
-      var courseModel = await courseRepository.GetCourseWithSubjects(Guid.Parse(model.CourseId));
+      var courseModel
+        = await courseRepository.GetCourseWithSubjects(
+          Guid.Parse(model.CourseId));
 
       if (courseModel == null)
         return RedirectToAction(nameof(Index),
           new { message = "Course not found" });
 
-      var subjects = await subjectRepository.GetSubjectsNotInCourseAsync(courseModel);
+      var subjects
+        = await subjectRepository.GetSubjectsNotInCourseAsync(courseModel);
       model.Subjects = subjects;
       model.Name = courseModel.Name;
 
@@ -261,8 +269,20 @@ public class EnrollmentsController(
         new { message = "Course or subject not found" });
     }
 
-    course.Subjects.Remove(subject);
-    await courseRepository.UpdateAsync(course);
+    var canDelete
+      = await subjectRepository.CanDeleteSubjectAsync(subject, course.Id);
+    if (canDelete)
+    {
+      course.Subjects.Remove(subject);
+      await courseRepository.UpdateAsync(course);
+    }
+    else
+    {
+      throw new DbUpdateException(
+        "DELETE statement conflicted with the REFERENCE constraint",
+        new Exception(
+          "DELETE statement conflicted with the REFERENCE constraint"));
+    }
 
     return RedirectToAction(nameof(DetailsSubjects),
       new
@@ -302,9 +322,20 @@ public class EnrollmentsController(
         new { message = "Course or student not found" });
     }
 
-    //TODO: found out if student been use in other places on this course before removing
-    course.Students.Remove(student);
-    await courseRepository.UpdateAsync(course);
+    var canDelete
+      = await studentRepository.CanDeleteStudentAsync(student, course.Id);
+    if (canDelete)
+    {
+      course.Students.Remove(student);
+      await courseRepository.UpdateAsync(course);
+    }
+    else
+    {
+      throw new DbUpdateException(
+        "DELETE statement conflicted with the REFERENCE constraint",
+        new Exception(
+          "DELETE statement conflicted with the REFERENCE constraint"));
+    }
 
     return RedirectToAction(nameof(DetailsStudents),
       new

@@ -42,6 +42,9 @@
         </a>
       </li>
 
+      <li class="menu-header mt-5">
+        <span class="menu-header-text">Courses &amp; Subjects</span>
+      </li>
       <!-- Apps -->
       <li class='menu-item@(currentPage == "/Admin/Courses" ? " active" : "")'>
         <a asp-action="Index" asp-controller="Courses" asp-area="Admin"
@@ -56,44 +59,6 @@
           <i class="menu-icon tf-icons ri-graduation-cap-line"></i>
           <div>Subjects</div>
         </a>
-      </li>
-      <li class='menu-item@(currentPage == "/Apps/Calendar" ? " active" : "")'>
-        <a href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/html/vertical-menu-template/app-calendar.html" target="_blank" class="menu-link">
-          <i class="menu-icon tf-icons ri-calendar-line"></i>
-          <div>Calendar</div>
-          <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
-        </a>
-      </li>
-      <li class='menu-item@(currentPage == "/Apps/Kanban" ? " active" : "")'>
-        <a href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/html/vertical-menu-template/app-kanban.html" target="_blank" class="menu-link">
-          <i class="menu-icon tf-icons ri-drag-drop-line"></i>
-          <div>Kanban</div>
-          <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
-        </a>
-      </li>
-      <!-- Pages -->
-      <li class='menu-item@(currentPage.StartsWith("/Pages") ? " active open" : "")'>
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons ri-layout-left-line"></i>
-          <div>Account Settings</div>
-        </a>
-        <ul class="menu-sub">
-          <li class='menu-item@(currentPage == "/Pages/AccountSettings" ? " active" : "")'>
-            <a asp-controller="Pages" asp-action="AccountSettings" class="menu-link">
-              <div>Account</div>
-            </a>
-          </li>
-          <li class='menu-item@(currentPage == "/Pages/AccountSettingsNotifications" ? " active" : "")'>
-            <a asp-controller="Pages" asp-action="AccountSettingsNotifications" class="menu-link">
-              <div>Notifications</div>
-            </a>
-          </li>
-          <li class='menu-item@(currentPage == "/Pages/AccountSettingsConnections" ? " active" : "")'>
-            <a asp-controller="Pages" asp-action="AccountSettingsConnections" class="menu-link">
-              <div>Connections</div>
-            </a>
-          </li>
-        </ul>
       </li>
     </ul>
   }
@@ -131,12 +96,18 @@
           <div>Students</div>
         </a>
       </li>
+      <li class="menu-header mt-5">
+        <span class="menu-header-text">Add Students &amp; Subjects</span>
+      </li>
       <li class='menu-item@(currentPage == "/Staff/Enrollments" ? " active" : "")'>
         <a asp-action="Index" asp-controller="Enrollments" asp-area="Staff"
            class="menu-link">
           <i class="menu-icon tf-icons ri-school-line"></i>
           <div>Enrollments</div>
         </a>
+      </li>
+      <li class="menu-header mt-5">
+        <span class="menu-header-text">Grade Students</span>
       </li>
       <li class='menu-item@(currentPage == "/Staff/Grades" ? " active" : "")'>
         <a asp-action="Index" asp-controller="Grades" asp-area="Staff"
@@ -145,12 +116,18 @@
           <div>Grades</div>
         </a>
       </li>
+      <li class="menu-header mt-5">
+        <span class="menu-header-text">Consult Students Grades</span>
+      </li>
       <li class='menu-item@(currentPage == "/Staff/CheckGrades" ? " active" : "")'>
         <a asp-action="Index" asp-controller="CheckGrades" asp-area="Staff"
            class="menu-link">
           <i class="menu-icon tf-icons ri-graduation-cap-line"></i>
           <div>Check grades</div>
         </a>
+      </li>
+      <li class="menu-header mt-5">
+        <span class="menu-header-text">Mark Absents</span>
       </li>
       <li class='menu-item@(currentPage == "/Staff/Absents" ? " active" : "")'>
         <a asp-action="Index" asp-controller="Absents" asp-area="Staff"

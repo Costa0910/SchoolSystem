@@ -8,9 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Areas\Student\Views\Shared\" />
-      <Folder Include="Areas\Teacher\Controllers\" />
-      <Folder Include="Areas\Teacher\ViewModels\" />
-      <Folder Include="Areas\Teacher\Views\" />
       <Folder Include="src\" />
     </ItemGroup>
 
@@ -21,6 +18,7 @@
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.8" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
         <PrivateAssets>all</PrivateAssets>
@@ -43,6 +41,49 @@
       <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Subjects\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Staff\Pages\Students\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Staff\Pages\Absents\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Error\AccessDenied.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Disciplines\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Disciplines\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Disciplines\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Disciplines\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Dashboard\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Staff\Views\Dashboard\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Staff\Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\1.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\11.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\12.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\13.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\17.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\18.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\19.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\2.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\20.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\3.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\4.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\5.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\elements\7.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\asana.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\aws.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\behance.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\dribbble.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\facebook.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\github.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\google.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\instagram.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\mailchimp.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\slack.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\brands\twitter.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\misc\aviato.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\misc\bitbank.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\misc\triangle-light.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\misc\zipcar.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\payments\american-bank.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\payments\citi.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\payments\digital-ocean.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\payments\gumroad.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\payments\mastercard-2.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\icons\payments\stripes.png" />
     </ItemGroup>
 
     <ItemGroup>

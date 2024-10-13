@@ -7,7 +7,7 @@ namespace SchoolSystem.Web.Helpers;
 
 public class CourseMappingProfile : Profile
 {
-  private const string DefaultCoverImageUrl = "https://localhost:7228/assets/images/defaultPublic.jpg";
+  private const string DefaultCoverImageUrl = "https://supershop0910.blob.core.windows.net/classes/course.jpg";
 
   public CourseMappingProfile()
   {

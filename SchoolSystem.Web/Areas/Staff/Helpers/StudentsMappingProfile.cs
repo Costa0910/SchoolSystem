@@ -8,7 +8,7 @@ namespace SchoolSystem.Web.Areas.Staff.Helpers;
 public class StudentsMappingProfile : Profile
 {
   private const string DefaultImageUrl
-    = "http://localhost:5286/img/avatars/3.jpg";
+    = "https://supershop0910.blob.core.windows.net/profile/user.png";
 
   private const string photoUrl = "http://localhost:5286/img/avatars/2.png";
 

@@ -14,4 +14,5 @@ public interface ICourseRepository : IGenericRepository<Course>
   Task<Course?> GetCourseWithStudentsDetailsAndSubjects(Guid id);
   Task<Course?> GetCourseWithStudentsSubjectsAndAbsent(Guid id);
   Task<Course?> GetAbsentsAsync(Guid courseId, Student student);
+  Task<Course?> GetCourseByNameWithStudentsAsyn(string name);
 }

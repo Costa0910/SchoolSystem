@@ -7,7 +7,7 @@ namespace SchoolSystem.Web.Helpers;
 
 public class AccountProfileMapping : Profile
 {
-    private const string  DefaultProfilePhotoUrl = "http://localhost:5286/img/avatars/3.png";
+    private const string  DefaultProfilePhotoUrl = "https://supershop0910.blob.core.windows.net/profile/user.png";
 
     public AccountProfileMapping()
     {

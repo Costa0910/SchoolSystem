@@ -1,7 +1,6 @@
-﻿@{
+@{
   ViewBag.Title = "Something went wrong - Page";
   Layout = "_BlankLayout";
-
   if (ViewBag.IsAuthenticated)
   {
     ViewBag.Action = "Login";
@@ -20,17 +19,17 @@
 }
 
 <div class="misc-wrapper">
-  <h1 class="mb-2 mx-2" style="font-size: 6rem;line-height: 6rem;">@ViewBag.Code</h1>
-  <h4 class="mb-2">@ViewBag.TitleError 🙄</h4>
+  <h1 class="mb-2 mx-2" style="font-size: 6rem;line-height: 6rem">@ViewBag.Code</h1>
+  <h4 class="mb-2 mx-2">Something went wrong! 🚧</h4>
   <p class="mb-10 mx-2">@ViewBag.ErrorMessage</p>
   <div class="d-flex justify-content-center mt-5">
     <img src="~/img/illustrations/tree-3.png" alt="misc-tree" class="img-fluid misc-object d-none d-lg-inline-block">
     <img src="~/img/illustrations/tree.png" alt="misc-tree" class="img-fluid misc-object-right d-none d-lg-inline-block">
     <img src="~/img/illustrations/misc-mask-light.png" alt="misc-error" class="scaleX-n1-rtl misc-bg d-none d-lg-inline-block" height="172" data-app-light-img="illustrations/misc-mask-light.png" data-app-dark-img="illustrations/misc-mask-dark.png">
     <div class="d-flex flex-column align-items-center">
-      <img src="~/img/illustrations/404.png" alt="misc-error" class="misc-model img-fluid z-1" width="780">
+      <img src="~/img/illustrations/misc-under-maintenance.png" alt="misc-error" class="img-fluid z-1" width="780">
       <div>
-        <a asp-action="@ViewBag.Action" asp-controller="@ViewBag.Controller" class="btn btn-primary text-center my-6 waves-effect waves-light">Back to home</a>
+        <a asp-action="@ViewBag.Action" asp-controller="@ViewBag.Controller" class="btn btn-primary text-center my-12 waves-effect waves-light">Back to home</a>
       </div>
     </div>
   </div>

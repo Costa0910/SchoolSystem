@@ -22,23 +22,24 @@
       </form>
     </div>
     <!-- ***** Serach Start ***** -->
-    <div class="row event_box" id="coursesContainer">
-      @foreach (var course in Model)
-      {
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6">
-          <div class="events_item">
-            <div class="thumb">
-              <a asp-action="CourseDetails" asp-route-id="@course.Id" asp-controller="Home">
-                <img src="@course.CoverImageUrl" alt="">
-              </a>
+    <div class="row" id="coursesContainer">
+      <div class="d-flex flex-wrap justify-content-center gap-5 align-self-center mb-30">
+        @foreach (var course in Model)
+        {
+        <div class="course">
+          <a asp-action="CourseDetails" asp-route-id="@course.Id"
+             asp-controller="Home">
+            <div class="card" style="width: 18rem;">
+              <img src="@course.CoverImageUrl" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h3 class="author card-text text-truncate">@course.Name</h3>
+                <p class="card-text desc text-truncate">@course.Description</p>
+              </div>
             </div>
-            <div class="down-content">
-              <span class="author text-truncate">@course.Name</span>
-              <h4 class="desc text-truncate">@course.Description</h4>
-            </div>
-          </div>
+          </a>
         </div>
-      }
+        }
+      </div>
     </div>
   </div>
 </section>
@@ -66,8 +67,7 @@
   const Filter = () => {
     console.log('Filtering', searchText.value);
     const searchKeyword = searchText.value.toLocaleLowerCase();
-    const coursesContainer = document.getElementById('coursesContainer');
-    const courses = coursesContainer.getElementsByClassName('event_outer');
+    const courses = document.getElementsByClassName('course');
     for (let i = 0; i < courses.length; i++) {
       const course = courses[i];
       const courseName = course.getElementsByClassName('author')[0]
@@ -76,12 +76,12 @@
       ('desc')[0].textContent.toLocaleLowerCase();
       if (courseName.includes(searchKeyword) || courseDescription.includes
       (searchKeyword) || searchKeyword === '') {
-        course.style.display = '';
+        course.style.display = "block";
       } else {
-        course.style.display = 'none';
+        course.style.display = "none";
       }
     }
-
+         debugger;
     console.log('Filtering done');
   }
   </script>

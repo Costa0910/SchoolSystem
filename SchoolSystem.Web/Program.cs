@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Web.Data;
@@ -15,20 +14,20 @@ using Syncfusion.Licensing;
 var builder = WebApplication.CreateBuilder(args);
 
 SyncfusionLicenseProvider.RegisterLicense(
-    builder.Configuration["SyncfusionLicense"]);
+  builder.Configuration["SyncfusionLicense"]);
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Error()
-    .WriteTo.File(
-        path: "Logs/app-log-.txt",
-        rollingInterval: RollingInterval.Day,
-        retainedFileCountLimit: 7,
-        outputTemplate:
-        "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
-        retainedFileTimeLimit: TimeSpan.FromDays(7),
-        shared: true,
-        fileSizeLimitBytes: 10485760 // 10 MB
-    ).CreateLogger();
+  .MinimumLevel.Error()
+  .WriteTo.File(
+    path: "Logs/app-log-.txt",
+    rollingInterval: RollingInterval.Day,
+    retainedFileCountLimit: 7,
+    outputTemplate:
+    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+    retainedFileTimeLimit: TimeSpan.FromDays(7),
+    shared: true,
+    fileSizeLimitBytes: 10485760 // 10 MB
+  ).CreateLogger();
 
 builder.Host.UseSerilog();
 
@@ -36,37 +35,31 @@ builder.Host.UseSerilog();
 builder.Services.AddControllersWithViews();
 
 builder.Services.ConfigureApplicationCookie(
-    op =>
-    {
-        op.LoginPath = "/Auth/Login";
-        op.AccessDeniedPath = "/Errors/AccessDenied";
-    });
+  op =>
+  {
+    op.LoginPath = "/Auth/Login";
+    op.AccessDeniedPath = "/Error/AccessDenied";
+  });
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// TODO: Change configuration to be more secure after development
+
 builder.Services.AddIdentity<User, IdentityRole>(
-        config =>
-        {
-            config.Tokens.AuthenticatorTokenProvider
-                = TokenOptions.DefaultAuthenticatorProvider;
-            config.SignIn.RequireConfirmedEmail = true;
-            config.User.RequireUniqueEmail = true;
-            config.Password.RequireDigit = false;
-            config.Password.RequiredUniqueChars = 0;
-            config.Password.RequireUppercase = false;
-            config.Password.RequireLowercase = false;
-            config.Password.RequireNonAlphanumeric = false;
-        })
-    .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<AppDbContext>();
+    config =>
+    {
+      config.Tokens.AuthenticatorTokenProvider
+        = TokenOptions.DefaultAuthenticatorProvider;
+      config.SignIn.RequireConfirmedEmail = true;
+    })
+  .AddDefaultTokenProviders()
+  .AddEntityFrameworkStores<AppDbContext>();
 
 var connectionString
-    = builder.Configuration.GetConnectionString("DefaultConnection") ??
-      throw new ArgumentException("Connection string not found");
+  = builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new ArgumentException("Connection string not found");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+  options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<ICreateMailHtmlHelper, CreateMailHtmlHelper>();
@@ -87,10 +80,12 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+  app.UseExceptionHandler("/Error/Exception");
+  // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+  app.UseHsts();
 }
+
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
 
 // Seed database
 using var scoped = app.Services.CreateScope();
@@ -108,11 +103,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+  name: "areas",
+  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+  name: "default",
+  pattern: "{controller=Home}/{action=Index}/{id?}");
 
 await app.RunAsync();

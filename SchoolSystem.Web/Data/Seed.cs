@@ -31,7 +31,7 @@ public static class Seed
                 ProfilePhotoId = Guid.Empty
             };
 
-            user = await userHelper.AddUserAsync(user, "123456", Roles.Admin);
+            user = await userHelper.AddUserAsync(user, "Password0910#", Roles.Admin);
 
             if (user is not null)
             {

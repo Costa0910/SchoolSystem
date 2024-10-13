@@ -8,7 +8,7 @@ namespace SchoolSystem.Web.Areas.Staff.Helpers;
 public class GradesMappingProfile : Profile
 {
   private const string DefaultCoverImageUrl
-    = "http://localhost:5286/img/avatars/course.jpg";
+    = "https://supershop0910.blob.core.windows.net/classes/course.jpg";
 
   public GradesMappingProfile()
   {

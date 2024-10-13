@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchoolSystem.Web.Areas.Staff.Helpers;
 using SchoolSystem.Web.Areas.Staff.ViewModels.Grades;
 using SchoolSystem.Web.Controllers;
 using SchoolSystem.Web.Data.Interfaces;
@@ -14,7 +15,8 @@ namespace SchoolSystem.Web.Areas.Staff.Controllers;
 public class CheckGradesController(
   IUserHelper userHelper,
   IMapper mapper,
-  ICourseRepository courseRepository)
+  ICourseRepository courseRepository,
+  IStudentRepository studentRepository)
   : BaseController(userHelper)
 {
   public async Task<IActionResult> Index(string? message)
@@ -54,62 +56,140 @@ public class CheckGradesController(
     string studentId)
   {
     if (!ModelState.IsValid)
-    {
       return BadRequest();
-    }
 
-    var course = await courseRepository.GetCourseWithGradesAndStudents(Guid
-      .Parse(courseId));
+    var course
+      = await courseRepository.GetCourseWithStudentsSubjectsAndGrades(Guid
+        .Parse(courseId));
 
-    if (course == null)
-    {
+    if (course == null || course.Students.Count == 0)
       return NotFound();
-    }
 
-    var student = course.Students.Find(s => s.Id == Guid.Parse
-      (studentId));
-
-    if (student == null)
-    {
+    var student = await studentRepository.GetByIdAsync(Guid.Parse(studentId));
+    if (course.Students.All(s => s != student))
       return NotFound();
+
+    var grades = new List<ViewStudentGradeModel>();
+    double totalGrades = 0;
+    foreach (var subject in course.Subjects.OrderBy(s => s.Name))
+    {
+      var grade = course.Grades.Find(g => g.Subject == subject &&
+                                          g.Student == student);
+
+      if (grade == null)
+      {
+        grades.Add(new ViewStudentGradeModel
+        {
+          SubjectName = subject.Name,
+          ExpectedHours = subject.Hours,
+          Grade = 0,
+          Status = "Not graded yet"
+        });
+      }
+      else
+      {
+        grades.Add(new ViewStudentGradeModel
+        {
+          SubjectName = subject.Name,
+          Grade = grade.Value,
+          ExpectedHours = subject.Hours,
+          Status = grade.Status
+        });
+        totalGrades += grade.Value;
+      }
     }
 
-    var studentGrades = course.Grades.Where(g => g.Student == student);
+    var absents = await AddAbsents(course, student, grades);
+    var totalHours = AddAttendancePercentage(grades, course
+      .ExclusionPercentage);
+    var totalAttendancePercentage
+      = CalculateAttendancePercentage(totalHours, absents);
 
-    var dataToSend = await GetSubjectIfNoGrades(studentGrades, course.Id);
-    return Json(dataToSend);
+    string totalStatus;
+
+    if (grades.All(m => m.Status == StatusGrade.Pass))
+    {
+      totalStatus = StatusGrade.Pass;
+    }
+    else if (grades.Any(m => m.Status == StatusGrade.Fail))
+    {
+      totalStatus = StatusGrade.Fail;
+    }
+    else
+    {
+      totalStatus = "Not graded yet";
+    }
+
+
+    return Ok(new
+    {
+      grades,
+      TotalAbsents = absents,
+      TotalExpectedHours = totalHours,
+      IsTotalExcluded = grades.Any(g => g.IsExcluded),
+      TotalAttendancePercentage = Math.Round(totalAttendancePercentage, 2),
+      Average = totalGrades > 0
+        ? Math.Round(totalGrades / course.Subjects.Count, 2)
+        : 0,
+      TotalStatus = totalStatus
+    });
   }
 
-  private async Task<object> GetSubjectIfNoGrades(IEnumerable<Grade>
-    studentGrades, Guid courseId)
+
+  private async Task<int> AddAbsents(Course course, Models.Student student,
+    List<ViewStudentGradeModel> model)
   {
-    var subjectCourse
-      = await courseRepository.GetCourseWithSubjects(courseId);
-    if (subjectCourse == null)
+    int absents = 0;
+    var foundCourse
+      = await courseRepository.GetAbsentsAsync(course.Id, student);
+    if (foundCourse == null)
     {
-      return NotFound();
+      return absents;
     }
 
-    var enumerable = studentGrades.ToList();
-    if (enumerable.Count == 0)
+    foreach (var absent in foundCourse.Attendances)
     {
-      var subjects = subjectCourse.Subjects.Select(s => new
+      var subject = course.Subjects.Find(s => s == absent.Subject);
+      if (subject == null) continue;
+      var grade = model.Find(g => g.SubjectName == subject.Name);
+      if (grade != null)
       {
-        s.Id,
-        s.Name,
-        Grade = "No grade yet"
-      });
-
-      return subjects.OrderBy(s => s.Name);
+        grade.Absents += 4; // 4 hours of class
+        absents += 4;
+      }
     }
 
-    var grades = subjectCourse.Subjects.Select(s => new
-    {
-      s.Id,
-      s.Name,
-      Grade = enumerable.Find(g => g.Subject == s)?.Value
-    });
+    return absents;
+  }
 
-    return grades.OrderBy(s => s.Name);
+  private int AddAttendancePercentage(List<ViewStudentGradeModel> model,
+    double exclusionPercentage)
+  {
+    int totalHours = 0;
+    foreach (var grade in model)
+    {
+      totalHours += grade.ExpectedHours;
+      var attendancePercentage = CalculateAttendancePercentage(
+        grade.ExpectedHours, grade.Absents);
+      grade.AttendancePercentage = Math.Round(attendancePercentage, 2);
+      grade.IsExcluded = IsExcluded(grade.ExpectedHours, grade.Absents,
+        exclusionPercentage);
+    }
+
+    return totalHours;
+  }
+
+
+  private double CalculateAttendancePercentage(int totalHours, int absents)
+  {
+    return ((totalHours - absents) / (double)totalHours) * 100;
+  }
+
+  private bool IsExcluded(int totalHours, int absents,
+    double allowedAbsentPercentage)
+  {
+    double attendancePercentage
+      = CalculateAttendancePercentage(totalHours, absents);
+    return attendancePercentage < (100 - allowedAbsentPercentage);
   }
 }

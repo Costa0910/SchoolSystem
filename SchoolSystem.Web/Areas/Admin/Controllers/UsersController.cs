@@ -2,6 +2,7 @@ using System.Diagnostics;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Web.Areas.Admin.ViewModels.Users;
 using SchoolSystem.Web.Controllers;
 using SchoolSystem.Web.Data.Interfaces;
@@ -27,7 +28,8 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
     public UsersController(IUserHelper userHelper, IMapper mapper,
       IMailService mailService, ICreateMailHtmlHelper createMailHtmlHelper,
       IBlobStorageService blobStorageService, IAdminRepository adminRepository,
-      IStudentRepository studentRepository, IStaffRepository staffRepository) : base(userHelper)
+      IStudentRepository studentRepository,
+      IStaffRepository staffRepository) : base(userHelper)
     {
       _userHelper = userHelper;
       _mapper = mapper;
@@ -66,14 +68,13 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
 
     private async Task<User?> CreateUser(UserViewModel model)
     {
-      const string password = "Password@123"; // User gonna change it later
+      const string password = "Password@123#"; // User gonna change it later
       var profileImageId = Guid.Empty;
 
       if (model.Role is null) return null;
 
       if (model.ProfilePhoto is not null && model.ProfilePhoto.Length > 0)
       {
-        // Todo: Check container name in Azure Blob Storage
         profileImageId = await _blobStorageService.UploadFileAsync(model
           .ProfilePhoto, AzureContainerNames.profile);
       }
@@ -224,7 +225,6 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
       var photoId = Guid.Empty;
       if (model.Photo.Length > 0)
       {
-        // Todo: Check container name in Azure Blob Storage
         photoId = await _blobStorageService.UploadFileAsync(model
           .Photo, AzureContainerNames.profile);
       }
@@ -367,7 +367,7 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
         if (!result.Succeeded)
         {
           return RedirectToAction("Index",
-            new { message = "User not deleted" });
+            new { message = "User not deleted, try again" });
         }
       }
       catch (Exception ex)
@@ -390,8 +390,8 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
           }
         }
 
-        return RedirectToAction("Index",
-          new { message = "User can't be deleted" });
+        throw new DbUpdateException("An error occurred while deleting the user",
+          ex);
       }
 
       return RedirectToAction("Index",
@@ -414,6 +414,17 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
       }
       else if (role == Roles.Student)
       {
+        var student
+          = await _studentRepository.GetStudentByIdIncludeUserAsync(user.Id);
+        if (student is null) return false;
+        var canDelete = await _studentRepository.CanDeleteStudentAsync(student);
+        if (!canDelete)
+        {
+          throw new DbUpdateException(
+            "DELETE statement conflicted with the REFERENCE constraint",
+            new Exception("Can't delete student"));
+        }
+
         r = await _studentRepository.DeleteStudentAsync(user.Id);
         if (!r) return false;
       }

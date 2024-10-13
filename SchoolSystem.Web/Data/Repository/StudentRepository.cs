@@ -57,4 +57,48 @@ public class StudentRepository(AppDbContext context)
       .Include(s => s.Courses)
       .FirstOrDefaultAsync(s => s.User.Email == email);
   }
+
+  public async Task<bool> CanDeleteStudentAsync(Student student, Guid courseId)
+  {
+    var courses = await _context.Courses
+      .Include(c => c.Students)
+      .Include(c => c.Attendances).ThenInclude(attendance => attendance.Student)
+      .Include(c => c.Grades).ThenInclude(grade => grade.Student)
+      .FirstOrDefaultAsync(c => c.Id == courseId);
+
+    if (courses == null || !courses.Students
+          .Contains(student))
+    {
+      return false;
+    }
+
+    if (courses.Attendances.Any(a => a.Student
+                                     == student))
+    {
+      return false;
+    }
+
+    return courses.Grades.All(g => g.Student != student);
+  }
+
+  public async Task<bool> CanDeleteStudentAsync(Student student)
+  {
+    var courses = await _context.Courses
+      .Include(c => c.Students)
+      .Include(c => c.Attendances).ThenInclude(attendance => attendance.Student)
+      .Include(c => c.Grades).ThenInclude(grade => grade.Student)
+      .ToListAsync();
+
+    if (courses.All(c => !c.Students.Contains(student)))
+    {
+      return false;
+    }
+
+    if (courses.Any(c => c.Attendances.Any(a => a.Student == student)))
+    {
+      return false;
+    }
+
+    return courses.All(c => c.Grades.All(g => g.Student != student));
+  }
 }

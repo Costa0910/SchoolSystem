@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Web.Areas.Staff.ViewModels.Students;
 using SchoolSystem.Web.Controllers;
 using SchoolSystem.Web.Data.Interfaces;
@@ -24,7 +25,6 @@ public class StudentsController(
 {
   public async Task<IActionResult> Index(string? message)
   {
-
     if (!string.IsNullOrEmpty(message))
     {
       ViewBag.Message = message;
@@ -71,7 +71,7 @@ public class StudentsController(
       return View(model);
     }
 
-    const string password = "Password@123"; // User gonna change it later
+    const string password = "Password@123#"; // User gonna change it later
     var profileImageId = Guid.Empty;
 
 
@@ -208,6 +208,23 @@ public class StudentsController(
       return RedirectToAction("Index", new { message = "User not found" });
     }
 
+    var student = await studentRepository.GetStudentByIdIncludeUserAsync(id);
+
+    if (student is null)
+    {
+      return RedirectToAction("Index", new { message = "Student not found" });
+    }
+
+    var canDelete = await studentRepository.CanDeleteStudentAsync(student);
+
+    if (!canDelete)
+    {
+      throw new DbUpdateException(
+        "DELETE statement conflicted with the REFERENCE constraint",
+        new Exception(
+          "DELETE statement conflicted with the REFERENCE constraint"));
+    }
+
     // check if possible to delete without error
     try
     {
@@ -215,7 +232,7 @@ public class StudentsController(
       if (!result.Succeeded)
       {
         return RedirectToAction("Index",
-          new { message = "User not deleted" });
+          new { message = "User not deleted, try again" });
       }
     }
     catch (Exception ex)
@@ -236,8 +253,7 @@ public class StudentsController(
         }
       }
 
-      return RedirectToAction("Index",
-        new { message = "User can't be deleted" });
+      throw new DbUpdateException("Error deleting user", ex);
     }
 
     return RedirectToAction("Index",

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Web.Areas.Admin.ViewModels.Courses;
 using SchoolSystem.Web.Controllers;
 using SchoolSystem.Web.Data.Interfaces;
@@ -18,7 +19,8 @@ public class CoursesController(
   IMapper mapper,
   ICourseRepository courseRepository,
   IAdminRepository adminRepository,
-  ISubjectRepository subjectRepository, IUserHelper userHelper)
+  ISubjectRepository subjectRepository,
+  IUserHelper userHelper)
   : BaseController(userHelper)
 {
 //     // GET
@@ -160,14 +162,7 @@ public class CoursesController(
     }
 
 
-    try
-    {
-      await courseRepository.DeleteAsync(course);
-    }
-    catch (Exception e)
-    {
-      return RedirectToAction(nameof(Index), new { message = e.Message });
-    }
+    await courseRepository.DeleteAsync(course);
 
     return RedirectToAction(nameof(Index),
       new { message = $"{course.Name} deleted successfully." });
@@ -367,7 +362,6 @@ public class CoursesController(
       });
   }
 
-//TODO: check if subject is not been used in some part of the system with this course before deleting
   public async Task<IActionResult> DeleteSubjectFromCourse(string courseId,
     string
       subjectId)
@@ -394,21 +388,22 @@ public class CoursesController(
         new { id = courseId, message = "Subject not found." });
     }
 
-    course.Subjects.Remove(subject);
-
-    try
+    var canDelete = await subjectRepository.CanDeleteSubjectAsync(subject,
+      course.Id);
+    if (canDelete)
     {
+      course.Subjects.Remove(subject);
+
+
       await courseRepository.UpdateAsync(course);
     }
-    catch (Exception)
+    else
     {
-      return RedirectToAction(nameof(Details),
-        new
-        {
-          id = courseId,
-          message = $"Could not delete {subject.Name} from {course.Name}"
-        });
+      throw new DbUpdateException(
+        "DELETE statement conflicted with the REFERENCE constraint",
+        new Exception("DELETE statement conflicted with the REFERENCE constraint"));
     }
+
 
     return RedirectToAction(nameof(Details),
       new

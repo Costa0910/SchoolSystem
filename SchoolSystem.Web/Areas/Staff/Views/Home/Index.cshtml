@@ -11,6 +11,17 @@
       <div class="card">
         <h5 class="card-header">In box</h5>
         <div class="card-body">
+          @if (!Model.InBoxAlerts.Any())
+          {
+          <div class="alert alert-warning alert-dismissible text-black"
+               role="alert">
+            <div class="alert-heading d-flex align-items-center mb-0">
+              <div class="me-1">
+                <h6 class="mb-0">No alerts</h6>
+              </div>
+            </div>
+          </div>
+          }
           @foreach (var alert in Model.InBoxAlerts)
           {
             <div class="alert alert-success alert-dismissible text-black"

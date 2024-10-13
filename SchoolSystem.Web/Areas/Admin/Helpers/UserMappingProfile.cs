@@ -6,7 +6,7 @@ using SchoolSystem.Web.Models.EnumsClasses;
 namespace SchoolSystem.Web.Areas.Admin.Helpers;
 public class UserMappingProfile : Profile
 {
-  private const string  DefaultProfilePhotoUrl = "http://localhost:5286/img/avatars/3.png";
+  private const string  DefaultProfilePhotoUrl = "https://supershop0910.blob.core.windows.net/profile/user.png";
 
     public UserMappingProfile()
     {

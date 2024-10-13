@@ -168,29 +168,51 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
         <h5 class="modal-title"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body table-responsive">
-        <table class="table caption-top table-hover">
-          <caption id="caption"></caption>
-          <thead class="table-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Subject</th>
-            <th scope="col">Grade</th>
-            <th scope="col">Approval</th>
-          </tr>
-          </thead>
-          <tbody id="tableBody">
-          @* Rows will be inserted here *@
-          </tbody>
-          <tfoot class="table-light" id="tableFooter">
-          <tr>
-           @* footer will be inserted here *@
-          </tfoot>
-        </table>
+      <div class="modal-body">
+        <div class="card">
+          <h5 class="card-header" id="caption">Your grades on @ViewBag.CourseName</h5>
+          <div class="table-responsive text-nowrap">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Expected Hours</th>
+                <th>Absents(in hours)</th>
+                <th>Grade</th>
+                <th>Attendance</th>
+                <th>Approval</th>
+              </tr>
+              </thead>
+              <tbody id="tableBody">
+              </tbody><tfoot class="table-border-bottom-0" id="tableFooter"></tfoot>
+            </table>
+          </div>
+        </div>
+
+        @* <table class="table caption-top table-hover"> *@
+        @*   <caption id="caption"></caption> *@
+        @*   <thead class="table-dark"> *@
+        @*   <tr> *@
+        @*     <th scope="col">#</th> *@
+        @*     <th scope="col">Subject</th> *@
+        @*     <th scope="col">Grade</th> *@
+        @*     <th scope="col">Approval</th> *@
+        @*   </tr> *@
+        @*   </thead> *@
+        @*   <tbody id="tableBody"> *@
+        @*   $1$ Rows will be inserted here #1# *@
+        @*   </tbody> *@
+        @*   <tfoot class="table-light" id="tableFooter"> *@
+        @*   <tr> *@
+        @*    $1$ footer will be inserted here #1# *@
+        @*   </tfoot> *@
+        @* </table> *@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary waves-effect"
-                data-bs-dismiss="modal">Close</button>
+                data-bs-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
   </div>
@@ -198,7 +220,7 @@ gap-4 gap-md-0 gx-5 flex-wrap p-5 align-content-center" id="FilterOptions">
 
 @section PageScripts
 {
-<script src="~/js/showGrade.js"></script>
+  <script src="~/js/showGrade.js"></script>
   <!-- Load DataTables from CDN -->
   <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"
           defer></script>

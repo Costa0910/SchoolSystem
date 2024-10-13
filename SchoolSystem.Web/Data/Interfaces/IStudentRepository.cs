@@ -11,4 +11,6 @@ public interface IStudentRepository : IGenericRepository<Student>
   Task<List<Student>> GetStudentsIncludeUserAsync();
   Task<List<Student>> GetStudentsNotInCourseAsync(Course course);
   Task<Student?> GetStudentCoursesByEmailAsync(string email);
+  Task<bool> CanDeleteStudentAsync(Student student, Guid courseId);
+  Task<bool> CanDeleteStudentAsync(Student student);
 }
