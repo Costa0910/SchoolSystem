@@ -4,6 +4,7 @@
 let debounceTimeout;
 
 function filterStudents(e) {
+  debugger;
   clearTimeout(debounceTimeout);
   debounceTimeout = setTimeout(() => {
     const filter = e.target.value.toUpperCase();
@@ -11,6 +12,7 @@ function filterStudents(e) {
     const students = document.querySelectorAll('.elements');
     students.forEach((subject) => {
       const name = subject.querySelector('.element-name').textContent;
+      debugger;
       if (name.toUpperCase().includes(filter)) {
         subject.style.display = '';
       } else {

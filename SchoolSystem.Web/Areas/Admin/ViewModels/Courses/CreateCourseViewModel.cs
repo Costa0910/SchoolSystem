@@ -13,9 +13,7 @@ public class CreateCourseViewModel
 
 
   [Required, Display(Name = "Start Date"), DataType(DataType.Date,
-     ErrorMessage = "Invalid date format"),
-   DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode =
-     true)]
+     ErrorMessage = "Invalid date format")]
   public DateOnly StartDate { get; set; }
 
   [Range(5, 40, ErrorMessage = "Value must be between {0} and {1}"),

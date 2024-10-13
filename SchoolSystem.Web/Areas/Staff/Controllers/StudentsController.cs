@@ -89,7 +89,7 @@ public class StudentsController(
 
     if (newUser is null)
     {
-      ViewBag.ErrorMessage = "Something went wrong, please try again.";
+      ViewBag.Error = "Something went wrong, please try again.";
       return View(model);
     }
 
@@ -225,39 +225,15 @@ public class StudentsController(
           "DELETE statement conflicted with the REFERENCE constraint"));
     }
 
-    // check if possible to delete without error
-    try
+    var r = await DeleteFromStudentTable(user);
+    if (r)
     {
-      var result = await userHelper.DeleteUserAsync(user);
-      if (!result.Succeeded)
-      {
-        return RedirectToAction("Index",
-          new { message = "User not deleted, try again" });
-      }
-    }
-    catch (Exception ex)
-    {
-      if (ex.InnerException is not null &&
-          ex.InnerException.Message.Contains("dbo.Students"))
-      {
-        var r = await DeleteFromStudentTable(user);
-        if (r)
-        {
-          return RedirectToAction("Index",
-            new { message = $"{user.FirstName} deleted successfully" });
-        }
-        else
-        {
-          return RedirectToAction("Index",
-            new { message = "User can't be deleted" });
-        }
-      }
-
-      throw new DbUpdateException("Error deleting user", ex);
+      return RedirectToAction("Index",
+        new { message = $"{user.FirstName} deleted successfully" });
     }
 
     return RedirectToAction("Index",
-      new { message = $"{user.FirstName} deleted successfully" });
+      new { message = "User can't be deleted" });
   }
 
   private async Task<bool> DeleteFromStudentTable(User user)

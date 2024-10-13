@@ -60,25 +60,30 @@ public class StudentRepository(AppDbContext context)
 
   public async Task<bool> CanDeleteStudentAsync(Student student, Guid courseId)
   {
-    var courses = await _context.Courses
+    var course = await _context.Courses
       .Include(c => c.Students)
       .Include(c => c.Attendances).ThenInclude(attendance => attendance.Student)
       .Include(c => c.Grades).ThenInclude(grade => grade.Student)
       .FirstOrDefaultAsync(c => c.Id == courseId);
 
-    if (courses == null || !courses.Students
+    if (course == null || !course.Students
           .Contains(student))
     {
       return false;
     }
 
-    if (courses.Attendances.Any(a => a.Student
+    if (course.Attendances.Any(a => a.Student
                                      == student))
     {
       return false;
     }
 
-    return courses.Grades.All(g => g.Student != student);
+    if (course.Grades.Any(g => g.Student == student))
+    {
+      return false;
+    }
+
+    return true;
   }
 
   public async Task<bool> CanDeleteStudentAsync(Student student)
@@ -91,7 +96,7 @@ public class StudentRepository(AppDbContext context)
 
     if (courses.All(c => !c.Students.Contains(student)))
     {
-      return false;
+      return true;
     }
 
     if (courses.Any(c => c.Attendances.Any(a => a.Student == student)))
@@ -99,6 +104,11 @@ public class StudentRepository(AppDbContext context)
       return false;
     }
 
-    return courses.All(c => c.Grades.All(g => g.Student != student));
+    if (courses.Any(c => c.Grades.Any(g => g.Student == student)))
+    {
+      return false;
+    }
+
+    return true;
   }
 }

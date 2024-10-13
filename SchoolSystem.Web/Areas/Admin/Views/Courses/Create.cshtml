@@ -94,11 +94,12 @@
 
             <div class="col-md-6">
               <div class="form-floating form-floating-outline">
-                <ejs-datepicker id="datepickerFor" ejs-for="StartDate"
-                                cssClass="form-control Input-color-gray"
-                                placeholder="The start date of course"
-                                min="@DateOnly.FromDateTime(DateTime.Now)" format="dd-MM-yyyy">
-                </ejs-datepicker>
+                @* <ejs-datepicker id="datepickerFor" ejs-for="StartDate" *@
+                @*                 cssClass="form-control Input-color-gray" *@
+                @*                 placeholder="The start date of course" *@
+                @*                 min="@DateOnly.FromDateTime(DateTime.Now)"> *@
+                @* </ejs-datepicker> *@
+                <input type="date" asp-for="StartDate" class="form-control Input-color-gray" />
                 <label asp-for="StartDate">Start Date</label>
               </div>
               <div id="errorMessage">

@@ -422,7 +422,7 @@ namespace SchoolSystem.Web.Areas.Admin.Controllers
         {
           throw new DbUpdateException(
             "DELETE statement conflicted with the REFERENCE constraint",
-            new Exception("Can't delete student"));
+            new Exception("DELETE statement conflicted"));
         }
 
         r = await _studentRepository.DeleteStudentAsync(user.Id);
